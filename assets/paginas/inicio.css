@@ -1,0 +1,115 @@
+body {
+    background: linear-gradient(to bottom, #252525, rgb(34, 34, 34));
+    margin: 0;
+    text-align: center;
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+h1, h2, h3{
+    color: white;
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+#titulo_gamergyx{
+    color: #ff0000;
+    font-family: 'Pixelify Sans', sans-serif;
+
+}
+
+#titulo_gamergyx span{
+    color: white;
+    font-family: 'Pixelify Sans', sans-serif;
+
+}
+
+header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.header-container-usuario {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    
+}
+
+
+
+#usuario_menu_container {
+    position: relative;
+    cursor: pointer;
+}
+
+
+#usuario_icon {
+    width: 40px;
+    margin-bottom: 2.1rem;
+    transition: transform 0.3s ease;
+    background-color: #ff0000;
+}
+
+#usuario_icon:hover {
+    transform: scale(1.1);
+}
+
+#menu_usuario {    
+    display: none;
+    position: absolute;
+    background-color: #0c0c0c;
+    border-radius: 8px;
+    text-align: center;
+    top: 50px;
+    width: 150px; 
+}
+
+#menu_usuario ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}  
+
+#menu_usuario li {
+    position: relative;
+}
+
+#menu_usuario a{
+    display: block;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+
+
+
+
+
+ul li {
+    list-style: none;
+    padding: 0.5rem;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.ofertas-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+img {
+    max-width: 200px;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+

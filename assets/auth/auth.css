@@ -1,0 +1,106 @@
+* {
+    margin: 0;
+    padding: 0;
+
+}
+
+
+body {
+    overflow: hidden;
+    background: linear-gradient(to bottom, #252525, rgb(34, 34, 34));
+    margin: 0;
+    text-align: center;
+    font-family: 'Pixelify Sans', sans-serif;
+    color: white;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#info-left {
+    background-color: #1a1919;
+    border-radius: 2rem;
+    padding: 3rem;
+    max-width: 400px;
+    width: 600px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    margin-right: 2rem;
+}
+
+#imagen-right {
+    margin-left: 5rem
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #ff0000;
+    font-family: 'Pixelify Sans', sans-serif;
+    margin-bottom: 1.5rem;
+}
+
+#gyx {
+    color: white;
+}
+
+
+label {
+    display: block;
+    text-align: left;
+    padding: 0.5rem;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+
+input {
+    width: 100%;
+    padding: 0.8rem;
+    border-radius: 1rem;
+    border: 2px solid #555;
+    background-color: #333;
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 16px;
+}
+
+input:focus {
+    border-color: #ff0000;
+    outline: none;
+}
+
+
+button {
+    padding: 0.8rem;
+    font-size: 18px;
+    color: white;
+    background: linear-gradient(to bottom, rgb(255, 139, 6), rgb(255, 115, 0));
+    border-radius: 1rem;
+    border: none;
+    width: 430px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: linear-gradient(to bottom, rgb(255, 115, 0), rgb(255, 139, 6));
+}
+
+
+
+
+img {
+    width: 100%;
+    box-shadow: 10px 10px 0px black;
+
+}
+
+form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+}
