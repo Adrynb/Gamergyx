@@ -3,28 +3,30 @@
 include '../db.php';
 
 $api = '1b59c7f60d814b35b205f50e2b0182ef';
-$juegos = [];
-$url = 'https://api.rawg.io/api/games?key=' . $api . '&page=1';
 $cantidadJuegos = 500;
+$juegos = [];
+$nextUrl = 'https://api.rawg.io/api/games?key=' . $api . '&page_size=40';
 
-while (count($juegos) < $cantidadJuegos) {
-    $response = file_get_contents($url);
+while (count($juegos) < $cantidadJuegos && $nextUrl) {
+    $response = file_get_contents($nextUrl);
     $data = json_decode($response, true);
 
-    if (isset($data['results'])) {
-        $juegos = array_merge($juegos, $data['results']);
-    } else {
+    if (!isset($data['results'])) {
         echo 'No se encontraron juegos o ocurrió un error.';
         break;
     }
 
-    if (!isset($data['next'])) {
-        break;
+    foreach ($data['results'] as $juego) {
+        $id_rawg = $juego['id'];
+        if (!isset($juegos[$id_rawg])) {
+            $juegos[$id_rawg] = $juego;
+        }
     }
+
+    $nextUrl = $data['next'];
 }
 
 $juegos = array_slice($juegos, 0, $cantidadJuegos);
-
 
 $sqlGeneros = "INSERT INTO generos(id_generos, nombre) VALUES (?, ?) ON DUPLICATE KEY UPDATE nombre = VALUES(nombre)";
 $stmtGeneros = $conexion->prepare($sqlGeneros);
@@ -36,32 +38,36 @@ $sqlVideojuegos = "INSERT INTO videojuegos(titulo, descripcion, fecha_lanzamient
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 $stmtVideojuegos = $conexion->prepare($sqlVideojuegos);
 
-if ($juegos) {
-    foreach ($juegos as $juego) {
-        $titulo = $juego['name'];
-        $fecha = $juego['released'];
-        $id_plataformas = $juego['platforms'][0]['platform']['id'];
-        $plataforma_nombre = $juego['platforms'][0]['platform']['name'];
-        $id_generos = $juego['genres'][0]['id'];
-        $genero_nombre = $juego['genres'][0]['name'];
-        $imagen = $juego['background_image'];
-        $descripcion = $juego['description_raw'] ?? 'No description available.';
-        $precio = $juego['price'] ?? rand(20, 70); 
-        $stock = $juego['stock'] ?? rand(1, 500);
+foreach ($juegos as $juego) {
+    $titulo = $juego['name'] ?? 'Sin título';
+    $fecha = $juego['released'] ?? '2000-01-01';
+    $imagen = $juego['background_image'] ?? '';
+    $descripcion = $juego['slug'];
 
-        $stmtGeneros->bind_param("is", $id_generos, $genero_nombre);
-        $stmtGeneros->execute();
+    $genero = $juego['genres'][0] ?? ['id' => 0, 'name' => 'Desconocido'];
+    $id_generos = $genero['id'];
+    $genero_nombre = $genero['name'];
 
-        $stmtPlataformas->bind_param("is", $id_plataformas, $plataforma_nombre);
-        $stmtPlataformas->execute();
+    $plataforma = $juego['platforms'][0]['platform'] ?? ['id' => 0, 'name' => 'Desconocido'];
+    $id_plataformas = $plataforma['id'];
+    $plataforma_nombre = $plataforma['name'];
 
-        $stmtVideojuegos->bind_param("sssiiiis", $titulo, $descripcion, $fecha, $id_plataformas, $id_generos, $precio, $stock, $imagen);
-        $stmtVideojuegos->execute();
+    $precio = rand(20, 70);
+    $stock = rand(1, 500);
 
-    }
+    // Ejecutar inserts
+    $stmtGeneros->bind_param("is", $id_generos, $genero_nombre);
+    $stmtGeneros->execute();
 
-    $stmtGeneros->close();
-    $stmtPlataformas->close();
-    $stmtVideojuegos->close();
+    $stmtPlataformas->bind_param("is", $id_plataformas, $plataforma_nombre);
+    $stmtPlataformas->execute();
+
+    $stmtVideojuegos->bind_param("sssiiiis", $titulo, $descripcion, $fecha, $id_plataformas, $id_generos, $precio, $stock, $imagen);
+    $stmtVideojuegos->execute();
 }
+
+$stmtGeneros->close();
+$stmtPlataformas->close();
+$stmtVideojuegos->close();
+
 ?>
