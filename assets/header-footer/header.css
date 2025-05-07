@@ -1,0 +1,223 @@
+body {
+    background: linear-gradient(to bottom, #252525, rgb(34, 34, 34));
+    margin: 0;
+    text-align: center;
+    font-family: 'Pixelify Sans', sans-serif;
+    align-items: center;
+}
+
+h1, h2, h3, p{
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    
+}
+
+.titulo-section {
+   margin-bottom: 2rem;
+   padding: 6rem;
+   font-size: 3rem;
+   background-color: black;
+}
+
+h3{
+    font-size: 1.5rem;
+    font-family: 'Pixelify Sans', sans-serif;
+    margin-top: 2rem;
+}
+
+#banner-section {
+    padding: 8rem 0 0 0;
+    margin: 0;
+}
+
+
+.carousel-item img {
+    width: 100%;
+    max-height: 600px; 
+    object-fit: contain; 
+    object-position: center; 
+    height: auto; 
+    margin-bottom: 3rem;
+}
+
+
+
+h2{
+    font-size: 2rem;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    margin-top: 1rem;
+}
+
+.header-container-usuario {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#buscar_container input {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+
+#titulo_gamergyx {
+    color: #ff0000;
+    font-family: 'Pixelify Sans', sans-serif;
+    font-size: 3rem;
+    margin: 0;
+}
+
+#titulo_gamergyx span {
+    color: white;
+    font-family: 'Pixelify Sans', sans-serif;
+}
+
+nav {
+    font-family: Times, serif;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav ul li {
+    position: relative;
+
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 15px 20px;
+    display: block;
+    font-size: 22px;
+}
+
+nav ul li a:hover {
+    border-bottom: 2px solid white;
+    transition: border-bottom 0.3s ease;
+}
+
+nav ul li ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #444;
+    flex-direction: column;
+    white-space: nowrap;
+    z-index: 1;
+}
+
+nav ul li:hover > ul {
+    display: flex;
+}
+
+nav ul li ul li {
+    flex: none;
+}
+
+nav ul li ul li a {
+    padding: 10px 15px;
+}
+
+
+#usuario_menu_container {
+    position: relative;
+    cursor: pointer;
+    
+}
+
+
+#menu_usuario {    
+    display: none;
+    position: absolute;
+    background-color: #0c0c0c;
+    border-radius: 8px;
+    text-align: center;
+    top: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    width: 150px; 
+    z-index: 2;
+}
+
+
+#usuario_icon {
+    width: 40px;
+    transition: transform 0.3s ease;
+    background-color: #ff0000;
+    border-radius: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+#carrito_icon {
+    width: 40px;
+    transition: transform 0.3s ease;
+    background-color: #ff0000;
+    padding: 2px 2px;
+    border-radius: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+#usuario_dinero {
+    width: 100px;
+    transition: transform 0.3s ease;
+    background-color: #ff0000;
+    border-radius: 0.5rem;
+    padding: 2px 2px;
+}
+
+
+#usuario_icon:hover {
+    transform: scale(1.1);
+}
+
+
+
+#menu_usuario ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}  
+
+#menu_usuario li {
+    position: relative;
+}
+
+#menu_usuario a{
+    display: block;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+
+ul li {
+    list-style: none;
+    padding: 0.5rem;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+}

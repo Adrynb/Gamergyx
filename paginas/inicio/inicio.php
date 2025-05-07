@@ -27,6 +27,8 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../../assets/header-footer/header.css">
+    <link rel="stylesheet" href="../../assets/header-footer/footer.css">
     <title>INICIO - Tienda Videojuegos</title>
     <link rel="stylesheet" href="../../assets/paginas/inicio.css">
 
@@ -78,10 +80,7 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
 
             </div>
         </section>
-
-
         </section>
-
     </header>
 
 
@@ -143,33 +142,39 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
             echo '<div class="ofertas-container">';
 
             if (mysqli_num_rows($resultOfertas) > 0) {
-            echo '<div class="oferta-extra-container">';
-            while ($row = mysqli_fetch_assoc($resultOfertas)) {
-                echo '<div class="oferta-extra-item">';
-                echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-extra">';
-                echo '<h3>' . $row['titulo'] . '</h3>';
-                echo '<p>Precio: $' . $row['precio'] . '</p>';
+                echo '<div class="oferta-extra-container">';
+                while ($row = mysqli_fetch_assoc($resultOfertas)) {
+                    echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="item-form">';
+                    echo '<div class="oferta-extra-item">';
+                    echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-extra">';
+                    echo '<h3>' . $row['titulo'] . '</h3>';
+                    echo '<p>Precio: $' . $row['precio'] . '</p>';
+                    echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                    echo '<input type="hidden" name="game_id" value="' . $row['id_videojuegos'] . '">';
+                    echo '</div>';
+                }
                 echo '</div>';
-            }
-            echo '</div>';
             } else {
-            echo '<p>No hay ofertas destacadas disponibles en este momento.</p>';
+                echo '<p>No hay ofertas destacadas disponibles en este momento.</p>';
             }
             if (mysqli_num_rows($result) > 0) {
-            echo '<div class="oferta-items-container">';
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo '<div class="oferta-item">';
-                echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-section">';
-                echo '<h3>' . $row['titulo'] . '</h3>';
-                echo '<p>Precio: $' . $row['precio'] . '</p>';
+                echo '<div class="oferta-items-container">';
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<div class="oferta-item">';
+                    echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="item-form">';
+                    echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-section">';
+                    echo '<h3>' . $row['titulo'] . '</h3>';
+                    echo '<p>Precio: $' . $row['precio'] . '</p>';
+                    echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                    echo '<input type="hidden" name="game_id" value="' . $row['id_videojuegos'] . '">';
+                    echo '</div>';
+                }
                 echo '</div>';
-            }
-            echo '</div>';
             } else {
-            echo '<p>No hay ofertas disponibles en este momento.</p>';
+                echo '<p>No hay ofertas disponibles en este momento.</p>';
             }
 
-            echo '</div>'; 
+            echo '</div>';
             ?>
         </section>
 
@@ -180,14 +185,17 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
         <section id="novedades-section">
 
             <?php
-            $sql = "SELECT titulo, imagen, precio FROM VIDEOJUEGOS WHERE fecha_lanzamiento >= '2018-01-01' ORDER BY RAND() DESC LIMIT 8";
+            $sql = "SELECT id_videojuegos, titulo, imagen, precio FROM VIDEOJUEGOS WHERE fecha_lanzamiento >= '2018-01-01' ORDER BY RAND() DESC LIMIT 8";
             $result = mysqli_query($conexion, $sql);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<form method="POST" action="-../juego-detalle/juego-detalle.php" class="item-form">';
                     echo '<div class="item">';
                     echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-section">';
                     echo '<h3>' . $row['titulo'] . '</h3>';
                     echo '<p>Precio: $' . $row['precio'] . '</p>';
+                    echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                    echo '<input type="hidden" name="game_id" value="' . $row['id_videojuegos'] . '">';
                     echo '</div>';
                 }
             } else {
@@ -196,21 +204,24 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
             ?>
         </section>
 
-
+        <h2 class="titulo-section">MÁS VENDIDOS</h2>
 
         <section id="masvendidos-section">
-            <h2 class="titulo-section"">MÁS VENDIDOS</h2>
+
             <?php
             $sql = "SELECT * FROM VIDEOJUEGOS ORDER BY stock DESC LIMIT 4";
             $result = mysqli_query($conexion, $sql);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="item-form">';
                     echo '<div class="item">';
                     echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-section">';
                     echo '<h3>' . $row['titulo'] . '</h3>';
                     echo '<p>Precio: $' . $row['precio'] . '</p>';
-                    echo '<button>Añadir al carrito</button>';
+                    echo '<input type="hidden" name="game_id" value="' . $row['id_videojuegos'] . '">';
+                    echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
                     echo '</div>';
+                    echo '</form>';
                 }
             } else {
                 echo '<p>No hay productos más vendidos disponibles en este momento.</p>';
@@ -218,15 +229,36 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
             ?>
 
         </section>
+
+        </section>
     </main>
-
-
-
-
-
-
     <script src=" ./inicio.js" defer>
     </script>
+
+
+    <footer>
+        <section id="footer-social-media">
+            <h2>Redes Sociales</h2>
+            <div id="redes-sociales">
+                <a href="https://www.facebook.com/" target="_blank"><img src="../../assets/images/logos/facebook.png"
+                        alt="Facebook"></a>
+                <a href="https://www.instagram.com/" target="_blank"><img src="../../assets/images/logos/instagram.png"
+                        alt="Instagram"></a>
+                <a href="https://twitter.com/" target="_blank"><img src="../../assets/images/logos/twitter.png"
+                        alt="Twitter"></a>
+                <a href="https://www.youtube.com/" target="_blank"><img src="../../assets/images/logos/youtube.png"
+                        alt="YouTube"></a>
+            </div>
+        </section>
+        <section id="footer-legal">
+            <h2>Información Legal</h2>
+            <p><a href="#">Política de Privacidad</a></p>
+            <p><a href="#">Términos y Condiciones</a></p>
+            <p><a href="#">Cookies</a></p>
+            <p>&copy; 2025 Gamer<span>gyx</span>. Todos los derechos reservados.</p>
+        </section>
+
+    </footer>
 
 
 </body>
