@@ -162,6 +162,28 @@ nav ul li ul li a {
 }
 
 
+#admin_menu_container {
+    position: relative;
+    cursor: pointer;
+    
+}
+
+
+#admin_usuario {    
+    display: none;
+    position: absolute;
+    background-color: #0c0c0c;
+    border-radius: 8px;
+    text-align: center;
+    top: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    width: 150px; 
+    z-index: 2;
+}
+
+
 #usuario_icon {
     width: 40px;
     transition: transform 0.3s ease;

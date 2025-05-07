@@ -29,6 +29,7 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../../assets/header-footer/header.css">
     <link rel="stylesheet" href="../../assets/header-footer/footer.css">
+    
     <title>INICIO - Tienda Videojuegos</title>
     <link rel="stylesheet" href="../../assets/paginas/inicio.css">
 
@@ -42,7 +43,7 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
         <nav>
             <ul>
                 <li><a href="./inicio.php">Inicio</a></li>
-                <li><a href="./noticias.php">Noticias</a></li>
+                <li><a href="../noticias/noticias.php">Noticias</a></li>
                 <li><a href="#">Plataformas</a>
                     <ul>
                         <li><a href="./plataformas/nintendo.php">Nintendo Switch</a></li>
@@ -232,7 +233,7 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
 
         </section>
     </main>
-    <script src=" ./inicio.js" defer>
+
     </script>
 
 
@@ -259,6 +260,9 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
         </section>
 
     </footer>
+
+
+    <script src=" ../../assets/header-footer/menu.js" defer></script>
 
 
 </body>

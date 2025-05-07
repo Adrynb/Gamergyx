@@ -97,5 +97,14 @@ CREATE TABLE IF NOT EXISTS `reseñas` (
 );
 
 
-// INSERTAR DATOS 
+CREATE TABLE IF NOT EXISTS `noticias` (
+  `id_noticias` INT NOT NULL AUTO_INCREMENT,
+  `titulo` VARCHAR(100) NOT NULL,
+  `contenido` TEXT NOT NULL,
+  `fecha` DATETIME NOT NULL,
+  `portada` VARCHAR(255),
+  `fuente` VARCHAR(255),
+  `enlace` VARCHAR(255),
+  PRIMARY KEY (`id_noticias`)
+);
 
