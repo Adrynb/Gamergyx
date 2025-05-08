@@ -9,6 +9,23 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
     exit();
 }
 
+
+$nombre = $_SESSION['nombre'];
+
+$sqlFP = "SELECT fotoPerfil FROM usuarios WHERE nombre = ?";
+$stmt = mysqli_prepare($conexion, $sqlFP);
+mysqli_stmt_bind_param($stmt, "s", $nombre);
+mysqli_stmt_execute($stmt);
+$resultFP = mysqli_stmt_get_result($stmt);
+
+if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
+    $fotoPerfil = $row['fotoPerfil'];
+} else {
+    $fotoPerfil = '../../assets/images/logos/usuario_icon.png'; 
+}
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +46,7 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../../assets/header-footer/header.css">
     <link rel="stylesheet" href="../../assets/header-footer/footer.css">
-    
+
     <title>INICIO - Tienda Videojuegos</title>
     <link rel="stylesheet" href="../../assets/paginas/inicio.css">
 
@@ -66,10 +83,16 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
 
 
             <section id="usuario_menu_container">
-                <img src="../../assets/images/logos/usuario_icon.png" alt="usuario_icon" id="usuario_icon">
+                <?php if (empty($fotoPerfil)): ?>
+                    <img src="../../assets/images/logos/usuario_icon.png" alt="usuario_icon" id="usuario_icon">
+                <?php else: ?>
+                    <img src="../../assets/images/perfiles/<?= $fotoPerfil ?>" alt="usuario_icon" id="usuario_icon">
+                <?php endif; ?>
+
                 <div id="menu_usuario">
                     <ul>
-                        <li><a href="../configuracion/config_perfil.php">Editar Perfil</a></li>
+                        <li><a href="../configuracion/editar_perfil.php">Editar
+                                Perfil</a></li>
                         <li><a href="../configuracion/mis_pedidos.php">Mis pedidos</a></li>
                         <li><a href="../configuracion/cerrar_sesion.php">Cerrar Sesión</a></li>
                     </ul>
@@ -83,7 +106,6 @@ if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
         </section>
         </section>
     </header>
-
 
 
     <main>

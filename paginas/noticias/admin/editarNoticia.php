@@ -122,6 +122,8 @@ if (isset($_POST["editarNoticia"])) {
         <input type="submit" value="Editar Noticia" id="editarNoticia" name="editarNoticia">
         <p id="mensajeError"></p>
 
+        <button><a href="../noticias.php">Volver a noticias</a></button>
+
         <script src="insertarNoticia.js" defer></script>
     </form>
 </body>
