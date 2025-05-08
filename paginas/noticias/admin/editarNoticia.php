@@ -1,5 +1,4 @@
 <?php
-
 include '../../../includes/db.php';
 session_start();
 
@@ -9,69 +8,84 @@ if ($_SESSION["rol"] != "admin") {
 }
 
 if (isset($_GET["id"])) {
-
+    $id_noticia = $_GET["id"];
     $titulo = urldecode($_GET["titulo"]);
     $descripcion = urldecode($_GET["contenido"]);
     $fecha = urldecode($_GET["fecha"]);
     $fuente = urldecode($_GET["fuente"]);
     $enlace = urldecode($_GET["enlace"]);
+    $imagen_actual = urldecode($_GET["portada"]);
 } else {
-    $id_noticia = $titulo = $descripcion = $fecha = $fuente = $enlace = '';
+    $id_noticia = $titulo = $descripcion = $fecha = $fuente = $enlace = $imagen_actual = '';
 }
 
 if (isset($_POST["editarNoticia"])) {
-
+    $id_noticia = intval($_POST['id_noticia']);
     $titulo = $_POST['titulo'];
     $descripcion = $_POST['descripcion'];
     $fecha = $_POST['fecha'];
-    $imagen = $_FILES['imagen']['name'];
     $fuente = $_POST['fuente'];
     $enlace = $_POST['enlace'];
-    $id_noticia = $_GET["id"];
+    $imagen_actual = $_POST['imagen'];
 
-    $formatosPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
-    $maximoTamanio = 2 * 1024 * 1024;
+    if (!empty($_FILES['imagen']['name'])) {
+        $imagen = $_FILES['imagen']['name'];
+        $tipo = $_FILES['imagen']['type'];
+        $tam = $_FILES['imagen']['size'];
+        $tmp = $_FILES['imagen']['tmp_name'];
 
-    if (!in_array($_FILES['imagen']['type'], $formatosPermitidos)) {
-        die("Error: El formato de la imagen no es compatible. Solo se permiten JPEG, PNG y WEBP.");
-    }
+        $formatosPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
+        $maximoTamanio = 2 * 1024 * 1024;
 
-    if ($_FILES['imagen']['size'] > $maximoTamanio) {
-        die("Error: El tamaño de la imagen excede el límite de 2 MB.");
-    }
+        if (!in_array($tipo, $formatosPermitidos)) {
+            die("Error: El formato de la imagen no es compatible. Solo se permiten JPEG, PNG y WEBP.");
+        }
 
-    $uploadDir = '../../../assets/noticias/';
-    $uploadFile = $uploadDir . basename($imagen);
+        if ($tam > $maximoTamanio) {
+            die("Error: El tamaño de la imagen excede el límite de 2 MB.");
+        }
 
-    if (!move_uploaded_file($_FILES['imagen']['tmp_name'], $uploadFile)) {
-        die("Error: No se pudo subir la imagen.");
+        $uploadDir = '../../../assets/noticias/';
+        $uploadFile = $uploadDir . basename($imagen);
+
+        if (!move_uploaded_file($tmp, $uploadFile)) {
+            die("Error: No se pudo subir la imagen.");
+        }
+    } else {
+   
+        $imagen = $imagen_actual;
     }
 
     $sql = "UPDATE noticias SET 
-                titulo = '$titulo', 
-                contenido = '$descripcion',
-                portada = '$imagen', 
-                fecha = '$fecha', 
-                fuente = '$fuente', 
-                enlace = '$enlace' 
-            WHERE id_noticias = '$id_noticia'";
+                titulo = ?, 
+                contenido = ?, 
+                portada = ?, 
+                fecha = ?, 
+                fuente = ?, 
+                enlace = ? 
+            WHERE id_noticias = ?";
 
-    $result = mysqli_query($conexion, $sql);
+    $stmt = mysqli_prepare($conexion, $sql);
 
-    if ($result) {
+    if ($stmt === false) {
+        die("Error en la preparación de la consulta: " . mysqli_error($conexion));
+    }
+
+    mysqli_stmt_bind_param($stmt, "ssssssi", $titulo, $descripcion, $imagen, $fecha, $fuente, $enlace, $id_noticia);
+
+    if (mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_close($stmt);
         header("Location: ../noticias.php?mensaje=noticia_editada");
         exit();
     } else {
-        die("Error al actualizar: " . mysqli_error($conexion));
+        mysqli_stmt_close($stmt);
+        die("Error al actualizar: " . mysqli_stmt_error($stmt));
     }
 }
-
-
-
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -81,18 +95,23 @@ if (isset($_POST["editarNoticia"])) {
 
 <body>
     <form action="editarNoticia.php" method="POST" id="formulario" enctype="multipart/form-data">
+        <input type="hidden" name="id_noticia" value="<?= htmlspecialchars($id_noticia) ?>">
+        <input type="hidden" name="imagen_actual" value="<?= htmlspecialchars($imagen_actual) ?>">
+
         <label for="titulo">Título:</label>
         <input type="text" id="titulo" name="titulo" value="<?= htmlspecialchars($titulo) ?>" required><br><br>
 
         <label for="contenido">Descripción:</label><br>
-        <textarea id="contenido" name="descripcion" rows="4" cols="50"
-            required><?= htmlspecialchars($descripcion) ?></textarea><br><br>
+        <textarea id="contenido" name="descripcion" rows="4" cols="50" required><?= htmlspecialchars($descripcion) ?></textarea><br><br>
 
         <label for="fecha">Fecha:</label>
         <input type="date" id="fecha" name="fecha" value="<?= htmlspecialchars($fecha) ?>" required><br><br>
 
         <label for="imagen">Portada:</label>
-        <input type="file" id="imagen" name="imagen" accept="image/*" required><br><br>
+        <?php if (!empty($imagen_actual)): ?>
+            <br><img src="../../../assets/noticias/<?= htmlspecialchars($imagen_actual) ?>" alt="Portada actual" style="max-width: 200px;"><br>
+        <?php endif; ?>
+        <input type="file" id="imagen" name="imagen"><br><br>
 
         <label for="fuente">Fuente:</label>
         <input type="text" id="fuente" name="fuente" value="<?= htmlspecialchars($fuente) ?>" required><br><br>
@@ -101,11 +120,9 @@ if (isset($_POST["editarNoticia"])) {
         <input type="text" id="enlace" name="enlace" value="<?= htmlspecialchars($enlace) ?>" required><br><br>
 
         <input type="submit" value="Editar Noticia" id="editarNoticia" name="editarNoticia">
-
         <p id="mensajeError"></p>
 
         <script src="insertarNoticia.js" defer></script>
-
     </form>
 </body>
 

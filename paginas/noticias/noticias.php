@@ -63,23 +63,23 @@ $result = mysqli_query($conexion, $sql);
         <section id="usuario_menu_container">
             <img src="../../assets/images/logos/usuario_icon.png" alt="usuario_icon" id="usuario_icon">
             <div id="menu_usuario">
-            <ul>
-                <li><a href="../configuracion/config_perfil.php">Editar Perfil</a></li>
-                <li><a href="../configuracion/mis_pedidos.php">Mis pedidos</a></li>
-                <li><a href="../configuracion/cerrar_sesion.php">Cerrar Sesión</a></li>
-            </ul>
+                <ul>
+                    <li><a href="../configuracion/config_perfil.php">Editar Perfil</a></li>
+                    <li><a href="../configuracion/mis_pedidos.php">Mis pedidos</a></li>
+                    <li><a href="../configuracion/cerrar_sesion.php">Cerrar Sesión</a></li>
+                </ul>
             </div>
         </section>
 
-        <?php if (isset($_SESSION["rol"]) && $_SESSION["rol"] == "admin") : ?>
-        <section id="admin_menu_container">
-            <img src="../../assets/images/logos/usuario_icon.png" alt="usuario_icon" id="usuario_icon">
-            <div id="admin_menu">
-            <ul>
-                <li><a href="./admin/insertarNoticia/insertarNoticia.php">Insertar Noticias</a></li>
-            </ul>
-            </div>
-        </section>
+        <?php if (isset($_SESSION["rol"]) && $_SESSION["rol"] == "admin"): ?>
+            <section id="admin_menu_container">
+                <img src="../../assets/images/logos/usuario_icon.png" alt="usuario_icon" id="usuario_icon">
+                <div id="admin_menu">
+                    <ul>
+                        <li><a href="./admin/insertarNoticia/insertarNoticia.php">Insertar Noticias</a></li>
+                    </ul>
+                </div>
+            </section>
         <?php endif; ?>
     </section>
     </section>
@@ -105,13 +105,13 @@ $result = mysqli_query($conexion, $sql);
                 echo "<button><a href='./admin/editarNoticia.php?id=" . $row['id_noticias'] . "&titulo=" .
                     urlencode($row['titulo']) . "&contenido=" . urlencode($row['contenido'])
                     . "&fecha=" . urlencode($row['fecha']) . "&fuente=" . urlencode($row['fuente'])
-                    . "&enlace=" . urlencode($row['enlace']) . "'>Editar</a></button>";
+                    . "&enlace=" . urlencode($row['enlace']) . "&portada=" . urlencode($row['portada']) . "'>Editar</a></button>";
+
             }
             echo "<button><a href='" . $row['enlace'] . "' target='_blank'>Leer más</a></button>";
             echo "<hr>";
         }
-    }
-     else {
+    } else {
         echo "<p>No hay noticias disponibles.</p>";
     }
 
