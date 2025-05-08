@@ -1,20 +1,6 @@
 <?php
 
-if(isset($_POST["game_id"])){
-    
-    $game_id = $_POST["game_id"];
-    
-    $sql = "SELECT * FROM videojuegos WHERE id_videojuegos = ?";
-    // $stmt = $conexion->prepare($sql);
-    // $stmt->bind_param("i", $game_id);
-    // $stmt->execute();
-
-    // $resultado = $stmt->get_result();
-    // $juego = $resultado->fetch_assoc();
-    
-
-}
-
+include '../menus/header.php';
 
 ?>
 
