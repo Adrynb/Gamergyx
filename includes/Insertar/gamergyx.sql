@@ -84,15 +84,14 @@ CREATE TABLE IF NOT EXISTS `detalle_pedido` (
   FOREIGN KEY (`id_videojuegos`) REFERENCES `videojuegos`(`id_videojuegos`)
 );
 
-
 CREATE TABLE IF NOT EXISTS `reseñas` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `usuario` INT NOT NULL,
+  `usuario` VARCHAR(50) NOT NULL,
+  `fotoPerfil` VARCHAR(255),
   `id_videojuegos` INT NOT NULL,
   `comentarios` TEXT NOT NULL,
   `fecha` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`usuario`) REFERENCES `usuarios`(`id_usuarios`),
   FOREIGN KEY (`id_videojuegos`) REFERENCES `videojuegos`(`id_videojuegos`)
 );
 
