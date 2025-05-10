@@ -63,13 +63,13 @@ if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
                 <li><a href="../noticias/noticias.php">Noticias</a></li>
                 <li><a href="#">Plataformas</a>
                     <ul>
-                        <li><a href="./plataformas/nintendo.php">Nintendo Switch</a></li>
-                        <li><a href="./plataformas/playstation.php">PlayStation</a></li>
-                        <li><a href="./plataformas/xbox.php">Xbox</a></li>
-                        <li><a href="./plataformas/pc.php">PC</a></li>
+                        <li><a href="../plataformas/nintendo.php">Nintendo Switch</a></li>
+                        <li><a href="../plataformas/playstation.php">PlayStation</a></li>
+                        <li><a href="../plataformas/xbox.php">Xbox</a></li>
+                        <li><a href="../plataformas/pc.php">PC</a></li>
                     </ul>
                 </li>
-                <li><a href="./comunidad/comunidad.php">Comunidad</a></li>
+                <li><a href="../comunidad/comunidad.php">Comunidad</a></li>
                 <li><a href="./contacto.php">Contacto</a></li>
             </ul>
         </nav>

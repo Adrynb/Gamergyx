@@ -69,8 +69,9 @@ include '../menus/header.php';
                     echo '<h3>' . $row['titulo'] . '</h3>';
                     echo '<p>Precio: $' . $row['precio'] . '</p>';
                     echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
-                    echo '<input type="hidden" name="game_id" value="' . $row['id_videojuegos'] . '">';
+                    echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                     echo '</div>';
+                    echo '</form>';
                 }
                 echo '</div>';
             } else {
@@ -85,8 +86,9 @@ include '../menus/header.php';
                     echo '<h3>' . $row['titulo'] . '</h3>';
                     echo '<p>Precio: $' . $row['precio'] . '</p>';
                     echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
-                    echo '<input type="hidden" name="game_id" value="' . $row['id_videojuegos'] . '">';
+                    echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                     echo '</div>';
+                    echo '</form>';
                 }
                 echo '</div>';
             } else {
@@ -108,14 +110,15 @@ include '../menus/header.php';
             $result = mysqli_query($conexion, $sql);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo '<form method="POST" action="-../juego-detalle/juego-detalle.php" class="item-form">';
+                    echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="item-form">';
                     echo '<div class="item">';
                     echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-section">';
                     echo '<h3>' . $row['titulo'] . '</h3>';
                     echo '<p>Precio: $' . $row['precio'] . '</p>';
                     echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
-                    echo '<input type="hidden" name="game_id" value="' . $row['id_videojuegos'] . '">';
+                    echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                     echo '</div>';
+                    echo '</form>';
                 }
             } else {
                 echo '<p>No hay productos recientes disponibles en este momento.</p>';
@@ -139,6 +142,7 @@ include '../menus/header.php';
                     echo '<p>Precio: $' . $row['precio'] . '</p>';
                     echo '<input type="hidden" name="game_id" value="' . $row['id_videojuegos'] . '">';
                     echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                    echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                     echo '</div>';
                     echo '</form>';
                 }
@@ -155,29 +159,7 @@ include '../menus/header.php';
     </script>
 
 
-    <footer>
-        <section id="footer-social-media">
-            <h2>Redes Sociales</h2>
-            <div id="redes-sociales">
-                <a href="https://www.facebook.com/" target="_blank"><img src="../../assets/images/logos/facebook.png"
-                        alt="Facebook"></a>
-                <a href="https://www.instagram.com/" target="_blank"><img src="../../assets/images/logos/instagram.png"
-                        alt="Instagram"></a>
-                <a href="https://twitter.com/" target="_blank"><img src="../../assets/images/logos/twitter.png"
-                        alt="Twitter"></a>
-                <a href="https://www.youtube.com/" target="_blank"><img src="../../assets/images/logos/youtube.png"
-                        alt="YouTube"></a>
-            </div>
-        </section>
-        <section id="footer-legal">
-            <h2>Información Legal</h2>
-            <p><a href="#">Política de Privacidad</a></p>
-            <p><a href="#">Términos y Condiciones</a></p>
-            <p><a href="#">Cookies</a></p>
-            <p>&copy; 2025 Gamer<span>gyx</span>. Todos los derechos reservados.</p>
-        </section>
-
-    </footer>
+    <?= include '../menus/footer.php'; ?>
 
 
     <script src=" ../../assets/header-footer/menu.js" defer></script>
