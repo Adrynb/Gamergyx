@@ -53,36 +53,51 @@ if (isset($_POST['guardar_cambios'])) {
 
         $sqlPassword = "SELECT contraseña FROM usuarios WHERE nombre = ?";
         $stmtPassword = mysqli_prepare($conexion, $sqlPassword);
-        mysqli_stmt_bind_param($stmtPassword, "s", $nombre);
+        mysqli_stmt_bind_param($stmtPassword, "s", $_SESSION['nombre']);
         mysqli_stmt_execute($stmtPassword);
         $resultPassword = mysqli_stmt_get_result($stmtPassword);
         $passwordHash = mysqli_fetch_assoc($resultPassword)['contraseña'];
         mysqli_stmt_close($stmtPassword);
 
-        if (!password_verify($contraseniaAntigua, $passwordHash)) {
-            header("Location: editar_perfil.php?error=contraseña_incorrecta");
-            die("Error: La contraseña antigua no es correcta.");
+        if (empty($contraseniaAntigua) && empty($nuevaContrasenia) && empty($confirmarContrasenia)) {
+            $sql = "UPDATE usuarios SET nombre = ?, email = ?, fotoPerfil = ? WHERE nombre = ?;";
+            $stmt = mysqli_prepare($conexion, $sql);
+            mysqli_stmt_bind_param($stmt, 'ssss', $nombre, $email, $fotoPerfilSubida, $_SESSION['nombre']);
+            if (mysqli_stmt_execute($stmt)) {
+                mysqli_stmt_close($stmt);
+                $_SESSION['nombre'] = $nombre;
+                header("Location: ../inicio/inicio.php");
+                exit();
+            } else {
+                die("Error: No se pudo actualizar el perfil.");
+            }
         }
 
-        if ($nuevaContrasenia !== $confirmarContrasenia) {
-            header("Location: editar_perfil.php?error=contraseñaNueva_no_coincide");
-            die("Error: Las contraseñas no coinciden.");
+        if (!empty($contraseniaAntigua) || !empty($nuevaContrasenia) || !empty($confirmarContrasenia)) {
+            if (!password_verify($contraseniaAntigua, $passwordHash)) {
+                header("Location: editar_perfil.php?error=contraseña_incorrecta");
+                exit();
+            }
+
+            if ($nuevaContrasenia !== $confirmarContrasenia) {
+                header("Location: editar_perfil.php?error=contraseñaNueva_no_coincide");
+                exit();
+            }
+
+            $nuevaContraseniaHash = password_hash($nuevaContrasenia, PASSWORD_DEFAULT);
+
+            $sql = "UPDATE usuarios SET nombre = ?, email = ?, contraseña = ?, fotoPerfil = ? WHERE nombre = ?;";
+            $stmt = mysqli_prepare($conexion, $sql);
+            mysqli_stmt_bind_param($stmt, 'sssss', $nombre, $email, $nuevaContraseniaHash, $fotoPerfilSubida, $_SESSION['nombre']);
+            if (mysqli_stmt_execute($stmt)) {
+                mysqli_stmt_close($stmt);
+                $_SESSION['nombre'] = $nombre;
+                header("Location: ../inicio/inicio.php");
+                exit();
+            } else {
+                die("Error: No se pudo actualizar el perfil.");
+            }
         }
-
-        $nuevaContraseniaHash = password_hash($nuevaContrasenia, PASSWORD_DEFAULT);
-
-        $sql = "UPDATE usuarios SET nombre = ?, email = ?, contraseña = ?, fotoPerfil = ? WHERE nombre = ?;";
-        $stmt = mysqli_prepare($conexion, $sql);
-        mysqli_stmt_bind_param($stmt, 'sssss', $nombre, $email, $nuevaContraseniaHash, $fotoPerfilSubida, $_SESSION['nombre']);
-        if (mysqli_stmt_execute($stmt)) {
-            mysqli_stmt_close($stmt);
-            $_SESSION['nombre'] = $nombre;
-            header("Location: ../inicio/inicio.php");
-            exit();
-        } else {
-            die("Error: No se pudo actualizar el perfil.");
-        }
-
     }
 
 }
