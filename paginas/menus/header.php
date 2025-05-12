@@ -70,7 +70,7 @@ if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
                     </ul>
                 </li>
                 <li><a href="../comunidad/comunidad.php">Comunidad</a></li>
-                <li><a href="./contacto.php">Contacto</a></li>
+                <li><a href="../contacto/contacto.php">Contacto</a></li>
             </ul>
         </nav>
 

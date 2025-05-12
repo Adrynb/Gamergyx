@@ -60,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <button type="submit">Inicia sesión</button>
             <br><br>
             <a href="register.php">¿No tienes cuenta? Regístrate aquí</a>
+            <a href="forget_password.php">¿Se te ha olvidado la contraseña?</a>
             <br><br>
 
             <?php if (isset($_GET['error'])): ?>

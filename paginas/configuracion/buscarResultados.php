@@ -26,7 +26,7 @@ include "../menus/header.php";
 
             if (isset($_POST['buscar_input'])) {
                 $buscar_input = $_POST['buscar_input'];
-                $sql = "SELECT * FROM VIDEOJUEGOS WHERE titulo LIKE '%$buscar_input%'";
+                $sql = "SELECT * FROM VIDEOJUEGOS WHERE titulo LIKE '%" . mysqli_real_escape_string($conexion, $buscar_input) . "%'";
                 $result = mysqli_query($conexion, $sql);
 
                 if (mysqli_num_rows($result) > 0) {
