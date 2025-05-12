@@ -74,12 +74,69 @@ if (isset($_POST['id_videojuegos']) || isset($_GET['id_videojuegos'])) {
         <section id="botones_videojuego">
             <form method="POST" action="../carrito/carrito.php">
                 <input type="hidden" name="id_videojuegos" value="<?php echo $id_videojuegos; ?>">
-                <button type="submit" class="btn btn-warning bg-gradient">Agregar al Carrito</button>
+                <button type="submit" class="btn btn-warning bg-gradient" id="agregar_carrito">Agregar al
+                    Carrito</button>
+
+                <?php
+
+                if (isset($_POST['agregar_carrito']) && isset($_POST['id_videojuegos'])) {
+
+                    $id_videojuegos = $_POST['id_videojuegos'];
+
+                    $sqlIDusuario = "SELECT id_usuario FROM usuarios WHERE nombre = ?";
+                    $stmtIDusuario = mysqli_prepare($conexion, $sqlIDusuario);
+                    mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);
+                    mysqli_stmt_execute($stmtIDusuario);
+                    $resultIDusuario = mysqli_stmt_get_result($stmtIDusuario);
+                    $idUsuario = mysqli_fetch_assoc($resultIDusuario)['id_usuario'];
+
+                    $sqlCarrito = "INSERT INTO carrito (id_usuario, id_videojuegos) VALUES (?, ?)";
+                    $stmtCarrito = mysqli_prepare($conexion, $sqlCarrito);
+                    mysqli_stmt_bind_param($stmtCarrito, 'ii', $idUsuario, $id_videojuegos);
+                    if (mysqli_stmt_execute($stmtCarrito)) {
+                        echo "<p style='color:green';>Producto agregado al carrito.</p>";
+                    } else {
+                        echo "<p style='color:red';>Error al agregar el producto al carrito.</p>";
+                    }
+
+
+                }
+
+                ?>
+
             </form>
-            <form method="POST" action="../comprar/comprar.php">
+            <form method="POST" action="../configuracion/favoritos.php">
                 <input type="hidden" name="id_videojuegos" value="<?php echo $id_videojuegos; ?>">
-                <button type="submit" class="btn btn-success bg-gradient">Comprar Ahora</button>
+                <button type="submit" class="btn btn-success bg-gradient" id="agregar_favoritos"><img src="../../assets/images/logo/corazon.png" alt="Añadir a favoritos"></button>
             </form>
+
+            <?php 
+            
+            if(isset($_POST['agregar_favoritos']) && isset($_POST['id_videojuegos'])) {
+
+                $id_videojuegos = $_POST['id_videojuegos'];
+
+                $sqlIDusuario = "SELECT id_usuario FROM usuarios WHERE nombre = ?";
+                $stmtIDusuario = mysqli_prepare($conexion, $sqlIDusuario);
+                mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);
+                mysqli_stmt_execute($stmtIDusuario);
+                $resultIDusuario = mysqli_stmt_get_result($stmtIDusuario);
+                $idUsuario = mysqli_fetch_assoc($resultIDusuario)['id_usuario'];
+                $fecha = date('Y-m-d H:i:s');
+
+                $sqlFavoritos = "INSERT INTO favoritos (id_usuario, id_videojuegos, fecha) VALUES (?, ?, ?)";
+                $stmtFavoritos = mysqli_prepare($conexion, $sqlFavoritos);
+                mysqli_stmt_bind_param($stmtFavoritos, 'iis', $idUsuario, $id_videojuegos, $fecha);
+                if (mysqli_stmt_execute($stmtFavoritos)) {
+                    echo "<p style='color:green';>Producto agregado a favoritos.</p>";
+                } else {
+                    echo "<p style='color:red';>Error al agregar el producto a favoritos.</p>";
+                }
+
+            }
+            
+            ?>
+
         </section>
 
         <section id="reseñas_videojuego">
