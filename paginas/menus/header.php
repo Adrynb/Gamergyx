@@ -21,7 +21,7 @@ $resultFP = mysqli_stmt_get_result($stmt);
 if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
     $fotoPerfil = $row['fotoPerfil'];
 } else {
-    $fotoPerfil = '../../assets/images/logos/usuario_icon.png'; 
+    $fotoPerfil = '../../assets/images/logos/usuario_icon.png';
 }
 
 
@@ -77,7 +77,12 @@ if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
 
         <section class="header-container-usuario">
             <div id="buscar_container">
-                <input type="text" placeholder="Buscar..." id="buscar_input">
+                <form action="../configuracion/buscarResultados.php">
+                    <input type="text" placeholder="Buscar..." id="buscar_input" name="buscar_input">
+                    <button type="submit" id="buscar_btn"><img src="../../assets/images/logos/lupa.png"
+                            alt="lupa"></button>
+                </form>
+
             </div>
             <span id="usuario_dinero">$100.00</span>
 
@@ -105,5 +110,4 @@ if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
             </div>
         </section>
         </section>
-</header>
-
+    </header>
