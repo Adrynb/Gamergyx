@@ -1,9 +1,6 @@
 <?php
 
 include "../menus/header.php";
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -23,10 +20,24 @@ include "../menus/header.php";
     <main>
         <section id="resultados">
             <?php
+            if (isset($_GET['buscar_input'])) {
+                $buscar_input = $_GET['buscar_input'];
 
-            if (isset($_POST['buscar_input'])) {
-                $buscar_input = $_POST['buscar_input'];
-                $sql = "SELECT * FROM VIDEOJUEGOS WHERE titulo LIKE '%" . mysqli_real_escape_string($conexion, $buscar_input) . "%'";
+
+                $pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+                $limite = 8;
+                $offset = ($pagina - 1) * $limite;
+
+                $sqlContar = "SELECT COUNT(*) as total FROM VIDEOJUEGOS WHERE titulo LIKE '%" . mysqli_real_escape_string($conexion, $buscar_input) . "%'";
+                $resultContar = mysqli_query($conexion, $sqlContar);
+                $total = mysqli_fetch_assoc($resultContar)['total'];
+                $totalPaginas = ceil($total / $limite);
+
+                if ($totalPaginas > 25) {
+                    $totalPaginas = 25;
+                }
+
+                $sql = "SELECT * FROM VIDEOJUEGOS WHERE titulo LIKE '%" . mysqli_real_escape_string($conexion, $buscar_input) . "%' LIMIT $limite OFFSET $offset";
                 $result = mysqli_query($conexion, $sql);
 
                 if (mysqli_num_rows($result) > 0) {
@@ -45,8 +56,25 @@ include "../menus/header.php";
                     echo '<p>No se encontraron resultados para "' . htmlspecialchars($buscar_input) . '"</p>';
                 }
             }
-
             ?>
+            <div id="paginacion">
+                <?php
+                if (isset($totalPaginas) && $totalPaginas > 1) {
+                    if ($pagina > 1) {
+                        echo '<a href="?buscar_input=' . urlencode($buscar_input) . '&pagina=' . ($pagina - 1) . '" class="btn btn-secondary">Anterior</a>';
+                    }
+
+                    for ($i = 1; $i <= $totalPaginas; $i++) {
+                        echo '<a href="?buscar_input=' . urlencode($buscar_input) . '&pagina=' . $i . '" class="btn ' . ($i == $pagina ? 'btn-primary' : 'btn-secondary') . '">' . $i . '</a>';
+                    }
+
+                    if ($pagina < $totalPaginas) {
+                        echo '<a href="?buscar_input=' . urlencode($buscar_input) . '&pagina=' . ($pagina + 1) . '" class="btn btn-secondary">Siguiente</a>';
+                    }
+                }
+                ?>
+            </div>
+
         </section>
     </main>
 
