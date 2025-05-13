@@ -9,6 +9,7 @@ if (isset($_POST['id_videojuegos']) || isset($_GET['id_videojuegos'])) {
         $id = $_GET['id_videojuegos'];
     }
 
+
     $sql = "SELECT VIDEOJUEGOS.*, generos.nombre AS genero, plataformas.nombre AS plataforma 
             FROM VIDEOJUEGOS 
             INNER JOIN generos ON VIDEOJUEGOS.id_generos = generos.id_generos 
@@ -74,8 +75,19 @@ if (isset($_POST['id_videojuegos']) || isset($_GET['id_videojuegos'])) {
         <section id="botones_videojuego">
             <form method="POST" action="juego-detalle.php#botones_videojuego">
                 <input type="hidden" name="id_videojuegos" value="<?php echo $id; ?>">
-                <button type="submit" class="btn btn-warning bg-gradient" id="agregar_carrito">Agregar al
-                    Carrito</button>
+                <button type="submit" name="agregar_carrito" class="btn btn-warning bg-gradient"
+                    id="agregar_carrito">Agregar al Carrito</button>
+
+
+                <?php
+
+                if (isset($_GET['videojuego_error'])) {
+                    echo '<p style="color:red;">Error al insertar el videojuego</p>';
+                } else if (isset($_GET['videojuego_agregado'])) {
+                    echo '<p style="color:green;">Insertado el videojuego al carrito correctamente</p>';
+                }
+
+                ?>
 
                 <?php
 
@@ -83,26 +95,47 @@ if (isset($_POST['id_videojuegos']) || isset($_GET['id_videojuegos'])) {
 
                     $id_videojuegos = $_POST['id_videojuegos'];
 
-                    $sqlIDusuario = "SELECT id_usuario FROM usuarios WHERE nombre = ?";
+                    $sqlIDusuario = "SELECT id_usuarios FROM usuarios WHERE nombre = ?";
                     $stmtIDusuario = mysqli_prepare($conexion, $sqlIDusuario);
-                    mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);
-                    mysqli_stmt_execute($stmtIDusuario);
-                    $resultIDusuario = mysqli_stmt_get_result($stmtIDusuario);
-                    $idUsuario = mysqli_fetch_assoc($resultIDusuario)['id_usuario'];
 
-                    $sqlCarrito = "INSERT INTO carrito (id_usuario, id_videojuegos) VALUES (?, ?)";
-                    $stmtCarrito = mysqli_prepare($conexion, $sqlCarrito);
-                    mysqli_stmt_bind_param($stmtCarrito, 'ii', $idUsuario, $id);
-                    if (mysqli_stmt_execute($stmtCarrito)) {
-                        header("Location: juego-detalle.php?id_videojuegos=$id&videojuego_agregado=Videojuego agregado exitosamente en el carrito");
-                        exit();  
+                    if ($stmtIDusuario) {
+                        mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);
+                        mysqli_stmt_execute($stmtIDusuario);
                     } else {
-                        header("Location: juego-detalle.php?id_videojuegos=$id&videojuego_error=Videojuego no insertado correctamente en el carrito");
-                        exit();  
+                        die("Error en la preparación de la consulta: " . mysqli_error($conexion));
                     }
-                    
+                    $resultIDusuario = mysqli_stmt_get_result($stmtIDusuario);
+                    $idUsuario = mysqli_fetch_assoc($resultIDusuario)['id_usuarios'];
 
 
+                    $sqlCheckCarrito = "SELECT cantidad FROM carrito WHERE id_usuarios = ? AND id_videojuegos = ?";
+                    $stmtCheckCarrito = mysqli_prepare($conexion, $sqlCheckCarrito);
+                    mysqli_stmt_bind_param($stmtCheckCarrito, 'ii', $idUsuario, $id_videojuegos);
+                    mysqli_stmt_execute($stmtCheckCarrito);
+                    $resultCheckCarrito = mysqli_stmt_get_result($stmtCheckCarrito);
+
+                    if ($resultCheckCarrito && mysqli_num_rows($resultCheckCarrito) > 0) {
+                        $rowCarrito = mysqli_fetch_assoc($resultCheckCarrito);
+                        $nuevaCantidad = $rowCarrito['cantidad'] + 1;
+
+                        $sqlUpdateCarrito = "UPDATE carrito SET cantidad = ? WHERE id_usuarios = ? AND id_videojuegos = ?";
+                        $stmtUpdateCarrito = mysqli_prepare($conexion, $sqlUpdateCarrito);
+                        mysqli_stmt_bind_param($stmtUpdateCarrito, 'iii', $nuevaCantidad, $idUsuario, $id_videojuegos);
+                        if (mysqli_stmt_execute($stmtUpdateCarrito)) {
+                            echo "<p style='color:green;'>Cantidad actualizada en el carrito.</p>";
+                        } else {
+                            echo "<p style='color:red;'>Error al actualizar la cantidad en el carrito.</p>";
+                        }
+                    } else {
+                        $sqlCarrito = "INSERT INTO carrito (id_usuarios, id_videojuegos, cantidad) VALUES (?, ?, 1)";
+                        $stmtCarrito = mysqli_prepare($conexion, $sqlCarrito);
+                        mysqli_stmt_bind_param($stmtCarrito, 'ii', $idUsuario, $id_videojuegos);
+                        if (mysqli_stmt_execute($stmtCarrito)) {
+                            echo "<p style='color:green;'>Producto agregado al carrito.</p>";
+                        } else {
+                            echo "<p style='color:red;'>Error al agregar el producto al carrito.</p>";
+                        }
+                    }
                 }
 
                 ?>
@@ -122,22 +155,46 @@ if (isset($_POST['id_videojuegos']) || isset($_GET['id_videojuegos'])) {
             if (isset($_POST['agregar_favoritos']) && isset($_POST['id_videojuegos'])) {
                 $id_videojuegos = $_POST['id_videojuegos'];
 
-                $sqlIDusuario = "SELECT id_usuario FROM usuarios WHERE nombre = ?";
+                $sqlIDusuario = "SELECT id_usuarios FROM usuarios WHERE nombre = ?";
                 $stmtIDusuario = mysqli_prepare($conexion, $sqlIDusuario);
                 mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);
                 mysqli_stmt_execute($stmtIDusuario);
                 $resultIDusuario = mysqli_stmt_get_result($stmtIDusuario);
-                $idUsuario = mysqli_fetch_assoc($resultIDusuario)['id_usuario'];
+                $idUsuario = mysqli_fetch_assoc($resultIDusuario)['id_usuarios'];
+
+
                 $fecha = date('Y-m-d H:i:s');
 
-                $sqlFavoritos = "INSERT INTO favoritos (id_usuario, id_videojuegos, fecha) VALUES (?, ?, ?)";
-                $stmtFavoritos = mysqli_prepare($conexion, $sqlFavoritos);
-                mysqli_stmt_bind_param($stmtFavoritos, 'iis', $idUsuario, $id, $fecha);
-                if (mysqli_stmt_execute($stmtFavoritos)) {
-                    echo "<p style='color:green';>Producto agregado a favoritos.</p>";
+
+                $sqlComprobarSiExiste = 'SELECT id_favoritos FROM favoritos WHERE id_usuarios = ? AND id_videojuegos = ?';
+                $stmtComprobarExiste = mysqli_prepare($conexion, $sqlComprobarSiExiste);
+                mysqli_stmt_bind_param($stmtComprobarExiste, 'ii', $idUsuario, $id_videojuegos);
+                mysqli_stmt_execute($stmtComprobarExiste);
+                $resultComprobarExiste = mysqli_stmt_get_result($stmtComprobarExiste);
+
+                if (mysqli_num_rows($resultComprobarExiste) > 0) {
+                    $sqlBorrar = 'DELETE FROM favoritos WHERE id_usuarios = ? AND id_videojuegos = ?';
+                    $stmtBorrar = mysqli_prepare($conexion, $sqlBorrar);
+                    mysqli_stmt_bind_param($stmtBorrar, 'ii', $idUsuario, $id_videojuegos);
+                    if (mysqli_stmt_execute(statement: $stmtBorrar)) {
+                        echo "<p style='color:red;'>Producto eliminado de favoritos.</p>";
+                    } else {
+                        echo "<p style='color:red;'>Error al eliminar el producto de favoritos.</p>";
+                    }
+                    return;
                 } else {
-                    echo "<p style='color:red';>Error al agregar el producto a favoritos.</p>";
+                    $sqlFavoritos = "INSERT INTO favoritos (id_usuarios, id_videojuegos, fecha) VALUES (?, ?, ?)";
+                    $stmtFavoritos = mysqli_prepare($conexion, $sqlFavoritos);
+                    mysqli_stmt_bind_param($stmtFavoritos, 'iis', $idUsuario, $id, $fecha);
+                    if (mysqli_stmt_execute($stmtFavoritos)) {
+                        echo "<p style='color:green';>Producto agregado a favoritos.</p>";
+                    } else {
+                        echo "<p style='color:red';>Error al agregar el producto a favoritos.</p>";
+                    }
+
                 }
+
+
 
             }
 
