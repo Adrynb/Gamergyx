@@ -77,7 +77,7 @@ if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
 
         <section class="header-container-usuario">
             <div id="buscar_container">
-                <form action="../configuracion/buscarResultados.php">
+                <form action="../configuracion/buscarResultados.php" method="GET" enctype="multipart/form-data">
                     <input type="text" placeholder="Buscar..." id="buscar_input" name="buscar_input">
                     <button type="submit" id="buscar_btn"><img src="../../assets/images/logos/lupa.png"
                             alt="lupa"></button>

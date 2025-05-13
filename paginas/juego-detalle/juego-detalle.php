@@ -120,7 +120,6 @@ if (isset($_POST['id_videojuegos']) || isset($_GET['id_videojuegos'])) {
             <?php
 
             if (isset($_POST['agregar_favoritos']) && isset($_POST['id_videojuegos'])) {
-                echo "<script>alert(Hola);</script>";
                 $id_videojuegos = $_POST['id_videojuegos'];
 
                 $sqlIDusuario = "SELECT id_usuario FROM usuarios WHERE nombre = ?";

@@ -1,28 +1,27 @@
-<?php 
+<?php
 
-include ("../menus/header.php");
+include("../menus/header.php");
 
 
-if(isset($_POST["id_videojuegos"])){
+if (isset($_POST["id_videojuegos"])) {
     $id_videojuegos = $_POST["id_videojuegos"];
 
-$sqlIDusuario = "SELECT id_usuario FROM usuarios WHERE nombre = ?";
-$stmtIDusuario = mysqli_prepare($conexion, $sqlIDusuario);
-mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);
-mysqli_stmt_execute($stmtIDusuario);
-$resultIDusuario = mysqli_stmt_get_result($stmtIDusuario);
-$idUsuario = mysqli_fetch_assoc($resultIDusuario)['id_usuario'];
+    $sqlIDusuario = "SELECT id_usuario FROM usuarios WHERE nombre = ?";
+    $stmtIDusuario = mysqli_prepare($conexion, $sqlIDusuario);
+    mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);
+    mysqli_stmt_execute($stmtIDusuario);
+    $resultIDusuario = mysqli_stmt_get_result($stmtIDusuario);
+    $idUsuario = mysqli_fetch_assoc($resultIDusuario)['id_usuario'];
 
-$sqlCarrito = "SELECT videojuegos.* FROM carrito 
+    $sqlCarrito = "SELECT videojuegos.* FROM carrito 
                INNER JOIN videojuegos ON carrito.id_videojuego = videojuegos.id 
                WHERE carrito.id_usuario = ?";
 
-$prepareCarrito = mysqli_prepare($conexion, $sqlCarrito);
-mysqli_stmt_bind_param($prepareCarrito, 'i', $idUsuario);
-mysqli_stmt_execute($prepareCarrito);
-$resultCarrito = mysqli_stmt_get_result($prepareCarrito);
-}
-else {
+    $prepareCarrito = mysqli_prepare($conexion, $sqlCarrito);
+    mysqli_stmt_bind_param($prepareCarrito, 'i', $idUsuario);
+    mysqli_stmt_execute($prepareCarrito);
+    $resultCarrito = mysqli_stmt_get_result($prepareCarrito);
+} else {
     header("Location: ../inicio/inicio.php");
     exit();
 }
@@ -33,10 +32,10 @@ else {
 
 <main>
 
-<h1>Carrito de compras</h1>
+    <h1>Carrito de compras</h1>
 
-<section id="carrito-section">
-    
+    <section id="carrito-section">
+
         <?php
         if (mysqli_num_rows($resultCarrito) > 0) {
             while ($row = mysqli_fetch_assoc($resultCarrito)) {
@@ -54,7 +53,7 @@ else {
             echo '<p>No hay productos en tu carrito.</p>';
         }
         ?>
-</section>
+    </section>
 
 
 </main>
