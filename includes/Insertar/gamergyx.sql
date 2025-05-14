@@ -15,6 +15,16 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   PRIMARY KEY (`id_usuarios`)
 );
 
+CREATE TABLE IF NOT EXISTS `recuperar_contrasenia` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `id_usuarios` INT NOT NULL,
+  `email` VARCHAR(50) NOT NULL,
+  `token` VARCHAR(50) NOT NULL,
+  `fecha_expiracion` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`id_usuarios`) REFERENCES `usuarios`(`id_usuarios`)
+);
+
 
 CREATE TABLE IF NOT EXISTS `generos` (
   `id_generos` INT NOT NULL AUTO_INCREMENT,
