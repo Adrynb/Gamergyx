@@ -1,4 +1,7 @@
 <?php
+
+ob_start();
+
 include '../../includes/db.php';
 include '../../includes/sesion.php';
 include '../menus/header.php';
@@ -33,7 +36,7 @@ $resultCarrito = mysqli_stmt_get_result($prepareCarrito);
                 echo '<p>Precio: $' . htmlspecialchars($row['precio'], ENT_QUOTES, 'UTF-8') . '</p>';
 
                 echo '<form method="POST" action="../juego-detalle/juego-detalle.php">';
-                echo '<input type="hidden" name="id_videojuego" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
+                echo '<input type="hidden" name="id_videojuegos" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
                 echo '<button type="submit" name="ver_detalles" class="btn btn-warning bg-gradient">Ver Detalles</button>';
                 echo '</form>';
 
@@ -82,6 +85,7 @@ $resultCarrito = mysqli_stmt_get_result($prepareCarrito);
         $stmtBorrarVideojuegoCarrito = mysqli_prepare($conexion, $sqlBorrarVideojuegoCarrito);
         mysqli_stmt_bind_param($stmtBorrarVideojuegoCarrito, 'i', $id_videojuegos);
         mysqli_stmt_execute($stmtBorrarVideojuegoCarrito);
+        exit(header("Location:carrito.php"));
 
     }
 
