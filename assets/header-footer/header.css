@@ -6,20 +6,23 @@ body {
     align-items: center;
 }
 
-h1, h2, h3, p{
+h1,
+h2,
+h3,
+p {
     color: white;
     font-family: 'Times New Roman', Times, serif;
-    
+
 }
 
 .titulo-section {
-   margin-bottom: 2rem;
-   padding: 6rem;
-   font-size: 3rem;
-   background-color: black;
+    margin-bottom: 2rem;
+    padding: 6rem;
+    font-size: 3rem;
+    background-color: black;
 }
 
-h3{
+h3 {
     font-size: 1.5rem;
     font-family: 'Pixelify Sans', sans-serif;
     margin-top: 2rem;
@@ -33,16 +36,16 @@ h3{
 
 .carousel-item img {
     width: 100%;
-    max-height: 600px; 
-    object-fit: contain; 
-    object-position: center; 
-    height: auto; 
+    max-height: 600px;
+    object-fit: contain;
+    object-position: center;
+    height: auto;
     margin-bottom: 3rem;
 }
 
 
 
-h2{
+h2 {
     font-size: 2rem;
     font-family: 'Times New Roman', Times, serif;
 }
@@ -139,7 +142,7 @@ nav ul li ul {
     z-index: 1;
 }
 
-nav ul li:hover > ul {
+nav ul li:hover>ul {
     display: flex;
 }
 
@@ -152,66 +155,62 @@ nav ul li ul li a {
 }
 
 
-#usuario_menu_container {
+.menu_container {
     position: relative;
     cursor: pointer;
-    
+
 }
 
 
-#menu_usuario {    
+
+.menu_config {
     display: none;
     position: absolute;
     background-color: #0c0c0c;
     border-radius: 8px;
     text-align: center;
-    top: 3rem;
+    top: 70px;
     left: 50%;
     transform: translateX(-50%);
     margin: 0;
-    width: 150px; 
+    width: 150px;
     z-index: 2;
+    transition: all 0.2s ease-in-out;
 }
 
-
-#admin_menu_container {
-    position: relative;
-    cursor: pointer;
-    
+#menu_config_carrito {
+    top: 60px;
+    right: 20px; /* Adjusted to move it further to the right */
+    width: 100px;
 }
 
-
-#admin_usuario {    
-    display: none;
-    position: absolute;
-    background-color: #0c0c0c;
-    border-radius: 8px;
-    text-align: center;
-    top: 3rem;
-    left: 50%;
-    transform: translateX(-50%);
+.icon_config {
+    width: 60px;
+    height: 60px;
+    transition: transform 0.3s ease;
+    background-color: #ff0000;
+    border-radius: 50%;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 0;
-    width: 150px; 
-    z-index: 2;
 }
 
-
-#usuario_icon {
+#icon_carrito {
     width: 40px;
+    height: 40px;
     transition: transform 0.3s ease;
     background-color: #ff0000;
     border-radius: 0.5rem;
     margin-left: 0.5rem;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#carrito_icon {
-    width: 40px;
-    transition: transform 0.3s ease;
-    background-color: #ff0000;
-    padding: 2px 2px;
-    border-radius: 0.5rem;
-    margin-left: 0.5rem;
-}
 
 #usuario_dinero {
     width: 100px;
@@ -222,23 +221,25 @@ nav ul li ul li a {
 }
 
 
-#usuario_icon:hover {
+.icon_config:hover {
     transform: scale(1.1);
 }
 
+#icon_carrito:hover {
+    transform: scale(1.1);
+}
 
-
-#menu_usuario ul {
+.menu_config ul {
     list-style: none;
     padding: 0;
     margin: 0;
-}  
+}
 
-#menu_usuario li {
+.menu_config li {
     position: relative;
 }
 
-#menu_usuario a{
+.menu_config a {
     display: block;
     padding: 10px 20px;
     color: white;
@@ -255,3 +256,4 @@ ul li {
     font-weight: bold;
     font-size: 18px;
 }
+

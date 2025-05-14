@@ -1,7 +1,7 @@
 <?php
-
-include '../menus/header.php';
 include '../../includes/db.php';
+include '../../includes/sesion.php';
+include '../menus/header.php';
 
 
 

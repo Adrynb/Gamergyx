@@ -1,28 +1,23 @@
 <?php
-include("../menus/header.php");
+include '../../includes/db.php';
+include '../../includes/sesion.php';
+include '../menus/header.php';
 
-if (isset($_POST["id_videojuegos"])) {
-    $id_videojuegos = $_POST["id_videojuegos"];
 
-    $sqlIDusuario = "SELECT id_usuario FROM usuarios WHERE nombre = ?";
-    $stmtIDusuario = mysqli_prepare($conexion, $sqlIDusuario);
-    mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);
-    mysqli_stmt_execute($stmtIDusuario);
-    $resultIDusuario = mysqli_stmt_get_result($stmtIDusuario);
-    $idUsuario = mysqli_fetch_assoc($resultIDusuario)['id_usuario'];
+$sqlIDusuario = "SELECT id_usuarios FROM usuarios WHERE nombre = ?";
+$stmtIDusuario = mysqli_prepare($conexion, $sqlIDusuario);
+mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);
+mysqli_stmt_execute($stmtIDusuario);
+$resultIDusuario = mysqli_stmt_get_result($stmtIDusuario);
+$idUsuario = mysqli_fetch_assoc($resultIDusuario)['id_usuarios'];
 
-    $sqlCarrito = "SELECT videojuegos.* FROM carrito 
-                   INNER JOIN videojuegos ON carrito.id_videojuego = videojuegos.id 
-                   WHERE carrito.id_usuario = ?";
-    $prepareCarrito = mysqli_prepare($conexion, $sqlCarrito);
-    mysqli_stmt_bind_param($prepareCarrito, 'i', $idUsuario);
-    mysqli_stmt_execute($prepareCarrito);
-    $resultCarrito = mysqli_stmt_get_result($prepareCarrito);
-
-} else {
-    header("Location: ../inicio/inicio.php");
-    exit();
-}
+$sqlCarrito = "SELECT videojuegos.* FROM carrito 
+               INNER JOIN videojuegos ON carrito.id_videojuegos = videojuegos.id_videojuegos
+               WHERE carrito.id_usuarios = ?";
+$prepareCarrito = mysqli_prepare($conexion, $sqlCarrito);
+mysqli_stmt_bind_param($prepareCarrito, 'i', $idUsuario);
+mysqli_stmt_execute($prepareCarrito);
+$resultCarrito = mysqli_stmt_get_result($prepareCarrito);
 ?>
 
 <main>
@@ -37,20 +32,23 @@ if (isset($_POST["id_videojuegos"])) {
                 echo '<h3>' . htmlspecialchars($row['titulo'], ENT_QUOTES, 'UTF-8') . '</h3>';
                 echo '<p>Precio: $' . htmlspecialchars($row['precio'], ENT_QUOTES, 'UTF-8') . '</p>';
 
-
                 echo '<form method="POST" action="../juego-detalle/juego-detalle.php">';
-                echo '<input type="hidden" name="id_videojuegos" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
+                echo '<input type="hidden" name="id_videojuego" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
                 echo '<button type="submit" name="ver_detalles" class="btn btn-warning bg-gradient">Ver Detalles</button>';
                 echo '</form>';
 
-
                 echo '<form method="POST" action="./compra.php">';
-                echo '<input type="hidden" name="id_videojuegos" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
+                echo '<input type="hidden" name="id_videojuego" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
                 echo '<label for="cantidad_' . $row['id_videojuegos'] . '">Cantidad:</label>';
                 echo '<input type="number" name="cantidad_videojuegos[' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . ']" min="1" required>';
                 echo '<button type="submit" name="finalizar_compra" class="btn btn-warning bg-gradient">Finalizar Compra</button>';
                 echo '</form>';
                 echo '</div>';
+
+                echo '<form method="POST" action="carrito.php">';
+                echo '<input type="hidden" name="id_videojuego" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
+                echo '<button type="submit" name="eliminar_producto" class="btn btn-danger bg-gradient">Eliminar del Carrito</button>';
+                echo '</form>';
             }
         } else {
             echo '<p>No hay productos en tu carrito.</p>';
@@ -77,9 +75,17 @@ if (isset($_POST["id_videojuegos"])) {
     <?php endif; ?>
 
     <?php
-    if (isset($_POST['ver_detalles'])) {
-        header('Location: ../juego-detalle/juego-detalle.php?id_videojuegos=' . $_POST['id_videojuegos']);
-        exit();
+
+    if (isset($_POST['eliminar_producto'])) {
+        $id_videojuegos = $_POST['id_videojuego'];
+        $sqlBorrarVideojuegoCarrito = 'DELETE FROM carrito WHERE id_videojuegos = ?';
+        $stmtBorrarVideojuegoCarrito = mysqli_prepare($conexion, $sqlBorrarVideojuegoCarrito);
+        mysqli_stmt_bind_param($stmtBorrarVideojuegoCarrito, 'i', $id_videojuegos);
+        mysqli_stmt_execute($stmtBorrarVideojuegoCarrito);
+
     }
+
+
     ?>
+
 </main>

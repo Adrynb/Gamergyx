@@ -1,15 +1,5 @@
 <?php
 
-include '../../includes/db.php';
-
-session_start();
-
-if ($_SESSION["nombre"] == null || $_SESSION["nombre"] == "") {
-    header("Location: ../../auth/login.php");
-    exit();
-}
-
-
 $nombre = $_SESSION['nombre'];
 
 $sqlFP = "SELECT fotoPerfil FROM usuarios WHERE nombre = ?";
@@ -49,7 +39,9 @@ if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
 
     <title>INICIO - Tienda Videojuegos</title>
     <link rel="stylesheet" href="../../assets/paginas/inicio.css">
-    <script src="./menu.js" defer></script>
+
+
+
 
 </head>
 
@@ -88,14 +80,14 @@ if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
             <span id="usuario_dinero">$100.00</span>
 
 
-            <section id="usuario_menu_container">
+            <section class="menu_container">
                 <?php if (empty($fotoPerfil)): ?>
-                    <img src="../../assets/images/logos/usuario_icon.png" alt="usuario_icon" id="usuario_icon">
+                    <img src="../../assets/images/logos/usuario_icon.png" alt="usuario_icon" class="icon_config">
                 <?php else: ?>
-                    <img src="../../assets/images/perfiles/<?= $fotoPerfil ?>" alt="usuario_icon" id="usuario_icon">
+                    <img src="../../assets/images/perfiles/<?= $fotoPerfil ?>" alt="usuario_icon" class="icon_config">
                 <?php endif; ?>
 
-                <div id="menu_usuario">
+                <div class="menu_config">
                     <ul>
                         <li><a href="../configuracion/editar_perfil.php">Editar
                                 Perfil</a></li>
@@ -105,10 +97,19 @@ if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
                 </div>
             </section>
 
-            <div id="carrito_container">
-                <img src="../../assets/images/logos/carro-de-la-compra.png" alt="carrito" id="carrito_icon">
+            <section class="menu_container">
+                <img src="../../assets/images/logos/carro-de-la-compra.png" alt="carrito" id="icon_carrito">
 
-            </div>
+                <div class="menu_config" id="menu_config_carrito">
+                    <ul>
+                        <li><a href="../gestion_videojuegos/carrito.php">Carrito</a></li>
+                        <li><a href="../gestion_videojuegos/favoritos.php">Favoritos</a></li>
+                    </ul>
+                </div>
+
+            </section>
         </section>
         </section>
     </header>
+   
+<script src="../menus/menu.js" defer></script>

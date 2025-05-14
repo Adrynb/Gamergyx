@@ -1,6 +1,7 @@
 <?php
-session_start();
 include '../../includes/db.php';
+include '../../includes/sesion.php';
+include '../menus/header.php';
 
 if (isset($_POST['metodo_pago']) && $_POST['metodo_pago'] === 'monedero_virtual') {
   

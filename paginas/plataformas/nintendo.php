@@ -1,7 +1,8 @@
 <?php
-
-include '../menus/header.php';
 include '../../includes/db.php';
+include '../../includes/sesion.php';
+include '../menus/header.php';
+
 
 
 
@@ -14,7 +15,7 @@ include '../../includes/db.php';
     <section id="tendencias-section">
         <?php
         $sql = "SELECT DISTINCT * FROM VIDEOJUEGOS ORDER BY RAND() LIMIT 6";
-        $sqlTendencias = "SELECT DISTINCT * FROM VIDEOJUEGOS WHERE stock = (SELECT MIN(stock) FROM VIDEOJUEGOS WHERE stock > 0 AND precio < 30  AND 'id_plataforma = 7' LIMIT 1) LIMIT 1";
+        $sqlTendencias = "SELECT DISTINCT * FROM VIDEOJUEGOS WHERE stock = (SELECT MIN(stock) FROM VIDEOJUEGOS WHERE stock > 0 AND precio < 30 AND id_plataforma = 7 LIMIT 1) LIMIT 1";
         $result = mysqli_query($conexion, $sql);
         $resultTendencias = mysqli_query($conexion, $sqlTendencias);
 

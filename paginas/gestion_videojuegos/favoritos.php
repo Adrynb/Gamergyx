@@ -1,5 +1,6 @@
 <?php
-
+include '../../includes/db.php';
+include '../../includes/sesion.php';
 include '../menus/header.php';
 
 $sqlIDusuario = "SELECT id_usuarios FROM usuarios WHERE nombre = ?";

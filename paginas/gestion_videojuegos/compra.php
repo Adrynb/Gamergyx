@@ -1,5 +1,6 @@
 <?php
-
+include '../../includes/db.php';
+include '../../includes/sesion.php';
 include '../menus/header.php';
 
 if (isset($_POST['comprar_todo_ids[]']) || isset(($_POST['id_videojuegos']))) {

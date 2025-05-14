@@ -1,14 +1,13 @@
 <?php
-
-include '../menus/header.php';
 include '../../includes/db.php';
+include '../../includes/sesion.php';
+include '../menus/header.php';
 
-if (!empty($_POST['id_videojuegos']) || !empty($_GET['id_videojuegos'])) {
+if (!empty($_POST['id_videojuegos']) || !empty($_GET['id_videojuegos']) || isset($_POST['id_videojuegos'])) {
     $id = $_POST['id_videojuegos'];
     if (empty($id)) {
         $id = $_GET['id_videojuegos'];
     }
-
 
     $sql = "SELECT VIDEOJUEGOS.*, generos.nombre AS genero, plataformas.nombre AS plataforma 
             FROM VIDEOJUEGOS 
@@ -36,10 +35,7 @@ if (!empty($_POST['id_videojuegos']) || !empty($_GET['id_videojuegos'])) {
 
     }
 
-} else {
-    header("Location: ../inicio/inicio.php");
-    exit();
-}
+} 
 
 ?>
 
