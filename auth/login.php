@@ -1,6 +1,7 @@
 <?php
-include '../../includes/db.php';
-include '../../includes/sesion.php';
+session_start();
+include '../includes/db.php';
+
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = $_POST["nombre"] ?? '';
@@ -60,11 +61,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <button type="submit">Inicia sesión</button>
             <br><br>
             <a href="register.php">¿No tienes cuenta? Regístrate aquí</a>
-            <a href="forget_password.php">¿Se te ha olvidado la contraseña?</a>
+            <br><br>
+            <a href="recuperar_contrasenia.php">¿Se te ha olvidado la contraseña?</a>
             <br><br>
 
             <?php if (isset($_GET['error'])): ?>
                 <p style="color:red;"><?php echo htmlspecialchars($_GET['error']); ?></p>
+            <?php endif; ?>
+            <?php if (isset($_GET['success'])) : ?>
+                <p style="color:green"><?php echo htmlspecialchars($_GET['success']);?></p>
             <?php endif; ?>
         </div>
 
