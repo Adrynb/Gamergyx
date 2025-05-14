@@ -9,3 +9,8 @@ usuarioIcon.addEventListener("click", function () {
     }
 });
 
+
+document.getElementById('mostrarCodigo').addEventListener('click', function () {
+    document.getElementById('codigo').style.display = 'block';
+});
+
