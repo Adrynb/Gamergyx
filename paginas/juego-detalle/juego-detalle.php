@@ -3,7 +3,7 @@
 include '../menus/header.php';
 include '../../includes/db.php';
 
-if (isset($_POST['id_videojuegos']) || isset($_GET['id_videojuegos'])) {
+if (!empty($_POST['id_videojuegos']) || !empty($_GET['id_videojuegos'])) {
     $id = $_POST['id_videojuegos'];
     if (empty($id)) {
         $id = $_GET['id_videojuegos'];
@@ -40,9 +40,6 @@ if (isset($_POST['id_videojuegos']) || isset($_GET['id_videojuegos'])) {
     header("Location: ../inicio/inicio.php");
     exit();
 }
-
-
-
 
 ?>
 
@@ -224,7 +221,6 @@ if (isset($_POST['id_videojuegos']) || isset($_GET['id_videojuegos'])) {
                         echo "<p><strong>" . $rowResenas['usuario'] . "</strong>: " . $rowResenas['comentarios'] . "</p>";
                         echo "</div>";
                     }
-
 
                 } else {
                     echo "<p>No hay reseñas disponibles.</p>";

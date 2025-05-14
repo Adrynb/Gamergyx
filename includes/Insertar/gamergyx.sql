@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `rol` VARCHAR(20) NOT NULL,
   `fotoPerfil` VARCHAR(255),
   `email` VARCHAR(100) NOT NULL,
+  `monedero_virtual` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
   PRIMARY KEY (`id_usuarios`)
 );
 
@@ -79,6 +80,7 @@ CREATE TABLE IF NOT EXISTS `detalle_pedido` (
   `id_detalle` INT NOT NULL AUTO_INCREMENT,
   `id_pedido` INT NOT NULL,
   `id_videojuegos` INT NOT NULL,
+  `fecha` DATETIME NOT NULL, 
   PRIMARY KEY (`id_detalle`),
   FOREIGN KEY (`id_pedido`) REFERENCES `pedidos`(`id_pedido`),
   FOREIGN KEY (`id_videojuegos`) REFERENCES `videojuegos`(`id_videojuegos`)

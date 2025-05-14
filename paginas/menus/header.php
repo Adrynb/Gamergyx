@@ -49,6 +49,7 @@ if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
 
     <title>INICIO - Tienda Videojuegos</title>
     <link rel="stylesheet" href="../../assets/paginas/inicio.css">
+    <script src="./menu.js" defer></script>
 
 </head>
 
