@@ -2,9 +2,12 @@
 include '../../includes/db.php';
 require '../../includes/enviarCorreo.php'; 
 
-if (isset($_POST['recuperar_contrasenia'])) {
-    $correo_recuperar = $_POST['recuperar_contrasenia'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    
+    $correo_recuperar = $_POST['correo'] ?? '';
+
     if (!filter_var($correo_recuperar, FILTER_VALIDATE_EMAIL)) {
+        echo "{$correo_recuperar}<br>";
         echo "Formato de correo inválido.";
         exit;
     }
@@ -21,10 +24,11 @@ if (isset($_POST['recuperar_contrasenia'])) {
         $token = bin2hex(random_bytes(32));
         $expiracion = date("Y-m-d H:i:s", strtotime("+1 hour"));
 
-        $sqlToken = "INSERT INTO recuperar_contrasenia (email, token, fecha_expiracion) VALUES (?, ?, ?)
-                     ON DUPLICATE KEY UPDATE token = VALUES(token), fecha_expiracion = VALUES(fecha_expiracion)";
+        $idUsuario = mysqli_fetch_assoc($resultadoIDusuario)['id_usuarios'];
+
+        $sqlToken = "INSERT INTO recuperar_contrasenia (id_usuarios, email, token, fecha_expiracion) VALUES (?, ?, ?, ?)";
         $stmtToken = mysqli_prepare($conexion, $sqlToken);
-        mysqli_stmt_bind_param($stmtToken, 'sss', $email, $token, $expiracion);
+        mysqli_stmt_bind_param($stmtToken, 'isss', $idUsuario, $email, $token, $expiracion);
 
         if (mysqli_stmt_execute($stmtToken)) {
             $enlace = "http://localhost/gamergyx/auth/gestion_contrasenia/restablecer_contrasenia.php?token=" . urlencode($token);
