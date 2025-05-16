@@ -1,6 +1,8 @@
 <?php
 include '../../../includes/db.php';
-session_start();
+include '../../../includes/sesion.php';
+include '../../menus/header.php';
+
 
 if ($_SESSION["rol"] != "admin") {
     header("Location: ../../inicio/inicio.php");
