@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $resultadoCorreo = enviarCorreo($email, $asunto, $mensaje);
 
             if ($resultadoCorreo === true) {
-                redirigirConError("Se envió un correo para restablecer la contraseña");
+                header('Location: recuperar.php?success="Correo envíado correctamente"');
             } else {
                 redirigirConError("Error al enviar el correo");
             }
