@@ -6,10 +6,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $correo_recuperar = $_POST['correo'] ?? '';
 
-    if (!filter_var($correo_recuperar, FILTER_VALIDATE_EMAIL)) {
-        echo "{$correo_recuperar}<br>";
-        echo "Formato de correo inválido.";
+    function redirigirConError($mensaje) {
+        header("Location: recuperar.php?error=" . urlencode($mensaje));
         exit;
+    }
+
+    if (!filter_var($correo_recuperar, FILTER_VALIDATE_EMAIL)) {
+        redirigirConError("Formato de correo inválido");
     }
 
     $email = mysqli_real_escape_string($conexion, $correo_recuperar);
@@ -39,18 +42,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $resultadoCorreo = enviarCorreo($email, $asunto, $mensaje);
 
             if ($resultadoCorreo === true) {
-                echo "Se envió un correo para restablecer la contraseña.";
+                redirigirConError("Se envió un correo para restablecer la contraseña");
             } else {
-                echo "Error al enviar el correo. Detalles: $resultadoCorreo";
+                redirigirConError("Error al enviar el correo");
             }
         } else {
-            echo "Error al generar el token.";
+            redirigirConError("Error al generar el token");
         }
     } else {
-        echo "El correo electrónico no existe.";
+        redirigirConError("El correo electrónico no existe");
     }
 } else {
     header("Location: ../login.php");
     exit();
 }
-?>

@@ -17,6 +17,11 @@
         <button type="submit">Recuperar Contraseña</button>
         <br><br>
         <a href="../login.php">Volver al inicio</a>
+
+        <?php if(isset($_GET['error'])) : ?>
+            <p style="color:red;"><?=$_GET['error']?></p>
+        <? endif ; ?>
+
     </form>
 
 </body>
