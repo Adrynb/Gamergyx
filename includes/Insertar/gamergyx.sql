@@ -78,22 +78,14 @@ CREATE TABLE IF NOT EXISTS  `carrito` (
 );
 
 CREATE TABLE IF NOT EXISTS `pedidos` (
-  `id_pedido` INT NOT NULL AUTO_INCREMENT,
-  `id_usuarios` INT NOT NULL,
-  `fecha` DATETIME NOT NULL,
-  PRIMARY KEY (`id_pedido`),
-  FOREIGN KEY (`id_usuarios`) REFERENCES `usuarios`(`id_usuarios`)
-);
-
-
-CREATE TABLE IF NOT EXISTS `detalle_pedido` (
-  `id_detalle` INT NOT NULL AUTO_INCREMENT,
-  `id_pedido` INT NOT NULL,
+  `id_pedidos` INT NOT NULL AUTO_INCREMENT,
+  `id_usuarios` INT NOT NULL, 
   `id_videojuegos` INT NOT NULL,
-  `fecha` DATETIME NOT NULL, 
-  PRIMARY KEY (`id_detalle`),
-  FOREIGN KEY (`id_pedido`) REFERENCES `pedidos`(`id_pedido`),
-  FOREIGN KEY (`id_videojuegos`) REFERENCES `videojuegos`(`id_videojuegos`)
+  `fecha` DATETIME NOT NULL,
+  `codigo_videojuego`VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id_pedidos`),
+  FOREIGN KEY (`id_videojuegos`) REFERENCES `videojuegos`(`id_videojuegos`),
+  FOREIGN KEY (`id_usuarios`) REFERENCES `usuarios`(`id_usuarios`)
 );
 
 CREATE TABLE IF NOT EXISTS `reseñas` (

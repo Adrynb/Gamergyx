@@ -1,75 +1,60 @@
 <?php
+ob_start();
 include '../../includes/db.php';
 include '../../includes/sesion.php';
-include '../menus/header.php';
 
-if (isset($_POST['metodo_pago']) && $_POST['metodo_pago'] === 'monedero_virtual') {
-  
-    $sqlIDusuario = 'SELECT id_usuarios FROM usuarios WHERE nombre = ?';
-    $stmtIDusuario = mysqli_prepare($conexion, $sqlIDusuario);
-    mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);
-    mysqli_execute($stmtIDusuario);
-    $resultadoIDusuario = mysqli_stmt_get_result($stmtIDusuario);
-    $idUsuario = mysqli_fetch_assoc($resultadoIDusuario)['id_usuarios'];
+if (!isset($_SESSION['nombre'])) {
+    header('Location: ../../login.php');
+    exit;
+}
 
-    $sqlMonedero = 'SELECT monedero_virtual FROM usuarios WHERE id_usuarios = ?';
-    $stmtMonedero = mysqli_prepare($conexion, $sqlMonedero);
-    mysqli_stmt_bind_param($stmtMonedero, 'i', $idUsuario);
-    mysqli_execute($stmtMonedero);
-    $resultadoDinero = mysqli_stmt_get_result($stmtMonedero);
-    $dineroMonedero = mysqli_fetch_assoc($resultadoDinero)['monedero_virtual'];
+$sqlIDusuario = "SELECT id_usuarios, monedero_virtual FROM usuarios WHERE nombre = ?";
+$stmtIDusuario = mysqli_prepare($conexion, $sqlIDusuario);
+mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);
+mysqli_stmt_execute($stmtIDusuario);
+$resultIDusuario = mysqli_stmt_get_result($stmtIDusuario);
+$userData = mysqli_fetch_assoc($resultIDusuario);
+$idUsuario = $userData['id_usuarios'];
+$dineroMonedero = floatval($userData['monedero_virtual']);
 
-    $total = floatval($_POST['total']);
 
-    if ($total > $dineroMonedero) {
-        $_SESSION['compra_fallida'] = [
-            'items' => $_POST['items'],
-            'total' => $total,
-            'error' => "No se pudo finalizar la compra, tu saldo es insuficiente"
-        ];
-        header('Location: compra.php');
-        exit();
+
+
+if (isset($_POST['items']) && is_array($_POST['items']) && isset($_POST['total'])) {
+    $items = $_POST['items'];
+    $idsJuegos = [];
+    $total = $_POST['total'];
+
+    foreach ($items as $item) {
+    if (isset($item['id_videojuegos'])) {
+        $idsJuegos[] = intval($item['id_videojuegos']);
+    }
+}
+
+
+
+    if ($dineroMonedero < $total) {
+        header('Location: carrito.php?mensaje=El saldo es insuficiente');
+        exit;
     }
 
-    
-    if (isset($_POST['items'])) {
-        $items = $_POST['items'];
-        $fechaActual = date('Y-m-d H:i:s');
-        $todoCorrecto = true;
 
-        foreach ($items as $item) {
-            $idJuego = intval($item['id']);
+    $nuevoSaldo = $dineroMonedero - $total;
+    $updateSaldoSQL = 'UPDATE usuarios SET monedero_virtual = ? WHERE id_usuarios = ?';
+    $stmtUpdateSaldo = mysqli_prepare($conexion, $updateSaldoSQL);
+    mysqli_stmt_bind_param($stmtUpdateSaldo, 'di', $nuevoSaldo, $idUsuario);
+    mysqli_stmt_execute($stmtUpdateSaldo);
 
-            $borrarCarritoSQL = 'DELETE FROM carrito WHERE id_videojuego = ? AND id_usuario = ?';
-            $stmtBorrarCarrito = mysqli_prepare($conexion, $borrarCarritoSQL);
-            mysqli_stmt_bind_param($stmtBorrarCarrito, 'ii', $idJuego, $idUsuario);
-            mysqli_execute($stmtBorrarCarrito);
-
-            $finalizarPedido = 'INSERT INTO detalle_pedidos (id_usuarios, id_videojuegos, fecha) VALUES (?, ?, ?)';
-            $stmtFinalizarPedido = mysqli_prepare($conexion, $finalizarPedido);
-            mysqli_stmt_bind_param($stmtFinalizarPedido, 'iis', $idUsuario, $idJuego, $fechaActual);
-            mysqli_execute($stmtFinalizarPedido);
-
-
-            if (mysqli_stmt_affected_rows($stmtFinalizarPedido) <= 0) {
-                $todoCorrecto = false;
-                break;
-            }
-        }
-
-        if ($todoCorrecto) {
-            $nuevoSaldo = $dineroMonedero - $total;
-            $updateSaldoSQL = 'UPDATE usuarios SET monedero_virtual = ? WHERE id_usuarios = ?';
-            $stmtUpdateSaldo = mysqli_prepare($conexion, $updateSaldoSQL);
-            mysqli_stmt_bind_param($stmtUpdateSaldo, 'di', $nuevoSaldo, $idUsuario);
-            mysqli_execute($stmtUpdateSaldo);
-
-            header('Location: obtener_clave.php?mensaje=correcto');
-            exit();
-        } else {
-            header('Location: obtener_clave.php?mensaje=incorrecto');
-            exit();
-        }
+    if (mysqli_stmt_affected_rows($stmtUpdateSaldo) > 0) {
+        $idsJuegosStr = implode(',', $idsJuegos);
+        header("Location: obtener_clave.php?mensaje=correcto&ids_juegos=$idsJuegosStr");
+        exit;
+    } else {
+       header('Location: carrito.php?mensaje=Error del saldo al actualizar.');
+        exit;
     }
+} else {
+    header("Location: carrito.php?metodo_no_agregado&id=$idUsuario");
+    exit;
 }
 ?>

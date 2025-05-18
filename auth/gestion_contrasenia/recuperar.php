@@ -22,8 +22,8 @@
             <p style="color:red;"><?= $_GET['error'] ?></p>
         <?php endif; ?>
 
-        <?php if (isset($_GET['success'])) : ?>
-            <p style="color:green"><?= $_GET['success']?></p>
+        <?php if (isset($_GET['success'])): ?>
+            <p style="color:green"><?= $_GET['success'] ?></p>
         <?php endif; ?>
     </form>
 

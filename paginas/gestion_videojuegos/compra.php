@@ -1,9 +1,16 @@
 <?php
+
+ob_start();
+
 include '../../includes/db.php';
 include '../../includes/sesion.php';
 include '../menus/header.php';
 
-if (isset($_POST['comprar_todo_ids[]']) || isset(($_POST['id_videojuegos']))) {
+$items = [];
+$total = 0;
+
+if (isset($_POST['comprar_todo_ids']) || isset($_POST['id_videojuegos'])) {
+
 
 
     if (isset($_SESSION['compra_fallida'])) {
@@ -34,7 +41,7 @@ if (isset($_POST['comprar_todo_ids[]']) || isset(($_POST['id_videojuegos']))) {
                 $total += $subtotal;
 
                 $items[] = [
-                    'id' => $row['id_videojuegos'],
+                    'id_videojuegos' => $row['id_videojuegos'],
                     'titulo' => $row['titulo'],
                     'precio' => $row['precio'],
                     'cantidad' => $veces,
@@ -61,7 +68,7 @@ if (isset($_POST['comprar_todo_ids[]']) || isset(($_POST['id_videojuegos']))) {
             $total += $subtotal;
 
             $items[] = [
-                'id' => $row['id_videojuegos'],
+                'id_videojuegos' => $row['id_videojuegos'],
                 'titulo' => $row['titulo'],
                 'precio' => $row['precio'],
                 'cantidad' => $cantidad,
@@ -70,8 +77,11 @@ if (isset($_POST['comprar_todo_ids[]']) || isset(($_POST['id_videojuegos']))) {
         }
     }
 } else {
+
     header("Location: ./carrito.php");
     exit();
+
+
 }
 
 
@@ -109,15 +119,22 @@ if (isset($_POST['comprar_todo_ids[]']) || isset(($_POST['id_videojuegos']))) {
             <br><br>
 
             <?php foreach ($items as $item): ?>
-                <input type="hidden" name="items[<?= $item['id'] ?>][id]" value="<?= $item['id'] ?>">
-                <input type="hidden" name="items[<?= $item['id'] ?>][titulo]"
+                <input type="hidden" name="items[<?= $item['id_videojuegos'] ?>][id_videojuegos]"
+                    value="<?= $item['id_videojuegos'] ?>">
+                <input type="hidden" name="items[<?= $item['id_videojuegos'] ?>][titulo]"
                     value="<?= htmlspecialchars($item['titulo'], ENT_QUOTES, 'UTF-8') ?>">
-                <input type="hidden" name="items[<?= $item['id'] ?>][cantidad]" value="<?= $item['cantidad'] ?>">
-                <input type="hidden" name="items[<?= $item['id'] ?>][subtotal]" value="<?= $item['subtotal'] ?>">
+                <input type="hidden" name="items[<?= $item['id_videojuegos'] ?>][cantidad]"
+                    value="<?= $item['cantidad'] ?>">
+                <input type="hidden" name="items[<?= $item['id_videojuegos'] ?>][subtotal]"
+                    value="<?= $item['subtotal'] ?>">
             <?php endforeach; ?>
 
             <input type="hidden" name="total" value="<?= $total ?>">
             <input type="hidden" name="esCompraMultiple" value="<?= $esCompraMultiple ? '1' : '0' ?>">
+
+            <?php if (isset($_GET['mensaje'])): ?>
+                <p style="color:red"><?= $_GET['mensaje'] ?></p>
+            <?php endif; ?>
 
             <button type="submit">Proceder al Pago</button>
         </form>

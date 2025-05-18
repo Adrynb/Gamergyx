@@ -40,8 +40,8 @@ $resultCarrito = mysqli_stmt_get_result($prepareCarrito);
                 echo '<button type="submit" name="ver_detalles" class="btn btn-warning bg-gradient">Ver Detalles</button>';
                 echo '</form>';
 
-                echo '<form method="POST" action="./compra.php">';
-                echo '<input type="hidden" name="id_videojuego" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
+                echo '<form method="POST" action="compra.php">';
+                echo '<input type="hidden" name="id_videojuegos" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
                 echo '<label for="cantidad_' . $row['id_videojuegos'] . '">Cantidad:</label>';
                 echo '<input type="number" name="cantidad_videojuegos[' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . ']" min="1" required>';
                 echo '<button type="submit" name="finalizar_compra" class="btn btn-warning bg-gradient">Finalizar Compra</button>';
@@ -62,7 +62,7 @@ $resultCarrito = mysqli_stmt_get_result($prepareCarrito);
     <?php if (mysqli_num_rows($resultCarrito) > 0): ?>
         <section id="carrito_compra_section">
             <h2>Comprar todo el carrito</h2>
-            <form method="POST" action="./compra.php">
+            <form method="POST" action="compra.php">
                 <?php
                 mysqli_data_seek($resultCarrito, 0);
                 while ($row = mysqli_fetch_assoc($resultCarrito)) {
@@ -73,6 +73,11 @@ $resultCarrito = mysqli_stmt_get_result($prepareCarrito);
                 <label for="cantidad_veces">Veces que desea repetir el carrito completo:</label>
                 <input type="number" name="cantidad_veces" min="1" value="1" required>
                 <button type="submit" name="finalizar_compra_todo" class="btn btn-success bg-gradient">Comprar Todo</button>
+                <?php if (isset($_GET['mensaje'])): ?>
+                    <p style="color: red;"><?=$_GET['mensaje']?></p>
+                <?php endif; ?>
+
+                
             </form>
         </section>
     <?php endif; ?>
@@ -91,5 +96,6 @@ $resultCarrito = mysqli_stmt_get_result($prepareCarrito);
 
 
     ?>
+
 
 </main>

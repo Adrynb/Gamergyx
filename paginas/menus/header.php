@@ -8,12 +8,24 @@ mysqli_stmt_bind_param($stmt, "s", $nombre);
 mysqli_stmt_execute($stmt);
 $resultFP = mysqli_stmt_get_result($stmt);
 
+$sqlMonedero = "SELECT monedero_virtual FROM usuarios WHERE nombre = ?";
+$stmtMonedero = mysqli_prepare($conexion, $sqlMonedero);
+mysqli_stmt_bind_param($stmtMonedero, "s", $nombre);
+mysqli_stmt_execute($stmtMonedero);
+$resultMonedero = mysqli_stmt_get_result($stmtMonedero);
+
 if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
     $fotoPerfil = $row['fotoPerfil'];
 } else {
-    $fotoPerfil = '../../assets/images/logos/usuario_icon.png';
+    $fotoPerfil = '';
 }
 
+if ($resultMonedero && $rowMonedero = mysqli_fetch_assoc($resultMonedero)){
+    $monedero_virtual = $rowMonedero['monedero_virtual'];
+}
+else{
+    $monedero_virtual = 0.00;
+}
 
 
 ?>
@@ -77,7 +89,7 @@ if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
                 </form>
 
             </div>
-            <span id="usuario_dinero">$100.00</span>
+            <span id="usuario_dinero"><?= number_format($monedero_virtual, 2) ?> €</span>
 
 
             <section class="menu_container">
