@@ -4,6 +4,9 @@ body {
     text-align: center;
     font-family: 'Pixelify Sans', sans-serif;
     align-items: center;
+    position: relative;
+    padding-bottom: 3em;
+    min-height: 100vh;
 }
 
 h1,

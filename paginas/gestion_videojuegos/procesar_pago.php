@@ -11,7 +11,7 @@ if (!isset($_SESSION['nombre'])) {
 $sqlIDusuario = "SELECT id_usuarios, monedero_virtual FROM usuarios WHERE nombre = ?";
 $stmtIDusuario = mysqli_prepare($conexion, $sqlIDusuario);
 mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);
-mysqli_stmt_execute($stmtIDusuario);
+mysqli_stmt_execute(statement: $stmtIDusuario);
 $resultIDusuario = mysqli_stmt_get_result($stmtIDusuario);
 $userData = mysqli_fetch_assoc($resultIDusuario);
 $idUsuario = $userData['id_usuarios'];
