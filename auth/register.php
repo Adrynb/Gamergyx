@@ -30,6 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             if (mysqli_query($conexion, $sql)) {
                 echo "<script>alert('Usuario registrado con éxito.');</script>";
+                header("Location: login.php");
+                exit();
             } else {
                 $error = "Error al registrar: " . mysqli_error($conexion);
             }
@@ -39,24 +41,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../assets/auth/auth.css">
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet" />
+
     <title>Registro - Gamergyx</title>
 </head>
+
 <body>
-    <form action="register.php" method="POST">
+    <form action="register.php" method="POST" id="formulario" enctype="multipart/form-data">
         <div id="info-left">
             <h1>Registro de Usuario</h1>
             <label for="nombre">Nombre de Usuario</label>
-            <input type="text" name="nombre" required><br>
-
-            <label for="contraseña">Contraseña:</label>
-            <input type="password" name="contraseña" required><br>
+            <input type="text" id="nombre" name="nombre">
+            <span class="errores" style="color:red;"></span><br>
 
             <label for="email">Correo electrónico</label>
-            <input type="email" name="email" required><br>
+            <input type="email" id="email" name="email">
+            <span class="errores" style="color:red;"></span><br>
+
+            <label for="contraseña">Contraseña:</label>
+            <input type="password" id="contraseña" name="contraseña">
+            <span class="errores" style="color:red;"></span><br>
 
             <button type="submit">Registrarse</button>
             <br><br>
@@ -66,11 +74,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <?php if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($error)): ?>
                 <p style="color:red;"><?php echo $error; ?></p>
             <?php endif; ?>
-        </div> 
+        </div>
 
         <div id="imagen-right">
             <img src="https://zelda.nintendo.com/breath-of-the-wild/assets/media/wallpapers/tablet-1.jpg" alt="">
         </div>
     </form>
+
+    <script src="../paginas/menus/formulario.js" defer></script>
+
 </body>
+
 </html>

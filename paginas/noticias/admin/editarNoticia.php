@@ -54,7 +54,7 @@ if (isset($_POST["editarNoticia"])) {
             die("Error: No se pudo subir la imagen.");
         }
     } else {
-   
+
         $imagen = $imagen_actual;
     }
 
@@ -92,6 +92,7 @@ if (isset($_POST["editarNoticia"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../../menus/formulario.js" defer></script>
     <title>Editar Noticia</title>
 </head>
 
@@ -102,31 +103,39 @@ if (isset($_POST["editarNoticia"])) {
 
         <label for="titulo">Título:</label>
         <input type="text" id="titulo" name="titulo" value="<?= htmlspecialchars($titulo) ?>" required><br><br>
+        <span class="errores" style="color:red;"></span>
 
         <label for="contenido">Descripción:</label><br>
-        <textarea id="contenido" name="descripcion" rows="4" cols="50" required><?= htmlspecialchars($descripcion) ?></textarea><br><br>
+        <textarea id="contenido" name="descripcion" rows="4" cols="50"
+            required><?= htmlspecialchars($descripcion) ?></textarea><br><br>
+        <span class="errores" style="color:red;"></span>
+
+        <label for="enlace">Enlace Web:</label>
+        <input type="text" id="enlace" name="enlace" value="<?= htmlspecialchars($enlace) ?>" required><br><br>
+        <span class="errores" style="color:red;"></span>
 
         <label for="fecha">Fecha:</label>
         <input type="date" id="fecha" name="fecha" value="<?= htmlspecialchars($fecha) ?>" required><br><br>
 
         <label for="imagen">Portada:</label>
         <?php if (!empty($imagen_actual)): ?>
-            <br><img src="../../../assets/noticias/<?= htmlspecialchars($imagen_actual) ?>" alt="Portada actual" style="max-width: 200px;"><br>
+            <br><img src="../../../assets/noticias/<?= htmlspecialchars($imagen_actual) ?>" alt="Portada actual"
+                style="max-width: 200px;"><br>
         <?php endif; ?>
         <input type="file" id="imagen" name="imagen"><br><br>
 
         <label for="fuente">Fuente:</label>
         <input type="text" id="fuente" name="fuente" value="<?= htmlspecialchars($fuente) ?>" required><br><br>
 
-        <label for="enlace">Enlace Web:</label>
-        <input type="text" id="enlace" name="enlace" value="<?= htmlspecialchars($enlace) ?>" required><br><br>
+
+
 
         <input type="submit" value="Editar Noticia" id="editarNoticia" name="editarNoticia">
-        <p id="mensajeError"></p>
+
+
 
         <button><a href="../noticias.php">Volver a noticias</a></button>
 
-        <script src="insertarNoticia.js" defer></script>
     </form>
 </body>
 

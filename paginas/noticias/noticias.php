@@ -3,11 +3,19 @@ include '../../includes/db.php';
 include '../../includes/sesion.php';
 include '../menus/header.php';
 
+$sqlNoticias = "SELECT * FROM noticias ORDER BY fecha DESC";
+$result = mysqli_query($conexion, $sqlNoticias);
+if (!$result) {
+    die("Error en la consulta: " . mysqli_error($conexion));
+}
+
+if (isset($_SESSION["rol"]) && $_SESSION["rol"] == "admin") {
+    echo "<button><a href='./admin/insertarNoticia.php'>Insertar Noticia</a></button>";
+}
 
 
 
 ?>
-
 
 <body>
     <?php

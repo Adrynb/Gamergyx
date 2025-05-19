@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <br><br>
             <a href="register.php">¿No tienes cuenta? Regístrate aquí</a>
             <br><br>
-            <a href="./gestion_contrasenia/recuperar.html">¿Se te ha olvidado la contraseña?</a>
+            <a href="./gestion_contrasenia/recuperar.php">¿Se te ha olvidado la contraseña?</a>
             <br><br>
 
             <?php if (isset($_GET['error'])): ?>

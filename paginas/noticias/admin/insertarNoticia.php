@@ -1,11 +1,11 @@
 <?php
-include '../../includes/db.php';
-include '../../includes/sesion.php';
-include '../menus/header.php';
+include '../../../includes/db.php';
+include '../../../includes/sesion.php';
+include '../../menus/header.php';
 
 
 if ($_SESSION["rol"] != "admin") {
-    header("Location: ../../index.php");
+    header("Location: ../../../index.php");
     exit();
 }
 
@@ -29,7 +29,7 @@ if (isset($_POST["formulario"])) {
         die("Error: El tamaño de la imagen excede el límite de 2 MB.");
     }
 
-    $uploadDir = '../../../../assets/noticias/';
+    $uploadDir = '../../../assets/noticias/';
     $uploadFile = $uploadDir . basename($imagen);
 
     if (!move_uploaded_file($_FILES['imagen']['tmp_name'], $uploadFile)) {
@@ -43,13 +43,13 @@ if (isset($_POST["formulario"])) {
         $result = mysqli_query($conexion, $query);
 
         if ($result) {
-            header("Location: ../../noticias.php?mensaje=noticia_insertada");
+            header("Location: ../noticias.php?mensaje=noticia_insertada");
             echo "<script>alert('Noticia insertada correctamente.');</script>";
             exit();
         } else {
             echo "<script>alert('Error: No se pudo insertar la noticia.');</script>";
             die("Error: No se pudo insertar la noticia.");
-          
+
         }
     }
 
@@ -64,6 +64,8 @@ if (isset($_POST["formulario"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../../menus/formulario.js" defer></script>
+    <link rel="stylesheet" href="../../../assets/header-footer/header.css">
     <title>Insertar Noticia</title>
 </head>
 
@@ -74,6 +76,10 @@ if (isset($_POST["formulario"])) {
 
         <label for="contenido">Descripción:</label><br>
         <textarea id="contenido" name="descripcion" rows="4" cols="50" required></textarea><br><br>
+        
+        <label for="enlace">Enlace Web:</label>
+        <input type="text" id="enlace" name="enlace" required><br><br>
+          <span class="errores" style="color:red;"></span>
 
         <label for="fecha">Fecha:</label>
         <input type="date" id="fecha" name="fecha" required><br><br>
@@ -84,19 +90,17 @@ if (isset($_POST["formulario"])) {
         <label for="fuente">Fuente:</label>
         <input type="text" id="fuente" name="fuente" required><br><br>
 
-        <label for="enlace">Enlace Web:</label>
-        <input type="text" id="enlace" name="enlace" required><br><br>
 
         <input type="hidden" name="formulario" value="1">
         <input type="submit" id="insertarNoticia" name="insertarNoticia" value="Insertar Noticia">
 
-        <p id="mensajeError"></p>
+      
 
-        <a href="../../noticias.php">Volver a noticias</a>
+        <a href="../noticias.php">Volver a noticias</a>
 
     </form>
 
-    <!-- <script src="insertarNoticia.js" defer></script> -->
+
 
 </body>
 

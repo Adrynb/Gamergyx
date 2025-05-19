@@ -111,3 +111,11 @@ CREATE TABLE IF NOT EXISTS `noticias` (
   PRIMARY KEY (`id_noticias`)
 );
 
+CREATE TABLE posts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    contenido TEXT NOT NULL,
+    fecha_publicacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    id_usuario INT NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios)
+);

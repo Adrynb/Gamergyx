@@ -6,5 +6,7 @@ if (!isset($_SESSION['nombre']) || $_SESSION['nombre'] == "") {
     exit();
 }
 
+define('BASE_URL', '/gamergyx/');
+
 
 ?>
