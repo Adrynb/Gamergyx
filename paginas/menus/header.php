@@ -83,7 +83,7 @@ if ($resultMonedero && $rowMonedero = mysqli_fetch_assoc($resultMonedero)){
                         <li><a href="<?= BASE_URL ?>paginas/plataformas/pc.php">PC</a></li>
                     </ul>
                 </li>
-                <li><a href="<?= BASE_URL ?>paginas/comunidad/comunidad/build/index.html">Comunidad</a></li>
+                <li><a href="http://localhost:3000">Comunidad</a></li>
                 <li><a href="<?= BASE_URL ?>paginas/contacto/contacto.php">Contacto</a></li>
             </ul>
         </nav>

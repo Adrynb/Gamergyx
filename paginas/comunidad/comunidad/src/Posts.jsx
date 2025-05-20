@@ -4,31 +4,48 @@ export default function Posts() {
     const [posts, setPosts] = useState([]);
     const [nuevoPost, setNuevoPost] = useState("");
 
-    useEffect(() => {
-        fetch("../public/API/obtener_post.php")
-            .then((response) => response.json())
+    const cargarPosts = () => {
+        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/obtener_post.php", {
+            credentials: 'include',  
+            mode: 'cors'
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then((data) => {
                 setPosts(data);
-            });
+            })
+            .catch((error) => console.error("Error cargando posts:", error));
+    };
+
+
+    useEffect(() => {
+        cargarPosts();
     }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetch("../public/API/añadir_post.php", {
+        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/anadir_post.php", {
             method: "POST",
+            credentials: 'include',
+            mode: 'cors',
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ post: nuevoPost }),
+            body: JSON.stringify({ contenido : nuevoPost }),
         })
             .then((response) => response.json())
             .then((data) => {
                 setNuevoPost("");
-                fetch("../public/obtener_post.php")
-                    .then(res => res.json())
-                    .then(data => setPosts(data));
-            });
+                cargarPosts();
+            })
+            .catch((error) => console.error("Error enviando post:", error));
     };
+    
+
 
     return (
         <div>
@@ -39,13 +56,18 @@ export default function Posts() {
                     value={nuevoPost}
                     onChange={(e) => setNuevoPost(e.target.value)}
                 />
-                <button type="submit">Comentar</button>
+                <button type="submit">Publicar</button>
             </form>
             <ul>
-                {posts.map((post) => (
-                    <li key={post.id}>{post.post}</li>
+                {posts.map((post, idx) => (
+                    <li key={idx}>
+                        <strong>{post.nombre}</strong><br />
+                        {post.contenido}<br />
+                        <small>{new Date(post.fecha_publicacion).toLocaleString()}</small>
+                    </li>
                 ))}
             </ul>
+
         </div>
     );
 }
