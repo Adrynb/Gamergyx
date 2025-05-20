@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 export default function Posts() {
     const [posts, setPosts] = useState([]);
     const [nuevoPost, setNuevoPost] = useState("");
+    const [usuarioActual, setUsuarioActual] = useState(null);
 
     const cargarPosts = () => {
         fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/obtener_post.php", {
-            credentials: 'include',  
+            credentials: 'include',
             mode: 'cors'
         })
             .then((response) => {
@@ -21,10 +22,54 @@ export default function Posts() {
             .catch((error) => console.error("Error cargando posts:", error));
     };
 
+    const eliminarPost = (id) => { 
+        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/eliminar_post.php", {
+            method: "POST",
+            credentials: 'include',
+            mode: 'cors',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                cargarPosts();
+            })
+            .catch((error) => console.error("Error eliminando post:", error));
+    }
+
+    const obtenerUsuarioActual = () => {
+
+        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/config/usuario_actual.php", {
+            credentials: 'include',
+            mode: 'cors'
+        })
+
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                if (data.status === "success") {
+                    setUsuarioActual(data.nombre);
+                }
+            })
+            .catch((error) => console.error("Error cargando usuario actual:", error));
+
+    }
+
 
     useEffect(() => {
         cargarPosts();
+        obtenerUsuarioActual();
+
     }, []);
+
+
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -35,7 +80,7 @@ export default function Posts() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ contenido : nuevoPost }),
+            body: JSON.stringify({ contenido: nuevoPost }),
         })
             .then((response) => response.json())
             .then((data) => {
@@ -44,7 +89,7 @@ export default function Posts() {
             })
             .catch((error) => console.error("Error enviando post:", error));
     };
-    
+
 
 
     return (
@@ -63,7 +108,11 @@ export default function Posts() {
                     <li key={idx}>
                         <strong>{post.nombre}</strong><br />
                         {post.contenido}<br />
-                        <small>{new Date(post.fecha_publicacion).toLocaleString()}</small>
+                        <small>{new Date(post.fecha_publicacion).toLocaleString()}</small> <br />
+                        <button>Me gusta</button> <br />
+                        {usuarioActual === post.nombre && (
+                            <button onClick={() => eliminarPost(post.id)}>Eliminar comentario</button>
+                        )}
                     </li>
                 ))}
             </ul>

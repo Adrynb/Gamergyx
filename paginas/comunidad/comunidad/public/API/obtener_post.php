@@ -39,7 +39,7 @@ if (!$idUsuarioRow) {
 
 $idUsuario = $idUsuarioRow['id_usuarios'];
 
-$sql = "SELECT posts.contenido, posts.fecha_publicacion, usuarios.nombre 
+$sql = "SELECT posts.id, posts.contenido, posts.fecha_publicacion, usuarios.nombre 
         FROM posts 
         INNER JOIN usuarios ON posts.id_usuario = usuarios.id_usuarios 
         ORDER BY posts.fecha_publicacion DESC";
@@ -55,6 +55,7 @@ $posts = [];
 
 while ($row = mysqli_fetch_assoc($result)) {
     $posts[] = [
+        'id' => $row['id'],
         'contenido' => $row['contenido'],
         'fecha_publicacion' => $row['fecha_publicacion'],
         'nombre' => $row['nombre']
