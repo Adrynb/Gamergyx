@@ -22,7 +22,7 @@ export default function Posts() {
             .catch((error) => console.error("Error cargando posts:", error));
     };
 
-    const eliminarPost = (id) => { 
+    const eliminarPost = (id) => {
         fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/eliminar_post.php", {
             method: "POST",
             credentials: 'include',
@@ -30,7 +30,30 @@ export default function Posts() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ id }),
+            body: JSON.stringify({
+                id
+            }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                cargarPosts();
+            })
+            .catch((error) => console.error("Error eliminando post:", error));
+    }
+
+
+    const megustaPost = (id) => {
+        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/megusta_post.php", {
+            method: "POST",
+            credentials: 'include',
+            mode: 'cors',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                idPost: id,
+                usuarioActual: usuarioActual
+            }),
         })
             .then((response) => response.json())
             .then((data) => {
@@ -109,7 +132,7 @@ export default function Posts() {
                         <strong>{post.nombre}</strong><br />
                         {post.contenido}<br />
                         <small>{new Date(post.fecha_publicacion).toLocaleString()}</small> <br />
-                        <button>Me gusta</button> <br />
+                        <button onClick={() => megustaPost(post.id)}>Me gusta</button>
                         {usuarioActual === post.nombre && (
                             <button onClick={() => eliminarPost(post.id)}>Eliminar comentario</button>
                         )}
