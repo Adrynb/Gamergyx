@@ -31,17 +31,28 @@ if (empty($idObtenida['id'])) {
 
 $idPost = (int) $idObtenida['id'];
 
+
+$sqlBorrarRespuestas = "DELETE FROM posts WHERE id_padre = ?";
+$stmtRespuestas = mysqli_prepare($conexion, $sqlBorrarRespuestas);
+mysqli_stmt_bind_param($stmtRespuestas, 'i', $idPost);
+mysqli_stmt_execute($stmtRespuestas);
+
+$sqlBorrarFavoritos = "DELETE FROM posts_favoritos WHERE id_post = ?";
+$stmtFav = mysqli_prepare($conexion, $sqlBorrarFavoritos);
+mysqli_stmt_bind_param($stmtFav, 'i', $idPost);
+mysqli_stmt_execute($stmtFav);
+
+// Luego borrar el post
 $sqlBorrarPost = "DELETE FROM posts WHERE id = ?";
 $stmt = mysqli_prepare($conexion, $sqlBorrarPost);
 mysqli_stmt_bind_param($stmt, 'i', $idPost);
 mysqli_stmt_execute($stmt);
+
+
 if (mysqli_stmt_affected_rows($stmt) > 0) {
     echo json_encode(['status' => 'success', 'message' => 'Post eliminado']);
 } else {
     http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Error al eliminar el post']);
 }
-
-
-
 ?>

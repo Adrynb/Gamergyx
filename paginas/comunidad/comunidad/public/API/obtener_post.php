@@ -17,7 +17,6 @@ include './config/config.php';
 
 $autor = $_SESSION['nombre'];
 
-
 $sqlIDusuario = "SELECT id_usuarios FROM usuarios WHERE nombre = ?";
 $stmt = mysqli_prepare($conexion, $sqlIDusuario);
 mysqli_stmt_bind_param($stmt, 's', $autor);
@@ -39,7 +38,7 @@ if (!$idUsuarioRow) {
 
 $idUsuario = $idUsuarioRow['id_usuarios'];
 
-$sql = "SELECT posts.id, posts.contenido, posts.fecha_publicacion, usuarios.nombre 
+$sql = "SELECT posts.id, posts.contenido, posts.fecha_publicacion, usuarios.nombre, posts.id_padre
         FROM posts 
         INNER JOIN usuarios ON posts.id_usuario = usuarios.id_usuarios 
         ORDER BY posts.fecha_publicacion DESC";
@@ -58,7 +57,8 @@ while ($row = mysqli_fetch_assoc($result)) {
         'id' => $row['id'],
         'contenido' => $row['contenido'],
         'fecha_publicacion' => $row['fecha_publicacion'],
-        'nombre' => $row['nombre']
+        'nombre' => $row['nombre'],
+        'id_padre' => $row['id_padre']  // nuevo campo agregado
     ];
 }
 

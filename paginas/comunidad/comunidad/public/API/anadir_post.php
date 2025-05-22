@@ -9,12 +9,10 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
-
 
 session_start();
 
@@ -32,9 +30,10 @@ $stmt = mysqli_prepare($conexion, $sqlIDusuario);
 mysqli_stmt_bind_param($stmt, 's', $autor);
 mysqli_stmt_execute($stmt);
 $resultIDusuario = mysqli_stmt_get_result($stmt);
+
 if (!$resultIDusuario) {
     http_response_code(500);
-    echo json_encode(['status' => 'error', 'message' => 'Error en la consulta a la base de datos. No se encuentra el nombre ']);
+    echo json_encode(['status' => 'error', 'message' => 'Error en la consulta a la base de datos. No se encuentra el nombre']);
     exit();
 }
 
@@ -54,9 +53,20 @@ if (empty($posts['contenido'])) {
     exit();
 }
 
-$insertarPost = "INSERT INTO posts (contenido, id_usuario, fecha_publicacion) VALUES (?, ?, NOW())";
+$idPadre = isset($posts['id_padre']) ? $posts['id_padre'] : null;
+
+$insertarPost = "INSERT INTO posts (contenido, id_usuario, fecha_publicacion, id_padre) VALUES (?, ?, NOW(), ?)";
+
 $stmt = mysqli_prepare($conexion, $insertarPost);
-mysqli_stmt_bind_param($stmt, 'si', $posts['contenido'], $idUsuario);
+
+if ($idPadre === null) {
+    $idPadreParam = null;
+    mysqli_stmt_bind_param($stmt, 'sis', $posts['contenido'], $idUsuario, $idPadreParam);
+} else {
+    $idPadreInt = (int)$idPadre;
+    mysqli_stmt_bind_param($stmt, 'sii', $posts['contenido'], $idUsuario, $idPadreInt);
+}
+
 mysqli_stmt_execute($stmt);
 
 if (mysqli_stmt_affected_rows($stmt) > 0) {
@@ -65,6 +75,5 @@ if (mysqli_stmt_affected_rows($stmt) > 0) {
     http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Error al añadir el post a la base de datos.']);
 }
-
 
 ?>

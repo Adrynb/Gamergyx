@@ -116,6 +116,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
     contenido TEXT NOT NULL,
     fecha_publicacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     id_usuario INT NOT NULL,
+    id_padre INT DEFAULT NULL,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios)
 );
 

@@ -90,7 +90,7 @@ if ($resultMonedero && $rowMonedero = mysqli_fetch_assoc($resultMonedero)){
 
         <section class="header-container-usuario">
             <div id="buscar_container">
-                <form action="<?= BASE_URL ?>configuracion/buscarResultados.php" method="GET" enctype="multipart/form-data">
+                <form action="<?= BASE_URL ?>paginas/configuracion/buscarResultados.php" method="GET" enctype="multipart/form-data">
                     <input type="text" placeholder="Buscar..." id="buscar_input" name="buscar_input" />
                     <button type="submit" id="buscar_btn">
                         <img src="<?= BASE_URL ?>assets/images/logos/lupa.png" alt="lupa" />
