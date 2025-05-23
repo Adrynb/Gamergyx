@@ -1,104 +1,186 @@
-body {
-    background: linear-gradient(to bottom, #252525, rgb(34, 34, 34));
-    margin: 0;
-    text-align: center;
-    font-family: 'Pixelify Sans', sans-serif;
-    align-items: center;
-}
+/* === SECTIONS === */
 
-#ofertas-section {
-    max-width: 90%;
+
+
+#ofertas-section,
+#novedades-section {
+    max-width: 80%;
     margin: 0 auto;
 }
 
-
-.ofertas-container {
-    display: flex;
-    flex-wrap: nowrap; 
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem; 
-    padding: 1rem;
-
-}
-
-.oferta-extra-container {
-    max-width: 50%; 
-}
-
-.oferta-extra-item {
-    padding: 10px;
-    text-align: center;
-    background-color:  #DC143C;
-    border-radius: 1rem;
-}
-
-.imagen-extra {
-    width: 100%;
-    height: 660px;
-    border-radius: 1rem;
-    object-fit: cover;
-}
-
-.oferta-items-container {
-    max-width: 45%; 
+#novedades-section {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-    justify-content: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
 }
 
-.oferta-item {
-    padding: 10px;
-    width: 100%;
-    height: 400px;
-    text-align: center;
-    background-color: #DC143C;
-    border-radius: 1rem;
+#novedades-section img {
+    max-width: 100%;
+    margin-bottom: 2rem;
+    color: white;
+}
+
+#masvendidos-section {
     display: flex;
-    flex-direction: column;
-}
-
-.oferta-item img {
-    width: 100%;
-    height: 250px;
-    border-radius: 1rem;
-    object-fit: cover;
-}
-
-.item{
-    background-color: #DC143C;
-    border-radius: 1rem;
+    justify-content: space-around;
     margin-bottom: 2rem;
 }
 
+.noticias-container {
+    background-color: #22092C;
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+    display: flex;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    
+}
+
+.noticias-imagen-section {
+    width: 50%;
+    height: 100%;
+    min-height: 500px; /* Aumenta la altura mínima */
+    background-image: url(../images/banners/noticias.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 1rem;
+    margin-right: 1rem;
+    align-self: stretch;
+}
+
+.noticias-contenido-section {
+    width: 50%;
+    margin-left: 1rem;
+    padding: 6rem;
+    margin: 1rem;
+}
+
+.noticias-contenido-section h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: .15em solid #fff;
+    width: 0;
+    animation: escribir 2s steps(18, end) forwards, palito-blanco .75s step-end infinite;
+
+}
+
+@keyframes escribir {
+    from { width: 0 }
+    to { width: 21ch }
+}
+
+@keyframes palito-blanco {
+    from, to { border-color: transparent }
+    50% { border-color: #fff; }
+}
+
+.noticias-contenido-section p {
+    font-size: 1.2rem;
+}
+
+.titulo-section {
+    margin-bottom: 2rem;
+    padding: 6rem;
+    color: white;
+    font-size: 3rem;
+    background-color: rgba(17, 17, 17, 0.6); /* Fondo con opacidad */
+    text-align: center;
+}
+
+
+
+
+/* === CONTENEDORES DE OFERTAS === */
+
+.ofertas-container {
+    display: flex;
+}
+
+.oferta-extra-container {
+    max-width: 50%;
+    padding: 1rem;
+    color: white;
+
+}
+
+.oferta-items-container {
+    max-width: 50%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 1rem;
+    color: white;
+    gap: 1rem;
+}
+
+.oferta-button-container {
+    background-color: #F05941;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: arriba derecha abajo izquierda */
+    padding: 1rem 1rem 1rem 1rem;
+    border-radius: 0 0 1rem 1rem;
+    margin-top: 3rem;
+}
+
+.oferta-button-container #precio {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+
+
+/* === ELEMENTOS DE OFERTA === */
+
+.oferta-extra-item,
+.oferta-item,
+.item {
+    background-color: #BE3144;
+    border-radius: 1rem 1rem 1rem 1rem;
+    text-align: center;
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
+
+
+
+}
+
+
+
+.item {
+    margin-bottom: 2rem;
+}
+
+
+.imagen-extra,
+.oferta-item img,
 .item img {
     width: 100%;
     height: 250px;
-    border-radius: 1rem;
+    border-radius: 1rem 1rem 0rem 0rem;
     object-fit: cover;
+    margin-bottom: 2rem;
 }
 
+.oferta-item,
+.item {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+}
+
+.imagen-extra {
+    height: 660px;
+}
 
 .imagen-section {
     max-width: 400px;
     height: auto;
     object-fit: cover;
     border-radius: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
-
-#novedades-section {
-    max-width: 90%;
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 10px;
-}
-#masvendidos-section{
-    display: flex;
-    justify-content: space-around;
-
-}
-

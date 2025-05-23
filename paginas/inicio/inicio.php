@@ -4,7 +4,7 @@ include '../../includes/sesion.php';
 include '../menus/header.php';
 
 ?>
-<main>
+<sect>
     <section id="banner-section" class="w-100 p-0 m-0">
         <div id="carouselExampleIndicators" class="carousel slide">
             <div class="carousel-indicators">
@@ -66,29 +66,34 @@ include '../menus/header.php';
                 echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="item-form">';
                 echo '<div class="oferta-extra-item">';
                 echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-extra">';
-                echo '<h3>' . $row['titulo'] . '</h3>';
-                echo '<p>Precio: $' . $row['precio'] . '</p>';
+                echo '<h4>' . $row['titulo'] . '</h4>';
+                echo '<div class="oferta-button-container">';
+                echo '<p id="precio">$' . $row['precio'] . '</p>';
                 echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
-                echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                 echo '</div>';
+                echo '</div>';
+                echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                 echo '</form>';
             }
             echo '</div>';
         } else {
             echo '<p>No hay ofertas destacadas disponibles en este momento.</p>';
         }
+
         if (mysqli_num_rows($result) > 0) {
             echo '<div class="oferta-items-container">';
             while ($row = mysqli_fetch_assoc($result)) {
                 echo '<div class="oferta-item">';
                 echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="item-form">';
                 echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-section">';
-                echo '<h3>' . $row['titulo'] . '</h3>';
-                echo '<p>Precio: $' . $row['precio'] . '</p>';
+                echo '<h4>' . $row['titulo'] . '</h4>';
+                echo '<div class="oferta-button-container">';
+                echo '<p id="precio">$' . $row['precio'] . '</p>';
                 echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
-                echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                 echo '</div>';
+                echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                 echo '</form>';
+                echo '</div>';
             }
             echo '</div>';
         } else {
@@ -99,14 +104,28 @@ include '../menus/header.php';
         ?>
     </section>
 
-    ?>
+    <section class="noticias-container">
+        <section class="noticias-contenido-section">
+            <h2>NUESTRAS NOTICIAS</h2>
+            <article>
+                <p>Descubre las noticias web más recientes sobre los videojuegos, novedades del sector, lanzamientos y
+                    todo
+                    lo que necesitas saber para mantenerte actualizado en el mundo gamer.</p>
+                <p>No te pierdas nuestras recomendaciones, curiosidades y reportajes especiales para que vivas la experiencia gamer al máximo. ¡Sigue nuestras noticias y sé parte de la comunidad!</p>
+            </article>
+            <a href="../noticias/noticias.php">
+                <button class="btn btn-warning bg-gradient">VER NOTICIAS</button>
+            </a>
+
+        </section>
+        <section class="noticias-imagen-section"></section>
+
     </section>
 
     <h2 class="titulo-section">MÁS RECIENTES</h2>
     <section id="novedades-section">
-
         <?php
-        $sql = "SELECT id_videojuegos, titulo, imagen, precio FROM VIDEOJUEGOS WHERE fecha_lanzamiento >= '2018-01-01' ORDER BY RAND() DESC LIMIT 8";
+        $sql = "SELECT id_videojuegos, titulo, imagen, precio FROM VIDEOJUEGOS WHERE fecha_lanzamiento >= '2018-01-01' ORDER BY RAND() DESC LIMIT 9";
         $result = mysqli_query($conexion, $sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
@@ -114,8 +133,10 @@ include '../menus/header.php';
                 echo '<div class="item">';
                 echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-section">';
                 echo '<h3>' . $row['titulo'] . '</h3>';
-                echo '<p>Precio: $' . $row['precio'] . '</p>';
+                echo '<div class="oferta-button-container">';
+                echo '<p id="precio">$' . $row['precio'] . '</p>';
                 echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                echo '</div>';
                 echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                 echo '</div>';
                 echo '</form>';
@@ -126,10 +147,39 @@ include '../menus/header.php';
         ?>
     </section>
 
+
+    <h2 class="titulo-section">LAS MEJORES RESEÑAS</h2>
+    <section id="reseñas">
+        <?php
+
+        $sql = "SELECT comentarios, fecha, id_videojuegos FROM Reseñas WHERE estrellas > 4 ORDER BY fecha DESC LIMIT 3";
+        $result = mysqli_query($conexion, $sql);
+
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $id_videojuegos = $row['id_videojuegos'];
+                $sqlJuego = "SELECT titulo, imagen FROM VIDEOJUEGOS WHERE id_videojuegos = $id_videojuegos LIMIT 1";
+                $resultJuego = mysqli_query($conexion, $sqlJuego);
+                $juego = mysqli_fetch_assoc($resultJuego);
+
+                echo '<div class="reseña-item">';
+                if ($juego) {
+                    echo '<img src="' . $juego['imagen'] . '" alt="' . $juego['titulo'] . '" class="imagen-section">';
+                    echo '<h4>' . $juego['titulo'] . '</h4>';
+                }
+                echo '<p class="reseña-contenido">' . htmlspecialchars($row['comentarios']) . '</p>';
+                echo '<span class="reseña-fecha">' . date('d/m/Y', strtotime($row['fecha'])) . '</span>';
+                echo '</div>';
+            }
+        } else {
+            echo '<p>No hay reseñas destacadas disponibles en este momento.</p>';
+        }
+
+        ?>
+    </section>
+
     <h2 class="titulo-section">MÁS VENDIDOS</h2>
-
     <section id="masvendidos-section">
-
         <?php
         $sql = "SELECT * FROM VIDEOJUEGOS ORDER BY stock DESC LIMIT 4";
         $result = mysqli_query($conexion, $sql);
@@ -139,9 +189,10 @@ include '../menus/header.php';
                 echo '<div class="item">';
                 echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-section">';
                 echo '<h3>' . $row['titulo'] . '</h3>';
-                echo '<p>Precio: $' . $row['precio'] . '</p>';
-                echo '<input type="hidden" name="game_id" value="' . $row['id_videojuegos'] . '">';
+                echo '<div class="oferta-button-container">';
+                echo '<p id="precio">$' . $row['precio'] . '</p>';
                 echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                echo '</div>';
                 echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                 echo '</div>';
                 echo '</form>';
@@ -150,16 +201,10 @@ include '../menus/header.php';
             echo '<p>No hay productos más vendidos disponibles en este momento.</p>';
         }
         ?>
-
-
     </section>
+    </main>
 
-    </section>
-</main>
+    <?= include '../menus/footer.php'; ?>
+    </body>
 
-
-<?= include '../menus/footer.php'; ?>
-
-</body>
-
-</html>
+    </html>
