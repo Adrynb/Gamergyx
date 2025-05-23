@@ -56,6 +56,7 @@ include '../menus/header.php';
                 } else {
                     echo '<p>No se encontraron resultados para "' . htmlspecialchars($buscar_input) . '"</p>';
                 }
+                
             }
             ?>
             <div id="paginacion">

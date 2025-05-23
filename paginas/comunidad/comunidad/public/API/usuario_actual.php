@@ -43,7 +43,7 @@ else{
 
 
 
-
+$stmt->close();
 
 
 ?>

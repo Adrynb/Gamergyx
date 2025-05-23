@@ -100,6 +100,9 @@ if (isset($_POST['guardar_cambios'])) {
         }
     }
 
+    $stmt->close();
+    $stmtPassword->close();
+
 }
 
 

@@ -64,12 +64,11 @@ if (mysqli_num_rows($resultVerificar) > 0) {
     exit();
 }
 
-
-
-
 $sqlInsertar = "INSERT INTO posts_favoritos (id_post, id_usuario) VALUES (?, ?)";
 $stmt = mysqli_prepare($conexion, $sqlInsertar);
 mysqli_stmt_bind_param($stmt, 'ii', $idPost, $idUsuario);
 $ejecutar = mysqli_stmt_execute($stmt);
+
+$stmt -> close();
 
 

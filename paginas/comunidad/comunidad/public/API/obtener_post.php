@@ -38,7 +38,7 @@ if (!$idUsuarioRow) {
 
 $idUsuario = $idUsuarioRow['id_usuarios'];
 
-$sql = "SELECT posts.id, posts.contenido, posts.fecha_publicacion, usuarios.nombre, posts.id_padre
+$sql = "SELECT posts.id, posts.contenido, posts.fecha_publicacion, usuarios.nombre, usuarios.fotoPerfil, posts.id_padre, posts.imagen
         FROM posts 
         INNER JOIN usuarios ON posts.id_usuario = usuarios.id_usuarios 
         ORDER BY posts.fecha_publicacion DESC";
@@ -58,9 +58,15 @@ while ($row = mysqli_fetch_assoc($result)) {
         'contenido' => $row['contenido'],
         'fecha_publicacion' => $row['fecha_publicacion'],
         'nombre' => $row['nombre'],
-        'id_padre' => $row['id_padre']  // nuevo campo agregado
+        'fotoPerfil' => $row['fotoPerfil'],
+        'id_padre' => $row['id_padre'],
+        'imagen' => $row['imagen'],
     ];
 }
 
 echo json_encode($posts);
+
+$stmt->close();
+
+
 ?>

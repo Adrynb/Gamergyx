@@ -1,0 +1,17 @@
+h2{
+    color: black;
+}
+
+.boton-flotante{
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    border-radius: 50%;
+    padding: 1rem 1rem;
+    border: none;
+    background-color: crimson;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}

@@ -48,4 +48,7 @@ if (isset($_POST['id_pedidos'])) {
 }
 include '../menus/footer.php';
 
+$stmt->close();
+
+
 ?>

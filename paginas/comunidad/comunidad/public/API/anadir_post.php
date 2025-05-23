@@ -54,17 +54,54 @@ if (empty($posts['contenido'])) {
 }
 
 $idPadre = isset($posts['id_padre']) ? $posts['id_padre'] : null;
+$imagen = isset($posts['imagen']) ? $posts['imagen'] : null;
+$rutaImagen = null;
 
-$insertarPost = "INSERT INTO posts (contenido, id_usuario, fecha_publicacion, id_padre) VALUES (?, ?, NOW(), ?)";
+if ($imagen) {
+    $directorio = __DIR__ . '/imagenes/';
+    if (!is_dir($directorio)) {
+        mkdir($directorio, 0755, true);
+    }
+    $nombreArchivo = uniqid('img_') . '.png';
+    $rutaCompleta = $directorio . $nombreArchivo;
+
+
+    if (preg_match('/^data:image\/(\w+);base64,/', $imagen, $tipo)) {
+        $imagen = substr($imagen, strpos($imagen, ',') + 1);
+        $extension = strtolower($tipo[1]);
+        $nombreArchivo = uniqid('img_') . '.' . $extension;
+        $rutaCompleta = $directorio . $nombreArchivo;
+    }
+
+    $imagen = base64_decode($imagen);
+
+    if ($imagen === false) {
+        http_response_code(400);
+        echo json_encode(['status' => 'error', 'message' => 'Imagen no válida']);
+        exit();
+    }
+
+    if (file_put_contents($rutaCompleta, $imagen) === false) {
+        http_response_code(500);
+        echo json_encode(['status' => 'error', 'message' => 'No se pudo guardar la imagen']);
+        exit();
+    }
+
+    
+    $rutaImagen = 'imagenes/' . $nombreArchivo;
+}
+
+$insertarPost = "INSERT INTO posts (contenido, id_usuario, fecha_publicacion, id_padre, imagen) VALUES (?, ?, NOW(), ?, ?)";
+
 
 $stmt = mysqli_prepare($conexion, $insertarPost);
 
 if ($idPadre === null) {
     $idPadreParam = null;
-    mysqli_stmt_bind_param($stmt, 'sis', $posts['contenido'], $idUsuario, $idPadreParam);
+    mysqli_stmt_bind_param($stmt, 'siss', $posts['contenido'], $idUsuario, $idPadreParam, $rutaImagen);
 } else {
     $idPadreInt = (int)$idPadre;
-    mysqli_stmt_bind_param($stmt, 'sii', $posts['contenido'], $idUsuario, $idPadreInt);
+    mysqli_stmt_bind_param($stmt, 'siis', $posts['contenido'], $idUsuario, $idPadreInt, $rutaImagen);
 }
 
 mysqli_stmt_execute($stmt);
@@ -75,5 +112,7 @@ if (mysqli_stmt_affected_rows($stmt) > 0) {
     http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Error al añadir el post a la base de datos.']);
 }
+
+$stmt->close();
 
 ?>
