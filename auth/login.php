@@ -48,7 +48,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <body>
 
-    <form action="login.php" method="POST">
+     <div class="container">
+        <div class="space1"></div>
+        <div class="space2"></div>
+        <div class="space3"></div>
+     </div>
+
+    <form action="login.php" method="POST" id="form-login">
         <div id="info-left">
             <h1>Iniciar sesión</h1>
 
@@ -66,17 +72,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <br><br>
 
             <?php if (isset($_GET['error'])): ?>
-                <p style="color:red;"><?php echo htmlspecialchars($_GET['error']); ?></p>
+                <p style="color:red; margin-top: 1rem;"><?php echo htmlspecialchars($_GET['error']); ?></p>
             <?php endif; ?>
-            <?php if (isset($_GET['success'])) : ?>
-                <p style="color:green"><?php echo htmlspecialchars($_GET['success']);?></p>
+            <?php if (isset($_GET['success'])): ?>
+                <p style="color:green"><?php echo htmlspecialchars($_GET['success']); ?></p>
             <?php endif; ?>
         </div>
 
         <div id="imagen-right">
-            <img src="https://zelda.nintendo.com/breath-of-the-wild/assets/media/wallpapers/tablet-1.jpg" alt="Fondo Zelda">
+            <img src="https://zelda.nintendo.com/breath-of-the-wild/assets/media/wallpapers/tablet-1.jpg"
+                alt="Fondo Zelda">
         </div>
     </form>
+
+    <script src="../assets/auth/auth.js" defer></script>
+    <script src="../paginas/menus/formulario.js" defer></script>
 
 </body>
 

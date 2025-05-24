@@ -4,7 +4,7 @@ include '../../includes/sesion.php';
 include '../menus/header.php';
 
 ?>
-<sect>
+<main>
     <section id="banner-section" class="w-100 p-0 m-0">
         <div id="carouselExampleIndicators" class="carousel slide">
             <div class="carousel-indicators">
@@ -48,7 +48,7 @@ include '../menus/header.php';
     </section>
 
 
-    <h2 class="titulo-section" style="background-image: url(../../assets/images/banners/ofertas.jpg);">MEJORAS
+    <h2 class="titulo-section">MEJORAS
         OFERTAS DE MERCADO</h2>
 
     <section id="ofertas-section">
@@ -69,7 +69,7 @@ include '../menus/header.php';
                 echo '<h4>' . $row['titulo'] . '</h4>';
                 echo '<div class="oferta-button-container">';
                 echo '<p id="precio">$' . $row['precio'] . '</p>';
-                echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                echo '<button type="submit"><i class="fa fa-eye"></i> Ver Detalles</button>';
                 echo '</div>';
                 echo '</div>';
                 echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
@@ -89,7 +89,7 @@ include '../menus/header.php';
                 echo '<h4>' . $row['titulo'] . '</h4>';
                 echo '<div class="oferta-button-container">';
                 echo '<p id="precio">$' . $row['precio'] . '</p>';
-                echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                echo '<button type="submit"><i class="fa fa-eye"></i> Ver Detalles</button>';
                 echo '</div>';
                 echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                 echo '</form>';
@@ -111,10 +111,11 @@ include '../menus/header.php';
                 <p>Descubre las noticias web más recientes sobre los videojuegos, novedades del sector, lanzamientos y
                     todo
                     lo que necesitas saber para mantenerte actualizado en el mundo gamer.</p>
-                <p>No te pierdas nuestras recomendaciones, curiosidades y reportajes especiales para que vivas la experiencia gamer al máximo. ¡Sigue nuestras noticias y sé parte de la comunidad!</p>
+                <p>No te pierdas nuestras recomendaciones, curiosidades y reportajes especiales para que vivas la
+                    experiencia gamer al máximo. ¡Sigue nuestras noticias y sé parte de la comunidad!</p>
             </article>
             <a href="../noticias/noticias.php">
-                <button class="btn btn-warning bg-gradient">VER NOTICIAS</button>
+                <button>VER NOTICIAS</button>
             </a>
 
         </section>
@@ -135,7 +136,7 @@ include '../menus/header.php';
                 echo '<h3>' . $row['titulo'] . '</h3>';
                 echo '<div class="oferta-button-container">';
                 echo '<p id="precio">$' . $row['precio'] . '</p>';
-                echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                echo '<button type="submit"><i class="fa fa-eye"></i> Ver Detalles</button>';
                 echo '</div>';
                 echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                 echo '</div>';
@@ -149,10 +150,10 @@ include '../menus/header.php';
 
 
     <h2 class="titulo-section">LAS MEJORES RESEÑAS</h2>
-    <section id="reseñas">
+    <section class="reseñas-container">
         <?php
 
-        $sql = "SELECT comentarios, fecha, id_videojuegos FROM Reseñas WHERE estrellas > 4 ORDER BY fecha DESC LIMIT 3";
+        $sql = "SELECT comentarios, fecha, id_videojuegos, estrellas, usuario, fotoPerfil FROM Reseñas WHERE estrellas > 4 ORDER BY RAND() LIMIT 3";
         $result = mysqli_query($conexion, $sql);
 
         if (mysqli_num_rows($result) > 0) {
@@ -164,11 +165,26 @@ include '../menus/header.php';
 
                 echo '<div class="reseña-item">';
                 if ($juego) {
-                    echo '<img src="' . $juego['imagen'] . '" alt="' . $juego['titulo'] . '" class="imagen-section">';
+                    echo '<img src="' . $juego['imagen'] . '" alt="' . $juego['titulo'] . '" class="reseña-imagen-videojuego">';
                     echo '<h4>' . $juego['titulo'] . '</h4>';
                 }
-                echo '<p class="reseña-contenido">' . htmlspecialchars($row['comentarios']) . '</p>';
-                echo '<span class="reseña-fecha">' . date('d/m/Y', strtotime($row['fecha'])) . '</span>';
+                if (!empty($row['fotoPerfil'])) {
+                    echo '<img src="../../assets/images/perfiles/' . htmlspecialchars($row['fotoPerfil']) . '" alt="Foto de perfil" class="reseña-foto-perfil">';
+                }
+                echo '<div class="reseña-content">';
+                echo '<p>' . htmlspecialchars($row['usuario']) . '</p>';
+                echo '<p>' . htmlspecialchars($row['comentarios']) . '</p>';
+                echo '<div class="reseña-estrellas">';
+                for ($i = 1; $i <= 5; $i++) {
+                    if ($i <= $row['estrellas']) {
+                        echo '<span class="fa fa-star checked"></span>';
+                    } else {
+                        echo '<span class="fa fa-star"></span>';
+                    }
+                }
+                echo '</div>';
+                echo '<span>' . date('d/m/Y', strtotime($row['fecha'])) . '</span>';
+                echo '</div>'; // cierre reseña-content
                 echo '</div>';
             }
         } else {
@@ -191,7 +207,7 @@ include '../menus/header.php';
                 echo '<h3>' . $row['titulo'] . '</h3>';
                 echo '<div class="oferta-button-container">';
                 echo '<p id="precio">$' . $row['precio'] . '</p>';
-                echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                echo '<button type="submit"><i class="fa fa-eye"></i> Ver Detalles</button>';
                 echo '</div>';
                 echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                 echo '</div>';
@@ -202,9 +218,9 @@ include '../menus/header.php';
         }
         ?>
     </section>
-    </main>
+</main>
 
-    <?= include '../menus/footer.php'; ?>
-    </body>
+<?= include '../menus/footer.php'; ?>
+</body>
 
-    </html>
+</html>

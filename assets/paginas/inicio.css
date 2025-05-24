@@ -34,13 +34,14 @@
     display: flex;
     margin-top: 5rem;
     margin-bottom: 5rem;
-    
+
 }
 
 .noticias-imagen-section {
     width: 50%;
     height: 100%;
-    min-height: 500px; /* Aumenta la altura mínima */
+    min-height: 500px;
+    /* Aumenta la altura mínima */
     background-image: url(../images/banners/noticias.jpg);
     background-size: cover;
     background-position: center;
@@ -68,15 +69,40 @@
 
 }
 
+.noticias-contenido-section button {
+    background: linear-gradient(90deg, #F05941 0%, #ff5d2b 100%);
+    border: none;
+    padding: 0.5rem 2rem;
+    border-radius: 0.5rem;
+    width: 100%;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 @keyframes escribir {
-    from { width: 0 }
-    to { width: 21ch }
+    from {
+        width: 0
+    }
+
+    to {
+        width: 18ch
+    }
 }
 
 @keyframes palito-blanco {
-    from, to { border-color: transparent }
-    50% { border-color: #fff; }
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: #fff;
+    }
 }
+
+
 
 .noticias-contenido-section p {
     font-size: 1.2rem;
@@ -87,7 +113,8 @@
     padding: 6rem;
     color: white;
     font-size: 3rem;
-    background-color: rgba(17, 17, 17, 0.6); /* Fondo con opacidad */
+    background-color: rgba(17, 17, 17, 0.6);
+    /* Fondo con opacidad */
     text-align: center;
 }
 
@@ -117,15 +144,25 @@
 }
 
 .oferta-button-container {
-    background-color: #F05941;
+    background: linear-gradient(90deg, #F05941 0%, #ff5d2b 100%);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* padding: arriba derecha abajo izquierda */
     padding: 1rem 1rem 1rem 1rem;
     border-radius: 0 0 1rem 1rem;
     margin-top: 3rem;
 }
+
+.oferta-button-container button {
+    background: #22092C;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 
 .oferta-button-container #precio {
     font-size: 1.5rem;
@@ -133,9 +170,72 @@
     color: white;
 }
 
+.reseñas-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 2rem;
+    gap: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: stretch; 
+}
+
+.reseña-item {
+    background-color: #22092C;
+    border-radius: 1rem;
+    box-shadow: 0 4px 24px rgba(34, 9, 44, 0.2);
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    width: 100%;
+    height: 100%; 
+    box-sizing: border-box;
+}
 
 
-/* === ELEMENTOS DE OFERTA === */
+.reseña-imagen-videojuego {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0.75rem;
+    margin-bottom: 1.2rem;
+}
+
+.reseña-foto-perfil {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #F05941;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+    background: #fff;
+}
+
+.reseña-estrellas {
+    color: #FFD700;
+    font-size: 1.3rem;
+    margin-bottom: 0.7rem;
+    letter-spacing: 2px;
+}
+
+.reseña-content {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-bottom: 1.2rem;
+    text-align: center;
+    line-height: 1.5;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
 
 .oferta-extra-item,
 .oferta-item,
@@ -145,9 +245,6 @@
     text-align: center;
     color: white;
     font-family: 'Times New Roman', Times, serif;
-
-
-
 }
 
 

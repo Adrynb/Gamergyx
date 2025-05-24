@@ -14,7 +14,7 @@ export default function AdjuntarArchivo({ onFileSelect }) {
         const archivo = e.target.files[0];
         if (archivo) {
             const base64 = await convertirABase64(archivo);
-            onFileSelect(base64); // Pasa la imagen codificada al padre
+            onFileSelect(base64); 
         }
     };
 

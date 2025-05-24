@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `reseñas` (
   `id_videojuegos` INT NOT NULL,
   `comentarios` TEXT NOT NULL,
   `fecha` DATETIME NOT NULL,
+  `estrellas` TINYINT NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`id_videojuegos`) REFERENCES `videojuegos`(`id_videojuegos`)
 );
@@ -117,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
     fecha_publicacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     id_usuario INT NOT NULL,
     id_padre INT DEFAULT NULL,
+    imagen VARCHAR(255),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios)
 );
 
@@ -124,6 +126,7 @@ CREATE TABLE IF NOT EXISTS `posts_favoritos` (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_post INT NOT NULL,
     id_usuario INT NOT NULL,
+    imagen VARCHAR(255),
     FOREIGN KEY (id_post) REFERENCES posts(id),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuarios)
 );

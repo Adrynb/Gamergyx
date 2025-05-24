@@ -46,11 +46,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <link rel="stylesheet" href="../assets/auth/auth.css">
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet" />
-
     <title>Registro - Gamergyx</title>
 </head>
 
 <body>
+
+     <div class="container">
+        <div class="space1"></div>
+        <div class="space2"></div>
+        <div class="space3"></div>
+     </div>
+
     <form action="register.php" method="POST" id="formulario" enctype="multipart/form-data">
         <div id="info-left">
             <h1>Registro de Usuario</h1>
@@ -80,9 +86,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <img src="https://zelda.nintendo.com/breath-of-the-wild/assets/media/wallpapers/tablet-1.jpg" alt="">
         </div>
     </form>
-
+    
+    <script src="../assets/auth/auth.js" defer></script>
     <script src="../paginas/menus/formulario.js" defer></script>
 
 </body>
-
 </html>

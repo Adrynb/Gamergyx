@@ -15,6 +15,7 @@ export default function Posts() {
     const [mostrarRespuesta, setMostrarRespuesta] = useState(null);
     const [mostrarNuevoPost, setMostrarNuevoPost] = useState(false);
     const [imagenAdjunta, setImagenAdjunta] = useState(null);
+    const [imagenesAdjuntasRespuestas, setImagenesAdjuntasRespuestas] = useState({});
 
     // Filtrar posts principales (sin padre)
     const postsPrincipales = posts.filter(post => post.id_padre === null);
@@ -22,7 +23,6 @@ export default function Posts() {
     // Obtener respuestas de un post
     const obtenerRespuestas = (idPost) => posts.filter(post => post.id_padre === idPost);
 
-    // Cargar todos los posts desde la API
     const cargarPosts = () => {
         fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/obtener_post.php", {
             credentials: 'include',
@@ -65,8 +65,8 @@ export default function Posts() {
     };
 
     // Obtener usuario actual
-    const obtenerUsuarioActual = async () => {
-        await fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/usuario_actual.php", {
+    const obtenerUsuarioActual = () => {
+        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/usuario_actual.php", {
             credentials: 'include',
             mode: 'cors'
         })
@@ -103,13 +103,14 @@ export default function Posts() {
         obtenerUsuarioActual();
     }, []);
 
-    // Publicar nuevo post
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/anadir_post.php", {
             method: "POST",
-            credentials: 'include',
-            mode: 'cors',
+            credentials: "include",
+            mode: "cors",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ contenido: nuevoPost, imagen: imagenAdjunta }),
         })
@@ -118,6 +119,7 @@ export default function Posts() {
                 setNuevoPost("");
                 setImagenAdjunta(null);
                 cargarPosts();
+                setMostrarNuevoPost(false);
             })
             .catch((error) => console.error("Error publicando post:", error));
     };
@@ -133,8 +135,20 @@ export default function Posts() {
                     onChange={(e) => setNuevoPost(e.target.value)}
                 />
                 <button type="submit">Publicar</button>
+
                 <AdjuntarArchivo onFileSelect={setImagenAdjunta} />
+
+                {/* Previsualización de la imagen */}
+                <br />
+                {imagenAdjunta && (
+                    <img
+                        src={imagenAdjunta}
+                        alt="Previsualización de imagen"
+                        style={{ maxWidth: "300px", marginTop: "10px", borderRadius: "8px" }}
+                    />
+                )}
             </form>
+
 
             {/* Lista de posts */}
             <ul>
@@ -172,6 +186,7 @@ export default function Posts() {
                             <form onSubmit={(e) => {
                                 e.preventDefault();
                                 responderPost(respuestas[post.id], post.id);
+                                setImagenAdjunta(null);  // Limpiar después de enviar
                             }}>
                                 <textarea
                                     placeholder="Escribe tu respuesta..."
@@ -180,8 +195,18 @@ export default function Posts() {
                                 />
                                 <button type="submit">Enviar respuesta</button>
                                 <AdjuntarArchivo onFileSelect={setImagenAdjunta} />
+
+                                {/* Previsualización imagen respuesta */}
+                                {imagenAdjunta && (
+                                    <img
+                                        src={imagenAdjunta}
+                                        alt="Previsualización de imagen de respuesta"
+                                        style={{ maxWidth: "300px", marginTop: "10px", borderRadius: "8px" }}
+                                    />
+                                )}
                             </form>
                         )}
+
 
                         {/* Respuestas */}
                         <ul id="respuestas">
@@ -214,24 +239,13 @@ export default function Posts() {
             </button>
 
             {/* Popup para nuevo post */}
-            <Popup isOpen={mostrarNuevoPost} onClose={() => setMostrarNuevoPost(false)}>
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                    fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/anadir_post.php", {
-                        method: "POST",
-                        credentials: 'include',
-                        mode: 'cors',
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ contenido: nuevoPost }),
-                    })
-                        .then((response) => response.json())
-                        .then(() => {
-                            setNuevoPost("");
-                            cargarPosts();
-                            setMostrarNuevoPost(false);
-                        })
-                        .catch((error) => console.error("Error publicando post:", error));
-                }}>
+            <Popup isOpen={mostrarNuevoPost} onClose={() => {
+                setMostrarNuevoPost(false);
+                setImagenAdjunta(null);
+                setNuevoPost("");
+            }}>
+                <form onSubmit={handleSubmit}> {/* handleSubmit usa nuevoPost e imagenAdjunta */}
+                    {/* Foto perfil */}
                     {usuarioActual?.fotoPerfil && (
                         <img
                             src={`http://localhost/gamergyx/assets/images/perfiles/${usuarioActual.fotoPerfil}`}
@@ -239,6 +253,7 @@ export default function Posts() {
                             style={{ width: "50px", height: "50px", borderRadius: "50%" }}
                         />
                     )}
+
                     <textarea
                         placeholder="¿Qué estás pensando?"
                         value={nuevoPost}
@@ -247,8 +262,21 @@ export default function Posts() {
                         style={{ width: "70%", padding: "10px", marginBottom: "10px" }}
                     />
                     <button type="submit">Publicar</button>
+                    <AdjuntarArchivo onFileSelect={setImagenAdjunta} />
+                    <br />
+                    {imagenAdjunta && (
+                        <img
+                            src={imagenAdjunta}
+                            alt="Previsualización de imagen"
+                            style={{ maxWidth: "300px", marginTop: "10px", borderRadius: "8px" }}
+                        />
+                    )}
+
+
                 </form>
             </Popup>
+
+
         </div>
     );
 }
