@@ -4,6 +4,8 @@ include '../../includes/sesion.php';
 include '../menus/header.php';
 
 ?>
+<link rel="stylesheet" href="../../assets/paginas/inicio.css">
+
 <main>
     <section id="banner-section" class="w-100 p-0 m-0">
         <div id="carouselExampleIndicators" class="carousel slide">

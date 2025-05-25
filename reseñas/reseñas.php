@@ -1,11 +1,12 @@
 <?php
-include '../../includes/db.php';
-include '../../includes/sesion.php';
+include '../includes/db.php';
+include '../includes/sesion.php';
 
 
 if (isset($_POST['id_videojuegos'])) {
     $id_videojuegos = $_POST['id_videojuegos'];
     $nombre = $_SESSION['nombre'];
+    $numEstrellas = $_POST['estrellas'];
 
     $sql = "SELECT nombre, fotoPerfil FROM usuarios WHERE nombre = ?";
     $stmt = mysqli_prepare($conexion, $sql);
@@ -18,9 +19,10 @@ if (isset($_POST['id_videojuegos'])) {
         $nombre_usuario = $row['nombre'];
         $fotoPerfil = $row['fotoPerfil'];
 
-        $sqlResenia = "INSERT INTO reseñas (id_videojuegos, usuario, fotoPerfil, comentarios) VALUES (?, ?, ?, ?)";
+
+        $sqlResenia = "INSERT INTO reseñas (id_videojuegos, usuario, fotoPerfil, comentarios, estrellas, fecha) VALUES (?, ?, ?, ?, ?, NOW())";
         $stmtResenia = mysqli_prepare($conexion, $sqlResenia);
-        mysqli_stmt_bind_param($stmtResenia, "isss", $id_videojuegos, $nombre_usuario, $fotoPerfil, $_POST['reseña']);
+        mysqli_stmt_bind_param($stmtResenia, "isssi", $id_videojuegos, $nombre_usuario, $fotoPerfil, $_POST['reseña'], $numEstrellas);
         mysqli_stmt_execute($stmtResenia);
 
         if (mysqli_stmt_affected_rows($stmtResenia) > 0) {

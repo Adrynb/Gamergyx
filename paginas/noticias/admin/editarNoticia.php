@@ -92,12 +92,13 @@ if (isset($_POST["editarNoticia"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../../menus/formulario.js" defer></script>
     <title>Editar Noticia</title>
+    <link rel="stylesheet" href="../../../assets/paginas/noticias/configNoticias.css">
 </head>
 
 <body>
-    <form action="editarNoticia.php" method="POST" id="formulario" enctype="multipart/form-data">
+    <form action="editarNoticia.php" method="POST" id="noticias-form" enctype="multipart/form-data">
+        <h1>Editar Noticias</h1>
         <input type="hidden" name="id_noticia" value="<?= htmlspecialchars($id_noticia) ?>">
         <input type="hidden" name="imagen_actual" value="<?= htmlspecialchars($imagen_actual) ?>">
 
@@ -127,16 +128,13 @@ if (isset($_POST["editarNoticia"])) {
         <label for="fuente">Fuente:</label>
         <input type="text" id="fuente" name="fuente" value="<?= htmlspecialchars($fuente) ?>" required><br><br>
 
-
-
-
         <input type="submit" value="Editar Noticia" id="editarNoticia" name="editarNoticia">
-
-
-
         <button><a href="../noticias.php">Volver a noticias</a></button>
 
     </form>
 </body>
+
+<script src="../../menus/formulario.js" defer></script>
+
 
 </html>

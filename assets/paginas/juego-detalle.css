@@ -141,8 +141,15 @@
         padding: 1rem 1.5rem;
         color: #fff;
         font-family: inherit;
+        overflow: auto;
+        width: 400px;
+
 
     }
+
+    .icono-activo {
+    color: black;
+}
 
     .comentario .foto-perfil {
         width: 50px;
@@ -156,7 +163,10 @@
         margin: 0;
         font-size: 1.1rem;
         flex: 1;
+        word-wrap: break-word;
+        white-space: pre-wrap;
     }
+
 
     .comentario .estrellas {
         display: flex;

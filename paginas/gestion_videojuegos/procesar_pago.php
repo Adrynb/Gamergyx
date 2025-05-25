@@ -8,6 +8,11 @@ if (!isset($_SESSION['nombre'])) {
     exit;
 }
 
+if (!isset($_POST['metodo_pago']) || $_POST['metodo_pago'] !== 'monedero_virtual') {
+    header('Location: carrito.php?mensaje= Solo puedes pagar con "Monedero_virtual" ya que los otros metodos de pagos aún no estan implementados.');
+    exit;
+}
+
 $sqlIDusuario = "SELECT id_usuarios, monedero_virtual FROM usuarios WHERE nombre = ?";
 $stmtIDusuario = mysqli_prepare($conexion, $sqlIDusuario);
 mysqli_stmt_bind_param($stmtIDusuario, 's', $_SESSION['nombre']);

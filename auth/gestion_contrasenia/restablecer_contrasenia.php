@@ -38,28 +38,52 @@ if (mysqli_num_rows($resultToken) > 0) {
     $row = mysqli_fetch_assoc($resultToken);
     $email = $row['email'];
     $fecha_duracion = $row['fecha_expiracion'];
-    echo $email;
-    echo $fecha_duracion;
     error_log("Email: " . $email . ", Fecha de expiración: " . $fecha_duracion);
 
     if (strtotime($fecha_duracion) > time()) {
         ?>
-        <h1>Escriba su nueva contraseña</h1>
-        <form action="restablecer_contrasenia.php" method="POST">
-            <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
-            <label for="Contraseña">Nueva Contraseña: </label><br>
-            <input type="password" name="nueva_contrasenia"><br>
-            <label for="Confirmar_contrasenia">Confirmar Contraseña: </label><br>
-            <input type="password" name="confirmar_contrasenia"><br><br>
-            <button type="submit" name="recuperar">Recuperar Contraseña</button>
+        <!DOCTYPE html>
+        <html lang="en">
 
-            <?php if (isset($_GET['error_contrasenia'])): ?>
-                <p style="color: red;">Error. Las contraseñas no son las mismas</p>
-            <?php endif; ?>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="../../assets/paginas/recuperar_contraseña/restablecer.css">
+            <title>Document</title>
+        </head>
 
-            <?php if (isset($_GET['error_actualizacion'])): ?>
-                <p style="color: red;">Error. No se pudo actualizar la contraseña, intentelo de nuevo más tarde.</p>
-            <?php endif; ?>
+        <body>
+
+            <div class="container">
+                <div class="space1"></div>
+                <div class="space2"></div>
+                <div class="space3"></div>
+            </div>
+
+            <h1>Escriba su nueva contraseña</h1>
+            <form action="restablecer_contrasenia.php" method="POST">
+                <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
+                <label for="Contraseña">Nueva Contraseña: </label><br>
+                <input type="password" name="nueva_contrasenia"><br>
+                <label for="Confirmar_contrasenia">Confirmar Contraseña: </label><br>
+                <input type="password" name="confirmar_contrasenia"><br><br>
+                <button type="submit" name="recuperar">Recuperar Contraseña</button><br>
+                <button><a href="../login.php" style="text-decoration: none; color: white;">Volver al inicio</a></button>
+        </body>
+
+        <script src="../../assets/animations/starsAnimation.js" defer></script>
+
+        </html>
+
+
+
+        <?php if (isset($_GET['error_contrasenia'])): ?>
+            <p style="color: red;">Error. Las contraseñas no son las mismas</p>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['error_actualizacion'])): ?>
+            <p style="color: red;">Error. No se pudo actualizar la contraseña, intentelo de nuevo más tarde.</p>
+        <?php endif; ?>
         </form>
         <?php
 

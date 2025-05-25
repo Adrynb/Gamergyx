@@ -4,20 +4,19 @@ include '../../includes/sesion.php';
 include '../menus/header.php';
 
 ?>
-
 <main>
-    <link rel="stylesheet" href="../../assets/contacto/contacto.css">
+    <link rel="stylesheet" href="../../assets/paginas/contacto/contacto.css">
     <section id="contacto-form">
         <form method="POST" action="./enviarContacto.php">
             <h1>Formulario de contacto</h1>
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" value="<?=$_SESSION['nombre']?>" required>
+            <label for="nombre">Nombre:</label><br>
+            <input type="text" id="nombre" name="nombre" value="<?= $_SESSION['nombre'] ?>" required> <br>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" required> <br><br>
 
-            <label for="mensaje">Mensaje:</label>
-            <textarea id="mensaje" name="mensaje" required></textarea>
+            <label for="mensaje">Mensaje:</label><br>
+            <textarea id="mensaje" name="mensaje" required></textarea><br><br>
 
             <button id="enviar_formulario" type="submit">Enviar</button>
 
@@ -30,7 +29,7 @@ include '../menus/header.php';
     </section>
 
     <section id="contacto-imagen">
-        <img src="../../assets/contacto/contacto.jpg" alt="contactoFormulario">
+        <img src="../../assets/paginas/contacto/contacto.jpg" alt="contactoFormulario">
     </section>
 
 </main>

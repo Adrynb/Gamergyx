@@ -3,7 +3,6 @@ include '../../includes/db.php';
 include '../../includes/sesion.php';
 include '../menus/header.php';
 
-
 $nombre = $_SESSION['nombre'];
 
 $sqlFP = "SELECT fotoPerfil FROM usuarios WHERE nombre = ?";
@@ -15,17 +14,31 @@ $resultFP = mysqli_stmt_get_result($stmt);
 if ($resultFP && $row = mysqli_fetch_assoc($resultFP)) {
     $fotoPerfil = '../../assets/images/perfiles/' . $row['fotoPerfil'];
 } else {
-    $fotoPerfil = '../../assets/images/logos/usuario_icon.png'; 
+    $fotoPerfil = '../../assets/images/logos/usuario_icon.png';
 }
-
 
 if (isset($_POST['guardar_cambios'])) {
     $nombre = $_POST['nombre'];
-    $email = $_POST['email'];
+    $email = trim($_POST['email']);
     $contraseniaAntigua = $_POST['contrasenia_antigua'];
     $confirmarContrasenia = $_POST['confirmar_contrasenia'];
     $nuevaContrasenia = $_POST['nueva_contrasenia'];
     $fotoPerfilSubida = $_FILES['foto_perfil']['name'];
+
+    if (empty($email) || $email = "") {
+        $sqlEmail = "SELECT email FROM usuarios WHERE nombre = ?";
+        $stmtEmail = mysqli_prepare($conexion, $sqlEmail);
+        mysqli_stmt_bind_param($stmtEmail, "s", $_SESSION['nombre']);
+        mysqli_stmt_execute($stmtEmail);
+        $resultEmail = mysqli_stmt_get_result($stmtEmail);
+
+        if ($resultEmail && $rowEmail = mysqli_fetch_assoc($resultEmail)) {
+            $email = $rowEmail['email'];
+        } else {
+            $email = '';
+        }
+        mysqli_stmt_close($stmtEmail);
+    }
 
     if ($fotoPerfilSubida) {
         $tipo = $_FILES['foto_perfil']['type'];
@@ -36,11 +49,13 @@ if (isset($_POST['guardar_cambios'])) {
         $maximoTamanio = 2 * 1024 * 1024;
 
         if (!in_array($tipo, $formatosPermitidos)) {
-            die("Error: El formato de la imagen no es compatible. Solo se permiten JPEG, PNG y WEBP.");
+            header("Location: editar_perfil.php?error=formato_imagen_invalido");
+            exit();
         }
 
         if ($tam > $maximoTamanio) {
-            die("Error: El tamaño de la imagen excede el límite de 2 MB.");
+            header("Location: editar_perfil.php?error=tamanio_imagen_excedido");
+            exit();
         }
 
         $uploadDir = '../../assets/images/perfiles/';
@@ -49,62 +64,58 @@ if (isset($_POST['guardar_cambios'])) {
         $fotoPerfilSubida = null;
     }
 
-    if (isset($_POST['guardar_cambios'])) {
+    $sqlPassword = "SELECT contraseña FROM usuarios WHERE nombre = ?";
+    $stmtPassword = mysqli_prepare($conexion, $sqlPassword);
+    mysqli_stmt_bind_param($stmtPassword, "s", $_SESSION['nombre']);
+    mysqli_stmt_execute($stmtPassword);
+    $resultPassword = mysqli_stmt_get_result($stmtPassword);
+    $passwordHash = mysqli_fetch_assoc($resultPassword)['contraseña'];
+    mysqli_stmt_close($stmtPassword);
 
-        $sqlPassword = "SELECT contraseña FROM usuarios WHERE nombre = ?";
-        $stmtPassword = mysqli_prepare($conexion, $sqlPassword);
-        mysqli_stmt_bind_param($stmtPassword, "s", $_SESSION['nombre']);
-        mysqli_stmt_execute($stmtPassword);
-        $resultPassword = mysqli_stmt_get_result($stmtPassword);
-        $passwordHash = mysqli_fetch_assoc($resultPassword)['contraseña'];
-        mysqli_stmt_close($stmtPassword);
-
-        if (empty($contraseniaAntigua) && empty($nuevaContrasenia) && empty($confirmarContrasenia)) {
-            $sql = "UPDATE usuarios SET nombre = ?, email = ?, fotoPerfil = ? WHERE nombre = ?;";
-            $stmt = mysqli_prepare($conexion, $sql);
-            mysqli_stmt_bind_param($stmt, 'ssss', $nombre, $email, $fotoPerfilSubida, $_SESSION['nombre']);
-            if (mysqli_stmt_execute($stmt)) {
-                mysqli_stmt_close($stmt);
-                $_SESSION['nombre'] = $nombre;
-                header("Location: ../inicio/inicio.php");
-                exit();
-            } else {
-                die("Error: No se pudo actualizar el perfil.");
-            }
-        }
-
-        if (!empty($contraseniaAntigua) || !empty($nuevaContrasenia) || !empty($confirmarContrasenia)) {
-            if (!password_verify($contraseniaAntigua, $passwordHash)) {
-                header("Location: editar_perfil.php?error=contraseña_incorrecta");
-                exit();
-            }
-
-            if ($nuevaContrasenia !== $confirmarContrasenia) {
-                header("Location: editar_perfil.php?error=contraseñaNueva_no_coincide");
-                exit();
-            }
-
-            $nuevaContraseniaHash = password_hash($nuevaContrasenia, PASSWORD_DEFAULT);
-
-            $sql = "UPDATE usuarios SET nombre = ?, email = ?, contraseña = ?, fotoPerfil = ? WHERE nombre = ?;";
-            $stmt = mysqli_prepare($conexion, $sql);
-            mysqli_stmt_bind_param($stmt, 'sssss', $nombre, $email, $nuevaContraseniaHash, $fotoPerfilSubida, $_SESSION['nombre']);
-            if (mysqli_stmt_execute($stmt)) {
-                mysqli_stmt_close($stmt);
-                $_SESSION['nombre'] = $nombre;
-                header("Location: ../inicio/inicio.php");
-                exit();
-            } else {
-                die("Error: No se pudo actualizar el perfil.");
-            }
+    if (empty($contraseniaAntigua) && empty($nuevaContrasenia) && empty($confirmarContrasenia)) {
+        $sql = "UPDATE usuarios SET nombre = ?, email = ?, fotoPerfil = ? WHERE nombre = ?";
+        $stmt = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($stmt, 'ssss', $nombre, $email, $fotoPerfilSubida, $_SESSION['nombre']);
+        if (mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_close($stmt);
+            $_SESSION['nombre'] = $nombre;
+            header("Location: ../inicio/inicio.php");
+            exit();
+        } else {
+            header("Location: editar_perfil.php?error=fallo_actualizacion");
+            exit();
         }
     }
 
+    if (!empty($contraseniaAntigua) || !empty($nuevaContrasenia) || !empty($confirmarContrasenia)) {
+        if (!password_verify($contraseniaAntigua, $passwordHash)) {
+            header("Location: editar_perfil.php?error=contraseña_incorrecta");
+            exit();
+        }
 
+        if ($nuevaContrasenia !== $confirmarContrasenia) {
+            header("Location: editar_perfil.php?error=contraseñaNueva_no_coincide");
+            exit();
+        }
+
+        $nuevaContraseniaHash = password_hash($nuevaContrasenia, PASSWORD_DEFAULT);
+
+        $sql = "UPDATE usuarios SET nombre = ?, email = ?, contraseña = ?, fotoPerfil = ? WHERE nombre = ?";
+        $stmt = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($stmt, 'sssss', $nombre, $email, $nuevaContraseniaHash, $fotoPerfilSubida, $_SESSION['nombre']);
+        if (mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_close($stmt);
+            $_SESSION['nombre'] = $nombre;
+            header("Location: ../inicio/inicio.php");
+            exit();
+        } else {
+            header("Location: editar_perfil.php?error=fallo_actualizacion");
+            exit();
+        }
+    }
 }
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -112,16 +123,17 @@ if (isset($_POST['guardar_cambios'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Perfil</title>
+    <link rel="stylesheet" href="../../assets/paginas/editar_perfil.css">
 </head>
 
 <body>
 
 
 
-    <img src="<?=$fotoPerfil?>">
+    <img src="<?= $fotoPerfil ?>" id="fotoPerfil">
     <h2>Editar Perfil</h2>
 
-    <form action="editar_perfil.php" method="post" enctype="multipart/form-data">
+    <form action="editar_perfil.php" method="post" enctype="multipart/form-data" id="editar_form">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" value="<?= htmlspecialchars($_SESSION['nombre']) ?>"
             required><br><br>
@@ -141,13 +153,20 @@ if (isset($_POST['guardar_cambios'])) {
         <label for="foto_perfil">Foto de perfil:</label>
         <input type="file" id="foto_perfil" name="foto_perfil"><br><br>
 
-        <?php if (isset($_GET['error']) == 'contraseña_incorrecta'): ?>
-            <p style="color: red;">La contraseña antigua es incorrecta.</p>
+        <?php if (isset($_GET['error'])): ?>
+            <?php if ($_GET['error'] == 'contraseña_incorrecta'): ?>
+                <p style="color: red;">La contraseña antigua es incorrecta.</p>
+            <?php elseif ($_GET['error'] == 'contraseñaNueva_no_coincide'): ?>
+                <p style="color: red;">Las contraseñas nuevas no coinciden.</p>
+            <?php elseif ($_GET['error'] == 'formato_imagen_invalido'): ?>
+                <p style="color: red;">Formato de imagen no válido. Solo JPEG, PNG y WEBP.</p>
+            <?php elseif ($_GET['error'] == 'tamanio_imagen_excedido'): ?>
+                <p style="color: red;">La imagen excede los 2 MB permitidos.</p>
+            <?php elseif ($_GET['error'] == 'fallo_actualizacion'): ?>
+                <p style="color: red;">Hubo un problema al actualizar tu perfil. Intenta de nuevo.</p>
+            <?php endif; ?>
         <?php endif; ?>
 
-        <?php if (isset($_GET['error']) == 'contraseñaNueva_no_coincide'): ?>
-            <p style="color: red;">Las contraseñas no coinciden.</p>
-        <?php endif; ?>
 
         <button type="submit" name="guardar_cambios">Guardar Cambios</button>
         <button><a href="../inicio/inicio.php">Cancelar</a></button>
@@ -155,6 +174,8 @@ if (isset($_POST['guardar_cambios'])) {
 
 
     </form>
+
+    <script src="../../assets/animations/starsAnimation.js" defer></script>
 
 
 </body>

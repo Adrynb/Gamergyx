@@ -4,8 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../assets/paginas/recuperar_contraseña/recuperar.css">
     <title>Olvidado - Contraseña</title>
 </head>
+
+<div class="container">
+    <div class="space1"></div>
+    <div class="space2"></div>
+    <div class="space3"></div>
+</div>
 
 <body>
     <h1>¿Has olvidado la contraseña?</h1>
@@ -30,3 +37,5 @@
 </body>
 
 </html>
+
+<script src="../../assets/animations/starsAnimation.js" defer></script>

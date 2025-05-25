@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../assets/auth/auth.css">
+    <link rel="stylesheet" href="../assets/paginas/auth/auth.css">
     <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet" />
     <title>Registro - Gamergyx</title>
 </head>
@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
     </form>
     
-    <script src="../assets/auth/auth.js" defer></script>
+    <script src="../assets/animations/starsAnimation.js" defer></script>
     <script src="../paginas/menus/formulario.js" defer></script>
 
 </body>

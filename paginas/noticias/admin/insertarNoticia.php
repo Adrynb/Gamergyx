@@ -67,19 +67,21 @@ if (isset($_POST["formulario"])) {
     <script src="../../menus/formulario.js" defer></script>
     <link rel="stylesheet" href="../../../assets/header-footer/header.css">
     <title>Insertar Noticia</title>
+    <link rel="stylesheet" href="../../../assets/paginas/noticias/configNoticias.css">
 </head>
 
 <body>
-    <form action="insertarNoticia.php" method="POST" id="formulario" enctype="multipart/form-data">
+    <form action="insertarNoticia.php" method="POST" enctype="multipart/form-data" id="noticias-form">
+        <h1>Insertar Noticias</h1>
         <label for="titulo">Título:</label>
         <input type="text" id="titulo" name="titulo" required><br><br>
 
         <label for="contenido">Descripción:</label><br>
         <textarea id="contenido" name="descripcion" rows="4" cols="50" required></textarea><br><br>
-        
+
         <label for="enlace">Enlace Web:</label>
         <input type="text" id="enlace" name="enlace" required><br><br>
-          <span class="errores" style="color:red;"></span>
+        <span class="errores" style="color:red;"></span>
 
         <label for="fecha">Fecha:</label>
         <input type="date" id="fecha" name="fecha" required><br><br>
@@ -94,9 +96,9 @@ if (isset($_POST["formulario"])) {
         <input type="hidden" name="formulario" value="1">
         <input type="submit" id="insertarNoticia" name="insertarNoticia" value="Insertar Noticia">
 
-      
 
-        <a href="../noticias.php">Volver a noticias</a>
+
+        <button><a href="../noticias.php">Volver a noticias</a></button>
 
     </form>
 
