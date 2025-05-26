@@ -58,7 +58,6 @@ if (isset($_POST['id_videojuegos']) || isset($_GET['id_videojuegos'])) {
         mysqli_stmt_execute($stmt);
     }
 
-    // Verificar si ya está en carrito o favoritos (actualizar íconos)
     $stmt = mysqli_prepare($conexion, "SELECT 1 FROM carrito WHERE id_usuarios = ? AND id_videojuegos = ?");
     mysqli_stmt_bind_param($stmt, 'ii', $idUsuario, $id_videojuegos);
     mysqli_stmt_execute($stmt);
@@ -69,7 +68,7 @@ if (isset($_POST['id_videojuegos']) || isset($_GET['id_videojuegos'])) {
     mysqli_stmt_execute($stmt);
     $isFavorito = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt)) ? true : false;
 
-    // Obtener datos del videojuego
+
     $sql = "SELECT v.*, g.nombre AS genero, p.nombre AS plataforma
             FROM VIDEOJUEGOS v
             INNER JOIN generos g ON v.id_generos = g.id_generos

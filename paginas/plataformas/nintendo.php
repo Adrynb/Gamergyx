@@ -8,7 +8,7 @@ include '../menus/header.php';
 <link rel="stylesheet" href="../../assets/paginas/plataformas/plataformas.css">
 
 <main>
-    <h2 class="titulo-section" style="background-color: black;">TENDENCIAS</h2>
+    <h2 class="titulo-section">TENDENCIAS</h2>
 
     <section id="tendencias-section">
         <?php
@@ -26,7 +26,7 @@ include '../menus/header.php';
                 echo '<h3>' . $row['titulo'] . '</h3>';
                 echo '<div class="oferta-button-container">';
                 echo '<p>Precio: $' . $row['precio'] . '</p>';
-                echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                echo '<button type="submit">Ver Detalles</button>';
                 echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                 echo '</div>';
                 echo '</div>';
@@ -52,7 +52,7 @@ include '../menus/header.php';
                 echo '<h3>' . $row['titulo'] . '</h3>';
                 echo '<div class="oferta-button-container">';
                 echo '<p>Precio: $' . $row['precio'] . '</p>';
-                echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                echo '<button type="submit">Ver Detalles</button>';
                 echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
                 echo '</div>';
                 echo '</div>';
@@ -66,39 +66,67 @@ include '../menus/header.php';
 
     <h2 class="titulo-section" id="titulo-section">DESCUBRE TODO TIPO DE JUEGOS</h2>
 
-    <section id="filtros-juegos">
+    <section class="filtros-juegos">
         <div class="filtro-form">
             <form method="GET" action="#titulo-section">
                 <label for="genero">Género:</label>
                 <select name="genero" id="genero">
                     <option value="">Seleccionar</option>
-                    <option value="4" <?php if(isset($_GET['genero']) && $_GET['genero'] == '4') echo 'selected'; ?>>Acción</option>
-                    <option value="3" <?php if(isset($_GET['genero']) && $_GET['genero'] == '3') echo 'selected'; ?>>Aventura</option>
-                    <option value="15" <?php if(isset($_GET['genero']) && $_GET['genero'] == '15') echo 'selected'; ?>>Deportes</option>
-                    <option value="1" <?php if(isset($_GET['genero']) && $_GET['genero'] == '1') echo 'selected'; ?>>Carreras</option>
-                    <option value="11" <?php if(isset($_GET['genero']) && $_GET['genero'] == '11') echo 'selected'; ?>>Arcade</option>
-                    <option value="5" <?php if(isset($_GET['genero']) && $_GET['genero'] == '5') echo 'selected'; ?>>RPG</option>
-                    <option value="6" <?php if(isset($_GET['genero']) && $_GET['genero'] == '6') echo 'selected'; ?>>Peleas</option>
-                    <option value="10" <?php if(isset($_GET['genero']) && $_GET['genero'] == '10') echo 'selected'; ?>>Estrategia</option>
-                    <option value="14" <?php if(isset($_GET['genero']) && $_GET['genero'] == '14') echo 'selected'; ?>>Simulacion</option>
-                    <option value="51" <?php if(isset($_GET['genero']) && $_GET['genero'] == '51') echo 'selected'; ?>>Indie</option>
-                    <option value="83" <?php if(isset($_GET['genero']) && $_GET['genero'] == '83') echo 'selected'; ?>>Plataformas</option>
+                    <option value="4" <?php if (isset($_GET['genero']) && $_GET['genero'] == '4')
+                        echo 'selected'; ?>>
+                        Acción</option>
+                    <option value="3" <?php if (isset($_GET['genero']) && $_GET['genero'] == '3')
+                        echo 'selected'; ?>>
+                        Aventura</option>
+                    <option value="15" <?php if (isset($_GET['genero']) && $_GET['genero'] == '15')
+                        echo 'selected'; ?>>
+                        Deportes</option>
+                    <option value="1" <?php if (isset($_GET['genero']) && $_GET['genero'] == '1')
+                        echo 'selected'; ?>>
+                        Carreras</option>
+                    <option value="11" <?php if (isset($_GET['genero']) && $_GET['genero'] == '11')
+                        echo 'selected'; ?>>
+                        Arcade</option>
+                    <option value="5" <?php if (isset($_GET['genero']) && $_GET['genero'] == '5')
+                        echo 'selected'; ?>>RPG
+                    </option>
+                    <option value="6" <?php if (isset($_GET['genero']) && $_GET['genero'] == '6')
+                        echo 'selected'; ?>>
+                        Peleas</option>
+                    <option value="10" <?php if (isset($_GET['genero']) && $_GET['genero'] == '10')
+                        echo 'selected'; ?>>
+                        Estrategia</option>
+                    <option value="14" <?php if (isset($_GET['genero']) && $_GET['genero'] == '14')
+                        echo 'selected'; ?>>
+                        Simulacion</option>
+                    <option value="51" <?php if (isset($_GET['genero']) && $_GET['genero'] == '51')
+                        echo 'selected'; ?>>
+                        Indie</option>
+                    <option value="83" <?php if (isset($_GET['genero']) && $_GET['genero'] == '83')
+                        echo 'selected'; ?>>
+                        Plataformas</option>
                 </select>
 
                 <label for="precio">Precio:</label>
                 <select name="precio" id="precio">
                     <option value="">Seleccionar</option>
-                    <option value="20" <?php if(isset($_GET['precio']) && $_GET['precio'] == '20') echo 'selected'; ?>>$20</option>
-                    <option value="50" <?php if(isset($_GET['precio']) && $_GET['precio'] == '50') echo 'selected'; ?>>$50</option>
-                    <option value="100" <?php if(isset($_GET['precio']) && $_GET['precio'] == '100') echo 'selected'; ?>>$80</option>
+                    <option value="20" <?php if (isset($_GET['precio']) && $_GET['precio'] == '20')
+                        echo 'selected'; ?>>$20
+                    </option>
+                    <option value="50" <?php if (isset($_GET['precio']) && $_GET['precio'] == '50')
+                        echo 'selected'; ?>>$50
+                    </option>
+                    <option value="100" <?php if (isset($_GET['precio']) && $_GET['precio'] == '100')
+                        echo 'selected'; ?>>
+                        $80</option>
                 </select>
 
-                <button type="submit" class="btn btn-primary bg-gradient">Filtrar</button>
+                <button type="submit">Filtrar</button>
                 <br><br>
             </form>
         </div>
 
-        <div class="filtro-juegos">
+        <div class="lista-juegos">
             <?php
             $genero = isset($_GET['genero']) ? $_GET['genero'] : '';
             $precio = isset($_GET['precio']) ? $_GET['precio'] : '';
@@ -128,21 +156,22 @@ include '../menus/header.php';
 
             if (mysqli_num_rows($resultFiltros) > 0) {
                 while ($row = mysqli_fetch_assoc($resultFiltros)) {
-                    echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="item-form">';
-                    echo '<div class="oferta-item">';
-                    echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-section">';
-                    echo '<h3>' . $row['titulo'] . '</h3>';
-                    echo '<div class="oferta-button-container">';
-                    echo '<p>Precio: $' . $row['precio'] . '</p>';
-                    echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
-                    echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '</form>';
+                    $detalleUrl = "../juego-detalle/juego-detalle.php?id_videojuegos=" . $row['id_videojuegos'];
+                    echo '<a href="' . $detalleUrl . '" class="lista-juegos-link">';
+                    echo '  <div class="lista-juegos-item">';
+                    echo '      <img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="lista-juegos-imagen">';
+                    echo '      <h3 class="lista-juego-titulo">' . $row['titulo'] . '</h3>';
+                    echo '      <div class="lista-juegos-detalles"></div>';
+                    echo '      <p class="lista-juegos-precio">$' . $row['precio'] . '</p>';
+                    echo '  </div>';
+                    echo '</a>';
                 }
-            } else {
-                echo '<p>No hay productos disponibles con los filtros seleccionados.</p>';
             }
+
+            else {
+                echo '<p>No se encontraron videojuegos que coincidan con los filtros seleccionados.</p>';
+            }
+
             ?>
 
             <div class="paginacion">

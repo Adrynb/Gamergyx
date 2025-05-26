@@ -1,0 +1,27 @@
+footer {
+    width: 100%;
+    padding: 2rem 1rem;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    background: linear-gradient(90deg, #22092C 0%, #33163b 100%);
+    z-index: 100;
+    /* elimina height y position */
+}
+
+
+#redes-sociales {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    /* Puedes quitar el gradiente aquí si no lo necesitas */
+    background: none;
+}
+
+#footer-social-media {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 1rem;
+    height: 100%;
+}

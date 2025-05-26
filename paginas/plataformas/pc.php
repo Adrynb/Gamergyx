@@ -2,34 +2,33 @@
 include '../../includes/db.php';
 include '../../includes/sesion.php';
 include '../menus/header.php';
-
-
-
 ?>
 
 
+<link rel="stylesheet" href="../../assets/paginas/plataformas/plataformas.css">
+
 <main>
-    <h2 class="titulo-section" style="background-color: black;">TENDENCIAS</h2>
+    <h2 class="titulo-section">TENDENCIAS</h2>
 
     <section id="tendencias-section">
         <?php
         $sql = "SELECT DISTINCT * FROM VIDEOJUEGOS ORDER BY RAND() LIMIT 6";
-        $sqlTendencias = "SELECT DISTINCT * FROM VIDEOJUEGOS WHERE stock = (SELECT MIN(stock) FROM VIDEOJUEGOS WHERE stock > 0 AND precio < 30  AND 'id_plataforma = 4' LIMIT 1) LIMIT 1";
+        $sqlTendencias = "SELECT DISTINCT * FROM VIDEOJUEGOS WHERE stock = (SELECT MIN(stock) FROM VIDEOJUEGOS WHERE stock > 0 AND precio < 30 AND id_plataforma = 4 LIMIT 1) LIMIT 1";
         $result = mysqli_query($conexion, $sql);
         $resultTendencias = mysqli_query($conexion, $sqlTendencias);
-
-        echo '<div class="tendencias-container">';
 
         if (mysqli_num_rows($result) > 0) {
             echo '<div class="oferta-items-container">';
             while ($row = mysqli_fetch_assoc($result)) {
-                echo '<div class="oferta-item">';
                 echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="item-form">';
+                echo '<div class="oferta-item">';
                 echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-section">';
                 echo '<h3>' . $row['titulo'] . '</h3>';
+                echo '<div class="oferta-button-container">';
                 echo '<p>Precio: $' . $row['precio'] . '</p>';
-                echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                echo '<button type="submit">Ver Detalles</button>';
                 echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
+                echo '</div>';
                 echo '</div>';
                 echo '</form>';
             }
@@ -37,29 +36,25 @@ include '../menus/header.php';
         } else {
             echo '<p>No hay ofertas disponibles en este momento.</p>';
         }
-
-        echo '</div>';
         ?>
-    </section>
-
-    ?>
     </section>
 
     <h2 class="titulo-section">NOVEDADES</h2>
     <section id="novedades-section">
-
         <?php
         $sql = "SELECT id_videojuegos, titulo, imagen, precio FROM VIDEOJUEGOS WHERE fecha_lanzamiento >= '2021-01-01' AND id_plataforma = 4 ORDER BY RAND() DESC LIMIT 8";
         $result = mysqli_query($conexion, $sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="item-form">';
-                echo '<div class="item">';
+                echo '<div class="oferta-item">';
                 echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-section">';
                 echo '<h3>' . $row['titulo'] . '</h3>';
+                echo '<div class="oferta-button-container">';
                 echo '<p>Precio: $' . $row['precio'] . '</p>';
-                echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
+                echo '<button type="submit">Ver Detalles</button>';
                 echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
+                echo '</div>';
                 echo '</div>';
                 echo '</form>';
             }
@@ -69,45 +64,73 @@ include '../menus/header.php';
         ?>
     </section>
 
-    <h2 class="titulo-section">DESCUBRE TODO TIPO DE JUEGOS</h2>
+    <h2 class="titulo-section" id="titulo-section">DESCUBRE TODO TIPO DE JUEGOS</h2>
 
-    <section id="filtros-juegos">
+    <section class="filtros-juegos">
         <div class="filtro-form">
-            <form method="GET" action="pc.php">
+            <form method="GET" action="#titulo-section">
                 <label for="genero">Género:</label>
                 <select name="genero" id="genero">
                     <option value="">Seleccionar</option>
-                    <option value="4">Acción</option>
-                    <option value="3">Aventura</option>
-                    <option value="15">Deportes</option>
-                    <option value="1">Carreras</option>
-                    <option value="11">Arcade</option>
-                    <option value="5">RPG</option>
-                    <option value="6">Peleas</option>
-                    <option value="10">Estrategia</option>
-                    <option value="14">Simulacion</option>
-                    <option value="51">Indie</option>
-                    <option value="83">Plataformas</option>
+                    <option value="4" <?php if (isset($_GET['genero']) && $_GET['genero'] == '4')
+                        echo 'selected'; ?>>
+                        Acción</option>
+                    <option value="3" <?php if (isset($_GET['genero']) && $_GET['genero'] == '3')
+                        echo 'selected'; ?>>
+                        Aventura</option>
+                    <option value="15" <?php if (isset($_GET['genero']) && $_GET['genero'] == '15')
+                        echo 'selected'; ?>>
+                        Deportes</option>
+                    <option value="1" <?php if (isset($_GET['genero']) && $_GET['genero'] == '1')
+                        echo 'selected'; ?>>
+                        Carreras</option>
+                    <option value="11" <?php if (isset($_GET['genero']) && $_GET['genero'] == '11')
+                        echo 'selected'; ?>>
+                        Arcade</option>
+                    <option value="5" <?php if (isset($_GET['genero']) && $_GET['genero'] == '5')
+                        echo 'selected'; ?>>RPG
+                    </option>
+                    <option value="6" <?php if (isset($_GET['genero']) && $_GET['genero'] == '6')
+                        echo 'selected'; ?>>
+                        Peleas</option>
+                    <option value="10" <?php if (isset($_GET['genero']) && $_GET['genero'] == '10')
+                        echo 'selected'; ?>>
+                        Estrategia</option>
+                    <option value="14" <?php if (isset($_GET['genero']) && $_GET['genero'] == '14')
+                        echo 'selected'; ?>>
+                        Simulacion</option>
+                    <option value="51" <?php if (isset($_GET['genero']) && $_GET['genero'] == '51')
+                        echo 'selected'; ?>>
+                        Indie</option>
+                    <option value="83" <?php if (isset($_GET['genero']) && $_GET['genero'] == '83')
+                        echo 'selected'; ?>>
+                        Plataformas</option>
                 </select>
 
                 <label for="precio">Precio:</label>
                 <select name="precio" id="precio">
                     <option value="">Seleccionar</option>
-                    <option value="20">$20</option>
-                    <option value="50">$50</option>
-                    <option value="100">$80</option>
+                    <option value="20" <?php if (isset($_GET['precio']) && $_GET['precio'] == '20')
+                        echo 'selected'; ?>>$20
+                    </option>
+                    <option value="50" <?php if (isset($_GET['precio']) && $_GET['precio'] == '50')
+                        echo 'selected'; ?>>$50
+                    </option>
+                    <option value="100" <?php if (isset($_GET['precio']) && $_GET['precio'] == '100')
+                        echo 'selected'; ?>>
+                        $80</option>
                 </select>
 
-                <button type="submit" class="btn btn-primary bg-gradient">Filtrar</button>
+                <button type="submit">Filtrar</button>
                 <br><br>
             </form>
         </div>
 
-        <div class="filtro-juegos">
+        <div class="lista-juegos">
             <?php
             $genero = isset($_GET['genero']) ? $_GET['genero'] : '';
             $precio = isset($_GET['precio']) ? $_GET['precio'] : '';
-            $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+            $pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
             $limite = 8;
             $offset = ($pagina - 1) * $limite;
 
@@ -115,13 +138,13 @@ include '../menus/header.php';
             $sqlContar = "SELECT COUNT(*) as total FROM VIDEOJUEGOS WHERE id_plataforma = 4";
 
             if ($genero != "") {
-                $sqlFiltros .= " AND id_generos = '$genero'";
-                $sqlContar .= " AND id_generos = '$genero'";
+            $sqlFiltros .= " AND id_generos = '$genero'";
+            $sqlContar .= " AND id_generos = '$genero'";
             }
 
             if ($precio != "") {
-                $sqlFiltros .= " AND precio < '$precio'";
-                $sqlContar .= " AND precio < '$precio'";
+            $sqlFiltros .= " AND precio < '$precio'";
+            $sqlContar .= " AND precio < '$precio'";
             }
 
             $sqlFiltros .= " LIMIT $limite OFFSET $offset";
@@ -131,41 +154,46 @@ include '../menus/header.php';
             $total = mysqli_fetch_assoc($resultContar)['total'];
             $totalPaginas = ceil($total / $limite);
 
+            // Limitar el máximo de páginas a 9
+            $maxPaginas = 9;
+            if ($totalPaginas > $maxPaginas) {
+            $totalPaginas = $maxPaginas;
+            }
+
             if (mysqli_num_rows($resultFiltros) > 0) {
-                while ($row = mysqli_fetch_assoc($resultFiltros)) {
-                    echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="item-form">';
-                    echo '<div class="item">';
-                    echo '<img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="imagen-section">';
-                    echo '<h3>' . $row['titulo'] . '</h3>';
-                    echo '<p>Precio: $' . $row['precio'] . '</p>';
-                    echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
-                    echo '<input type="hidden" name="id_videojuegos" value="' . $row['id_videojuegos'] . '">';
-                    echo '</div>';
-                    echo '</form>';
-                }
+            while ($row = mysqli_fetch_assoc($resultFiltros)) {
+                $detalleUrl = "../juego-detalle/juego-detalle.php?id_videojuegos=" . $row['id_videojuegos'];
+                echo '<a href="' . $detalleUrl . '" class="lista-juegos-link">';
+                echo '  <div class="lista-juegos-item">';
+                echo '      <img src="' . $row['imagen'] . '" alt="' . $row['titulo'] . '" class="lista-juegos-imagen">';
+                echo '      <h3 class="lista-juego-titulo">' . $row['titulo'] . '</h3>';
+                echo '      <div class="lista-juegos-detalles"></div>';
+                echo '      <p class="lista-juegos-precio">$' . $row['precio'] . '</p>';
+                echo '  </div>';
+                echo '</a>';
+            }
             } else {
-                echo '<p>No hay productos disponibles con los filtros seleccionados.</p>';
+            echo '<p>No se encontraron videojuegos que coincidan con los filtros seleccionados.</p>';
             }
             ?>
 
             <div class="paginacion">
-                <?php
-                if ($pagina > 1) {
-                    echo '<a href="?genero=' . $genero . '&precio=' . $precio . '&pagina=' . ($pagina - 1) . '" class="btn btn-secondary">Anterior</a>';
-                }
+            <?php
+            if ($pagina > 1) {
+                echo '<a href="?genero=' . $genero . '&precio=' . $precio . '&pagina=' . ($pagina - 1) . '#titulo-section" class="btn btn-secondary">Anterior</a>';
+            }
 
-                for ($i = 1; $i <= $totalPaginas; $i++) {
-                    echo '<a href="?genero=' . $genero . '&precio=' . $precio . '&pagina=' . $i . '" class="btn ' . ($i == $pagina ? 'btn-primary' : 'btn-secondary') . '">' . $i . '</a>';
-                }
+            for ($i = 1; $i <= $totalPaginas; $i++) {
+                echo '<a href="?genero=' . $genero . '&precio=' . $precio . '&pagina=' . $i . '#titulo-section" class="btn ' . ($i == $pagina ? 'btn-primary' : 'btn-secondary') . '">' . $i . '</a>';
+            }
 
-                if ($pagina < $totalPaginas) {
-                    echo '<a href="?genero=' . $genero . '&precio=' . $precio . '&pagina=' . ($pagina + 1) . '" class="btn btn-secondary">Siguiente</a>';
-                }
-                ?>
+            // Mostrar "Siguiente" solo si hay más páginas (hasta el máximo)
+            if ($pagina < $totalPaginas) {
+                echo '<a href="?genero=' . $genero . '&precio=' . $precio . '&pagina=' . ($pagina + 1) . '#titulo-section" class="btn btn-secondary">Siguiente</a>';
+            }
+            ?>
             </div>
         </div>
-    </section>
-
     </section>
 </main>
 

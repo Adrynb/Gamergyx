@@ -29,7 +29,7 @@ include '../menus/header.php';
     </section>
 
     <section id="contacto-imagen">
-        <img src="../../assets/paginas/contacto/contacto.jpg" alt="contactoFormulario">
+        <img src="../../assets/images/banners/celeste-portada.webp" alt="contactoFormulario">
     </section>
 
 </main>

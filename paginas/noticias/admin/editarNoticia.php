@@ -3,7 +3,6 @@ include '../../../includes/db.php';
 include '../../../includes/sesion.php';
 include '../../menus/header.php';
 
-
 if ($_SESSION["rol"] != "admin") {
     header("Location: ../../inicio/inicio.php");
     exit();
@@ -28,7 +27,7 @@ if (isset($_POST["editarNoticia"])) {
     $fecha = $_POST['fecha'];
     $fuente = $_POST['fuente'];
     $enlace = $_POST['enlace'];
-    $imagen_actual = $_POST['imagen'];
+    $imagen_actual = $_POST['imagen_actual'];
 
     if (!empty($_FILES['imagen']['name'])) {
         $imagen = $_FILES['imagen']['name'];
@@ -39,24 +38,25 @@ if (isset($_POST["editarNoticia"])) {
         $formatosPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
         $maximoTamanio = 2 * 1024 * 1024;
 
-        if (!in_array($tipo, $formatosPermitidos)) {
-            die("Error: El formato de la imagen no es compatible. Solo se permiten JPEG, PNG y WEBP.");
-        }
-
-        if ($tam > $maximoTamanio) {
-            die("Error: El tamaño de la imagen excede el límite de 2 MB.");
-        }
+       
 
         $uploadDir = '../../../assets/noticias/';
         $uploadFile = $uploadDir . basename($imagen);
 
         if (!move_uploaded_file($tmp, $uploadFile)) {
-            die("Error: No se pudo subir la imagen.");
+            header("Location: editarNoticia.php?error=subida&id=$id_noticia");
+            exit();
         }
     } else {
-
         $imagen = $imagen_actual;
     }
+
+
+    if (!preg_match('/^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-._~:\/?#[\]@!$&\'()*+,;=]*)?$/i', $enlace)) {
+        header("Location: editarNoticia.php?error=enlace_invalido&id=$id_noticia");
+        exit();
+    }
+    
 
     $sql = "UPDATE noticias SET 
                 titulo = ?, 
@@ -70,7 +70,8 @@ if (isset($_POST["editarNoticia"])) {
     $stmt = mysqli_prepare($conexion, $sql);
 
     if ($stmt === false) {
-        die("Error en la preparación de la consulta: " . mysqli_error($conexion));
+        header("Location: editarNoticia.php?error=consulta&id=$id_noticia");
+        exit();
     }
 
     mysqli_stmt_bind_param($stmt, "ssssssi", $titulo, $descripcion, $imagen, $fecha, $fuente, $enlace, $id_noticia);
@@ -81,7 +82,8 @@ if (isset($_POST["editarNoticia"])) {
         exit();
     } else {
         mysqli_stmt_close($stmt);
-        die("Error al actualizar: " . mysqli_stmt_error($stmt));
+        header("Location: editarNoticia.php?error=ejecucion&id=$id_noticia");
+        exit();
     }
 }
 ?>
@@ -99,24 +101,23 @@ if (isset($_POST["editarNoticia"])) {
 <body>
     <form action="editarNoticia.php" method="POST" id="noticias-form" enctype="multipart/form-data">
         <h1>Editar Noticias</h1>
+
+       
+
         <input type="hidden" name="id_noticia" value="<?= htmlspecialchars($id_noticia) ?>">
         <input type="hidden" name="imagen_actual" value="<?= htmlspecialchars($imagen_actual) ?>">
 
         <label for="titulo">Título:</label>
         <input type="text" id="titulo" name="titulo" value="<?= htmlspecialchars($titulo) ?>" required><br><br>
-        <span class="errores" style="color:red;"></span>
 
         <label for="contenido">Descripción:</label><br>
-        <textarea id="contenido" name="descripcion" rows="4" cols="50"
-            required><?= htmlspecialchars($descripcion) ?></textarea><br><br>
-        <span class="errores" style="color:red;"></span>
+        <textarea id="contenido" name="descripcion" rows="4" cols="50" required><?= htmlspecialchars($descripcion) ?></textarea><br><br>
 
         <label for="enlace">Enlace Web:</label>
         <input type="text" id="enlace" name="enlace" value="<?= htmlspecialchars($enlace) ?>" required><br><br>
-        <span class="errores" style="color:red;"></span>
 
         <label for="fecha">Fecha:</label>
-        <input type="date" id="fecha" name="fecha" value="<?= htmlspecialchars($fecha) ?>" required><br><br>
+        <input type="date" id="fecha" name="fecha" value="<?= htmlspecialchars(date('Y-m-d', strtotime($fecha))) ?>" required><br><br>
 
         <label for="imagen">Portada:</label>
         <?php if (!empty($imagen_actual)): ?>
@@ -130,11 +131,6 @@ if (isset($_POST["editarNoticia"])) {
 
         <input type="submit" value="Editar Noticia" id="editarNoticia" name="editarNoticia">
         <button><a href="../noticias.php">Volver a noticias</a></button>
-
     </form>
 </body>
-
-<script src="../../menus/formulario.js" defer></script>
-
-
 </html>

@@ -1,3 +1,10 @@
+:root {
+    --naranja: linear-gradient(90deg, #F05941 0%, #ff5d2b 100%);
+    --morado: #22092C;
+    --rojo: #BE3144;
+    --blanco: #fff;
+}
+
 body {
     margin: 0;
     text-align: center;
@@ -97,7 +104,7 @@ header {
 
 
 #titulo_gamergyx {
-    color: #ff0000;
+    color: var(--rojo);
     font-family: 'Pixelify Sans', sans-serif;
     font-size: 3rem;
     margin: 0;
@@ -144,7 +151,8 @@ nav ul li ul {
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #444;
+    background-color: var(--morado);
+    opacity: 0.9;
     flex-direction: column;
     white-space: nowrap;
     z-index: 1;
@@ -196,7 +204,7 @@ nav ul li ul li a {
     width: 60px;
     height: 60px;
     transition: transform 0.3s ease;
-    background-color: #e66161;
+    background-color: var(--rojo);
     border-radius: 50%;
     margin-left: 0.5rem;
     vertical-align: middle;
@@ -210,7 +218,7 @@ nav ul li ul li a {
     width: 40px;
     height: 40px;
     transition: transform 0.3s ease;
-    background-color: #DC143C;
+    background-color: var(--rojo);
     border-radius: 0.5rem;
     margin-left: 0.5rem;
     vertical-align: middle;
@@ -223,7 +231,7 @@ nav ul li ul li a {
 #usuario_dinero {
     width: 100px;
     transition: transform 0.3s ease;
-    background-color: #DC143C;
+    background-color: var(--rojo);
     border-radius: 0.5rem;
     padding: 2px 2px;
 }

@@ -18,23 +18,35 @@ if (isset($_POST["formulario"])) {
     $fuente = $_POST['fuente'];
     $enlace = $_POST['enlace'];
 
+    
+    if(!preg_match('/^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-._~:\/?#[\]@!$&\'()*+,;=]*)?$/i', $enlace)) {
+        header("Location: insertarNoticia.php?error=enlace_invalido");
+        exit();
+    }
+
     $formatosPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
     $maximoTamanio = 2 * 1024 * 1024;
 
-    if (!in_array($_FILES['imagen']['type'], $formatosPermitidos)) {
-        die("Error: El formato de la imagen no es compatible. Solo se permiten JPEG, PNG y WEBP.");
-    }
-
-    if ($_FILES['imagen']['size'] > $maximoTamanio) {
-        die("Error: El tamaño de la imagen excede el límite de 2 MB.");
-    }
 
     $uploadDir = '../../../assets/noticias/';
     $uploadFile = $uploadDir . basename($imagen);
 
-    if (!move_uploaded_file($_FILES['imagen']['tmp_name'], $uploadFile)) {
-        die("Error: No se pudo subir la imagen.");
+    if (!in_array($_FILES['imagen']['type'], $formatosPermitidos)) {
+        header("Location: insertarNoticia.php?error=formato");
+        exit();
     }
+
+    if ($_FILES['imagen']['size'] > $maximoTamanio) {
+        header("Location: insertarNoticia.php?error=tamanio");
+        exit();
+    }
+
+    if (!move_uploaded_file($_FILES['imagen']['tmp_name'], $uploadFile)) {
+        header("Location: insertarNoticia.php?error=subida");
+        exit();
+    }
+
+
 
     if (isset($_POST['insertarNoticia'])) {
 
@@ -64,7 +76,6 @@ if (isset($_POST["formulario"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../../menus/formulario.js" defer></script>
     <link rel="stylesheet" href="../../../assets/header-footer/header.css">
     <title>Insertar Noticia</title>
     <link rel="stylesheet" href="../../../assets/paginas/noticias/configNoticias.css">
@@ -99,6 +110,32 @@ if (isset($_POST["formulario"])) {
 
 
         <button><a href="../noticias.php">Volver a noticias</a></button>
+
+        <?php
+        if (isset($_GET['error'])) {
+            $mensaje = '';
+            switch ($_GET['error']) {
+                case 'formato':
+                    $mensaje = "El formato de la imagen no es compatible. Solo se permiten JPEG, PNG y WEBP.";
+                    break;
+                case 'tamanio':
+                    $mensaje = "El tamaño de la imagen excede el límite de 2 MB.";
+                    break;
+                case 'subida':
+                    $mensaje = "No se pudo subir la imagen.";
+                    break;
+                case 'insertar':
+                    $mensaje = "No se pudo insertar la noticia.";
+                    break;
+                case 'enlace_invalido':
+                    $mensaje = "El enlace proporcionado no es válido. Asegúrate de que comience con http:// o https://.";
+                    break;
+            }
+
+            echo "<p style='color:red; font-weight:bold;'>Error: $mensaje</p>";
+        }
+        ?>
+
 
     </form>
 
