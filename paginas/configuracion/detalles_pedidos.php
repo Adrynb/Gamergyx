@@ -2,8 +2,16 @@
 include '../../includes/db.php';
 include '../../includes/sesion.php';
 include '../menus/header.php';
-
-
+?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Pedido</title>
+    <link rel="stylesheet" href="../../assets/paginas/pedidos.css">
+</head>
+<body>
+<?php
 if (isset($_POST['id_pedidos'])) {
     $sqlPedidos = "SELECT 
                 pedidos.fecha, 
@@ -27,8 +35,8 @@ if (isset($_POST['id_pedidos'])) {
     $result = $stmt->get_result();
 
     if ($row = $result->fetch_assoc()) {
-        echo '<div style="text-align:center;">';
-        echo '<table border="1" cellpadding="5" style="color:white; margin: 0 auto;">';
+        echo '<div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 25rem; margin-top: 3rem;">';
+        echo '<table>';
         echo '<tr><th>Fecha</th><th>Usuario</th><th>Código</th><th>Precio</th><th>Título</th><th>Género</th><th>Plataforma</th><th>Imagen</th></tr>';
         echo '<tr>';
         echo '<td>' . htmlspecialchars($row['fecha']) . '</td>';
@@ -43,12 +51,11 @@ if (isset($_POST['id_pedidos'])) {
         echo '</table>';
         echo '</div>';
     } else {
-        echo "No se encontraron detalles para este pedido.";
+        echo "<p>No se encontraron detalles para este pedido.</p>";
     }
+    $stmt->close();
 }
 include '../menus/footer.php';
-
-$stmt->close();
-
-
 ?>
+</body>
+</html>

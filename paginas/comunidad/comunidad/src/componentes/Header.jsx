@@ -39,7 +39,7 @@ export default function Header() {
                 Gamer<span>gyx</span>
             </h2>
 
-            <nav>
+            <nav className="menu">
                 <ul>
                     <li><a href={`${BASE_URL}paginas/inicio/inicio.php`}>Inicio</a></li>
                     <li><a href={`${BASE_URL}paginas/noticias/noticias.php`}>Noticias</a></li>

@@ -1,34 +1,42 @@
+:root {
+    --naranja: linear-gradient(90deg, #F05941 0%, #ff5d2b 100%);
+    --morado: #22092C;
+    --rojo: #BE3144;
+    --blanco: #fff;
+}
+
 body {
-    background: linear-gradient(to bottom, #252525, rgb(34, 34, 34));
-    margin: 0;
-    font-family: 'Pixelify Sans', sans-serif;
+    margin-left: 3rem;
     position: relative;
     padding-bottom: 3em;
     min-height: 100vh;
-    margin-left: 3rem;
 }
 
-h1,
-h2,
-h3,
-p, 
-label {
-    color: white;
-    font-family: 'Times New Roman', Times, serif;
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url('../background_black.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
 }
 
-.titulo-section {
-    margin-bottom: 2rem;
-    padding: 6rem;
-    font-size: 3rem;
-    background-color: black;
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #22092C;
+    opacity: 0.5;
+    z-index: -1;
+    pointer-events: none;
 }
 
-h3 {
-    font-size: 1.5rem;
-    font-family: 'Pixelify Sans', sans-serif;
-    margin-top: 2rem;
-}
+
+
+
 
 #banner-section {
     padding: 8rem 0 0 0;
@@ -49,7 +57,7 @@ h3 {
 
 h2 {
     font-size: 2rem;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 }
 
 header {
@@ -68,7 +76,10 @@ header {
 
 #buscar_container {
     position: relative;
+    
 }
+
+
 
 #buscar_container input {
     background-color: white;
@@ -91,7 +102,7 @@ header {
 
 
 #titulo_gamergyx {
-    color: #ff0000;
+    color: var(--rojo);
     font-family: 'Pixelify Sans', sans-serif;
     font-size: 3rem;
     margin: 0;
@@ -102,11 +113,11 @@ header {
     font-family: 'Pixelify Sans', sans-serif;
 }
 
-nav {
+.menu {
     font-family: Times, serif;
 }
 
-nav ul {
+.menu ul {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -115,12 +126,11 @@ nav ul {
     align-items: center;
 }
 
-nav ul li {
+.menu ul li {
     position: relative;
-
 }
 
-nav ul li a {
+.menu ul li a {
     color: white;
     text-decoration: none;
     padding: 15px 20px;
@@ -128,31 +138,32 @@ nav ul li a {
     font-size: 22px;
 }
 
-nav ul li a:hover {
+.menu ul li a:hover {
     border-bottom: 2px solid white;
     transition: border-bottom 0.3s ease;
 }
 
-nav ul li ul {
+.menu ul li ul {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #444;
+    background-color: var(--morado);
+    opacity: 0.9;
     flex-direction: column;
     white-space: nowrap;
     z-index: 1;
 }
 
-nav ul li:hover>ul {
+.menu ul li:hover>ul {
     display: flex;
 }
 
-nav ul li ul li {
+.menu ul li ul li {
     flex: none;
 }
 
-nav ul li ul li a {
+.menu ul li ul li a {
     padding: 10px 15px;
 }
 
@@ -190,7 +201,7 @@ nav ul li ul li a {
     width: 60px;
     height: 60px;
     transition: transform 0.3s ease;
-    background-color: #ff0000;
+    background-color: var(--rojo);
     border-radius: 50%;
     margin-left: 0.5rem;
     vertical-align: middle;
@@ -204,7 +215,7 @@ nav ul li ul li a {
     width: 40px;
     height: 40px;
     transition: transform 0.3s ease;
-    background-color: #ff0000;
+    background-color: var(--rojo);
     border-radius: 0.5rem;
     margin-left: 0.5rem;
     vertical-align: middle;
@@ -217,7 +228,7 @@ nav ul li ul li a {
 #usuario_dinero {
     width: 100px;
     transition: transform 0.3s ease;
-    background-color: #ff0000;
+    background-color: var(--rojo);
     border-radius: 0.5rem;
     padding: 2px 2px;
 }
@@ -259,3 +270,201 @@ ul li {
     font-size: 18px;
 }
 
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        gap: 2rem;
+    }
+
+    .header-container-usuario {
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #buscar_container input {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    #buscar_container img {
+        width: 18px;
+        height: 18px;
+        right: 8px;
+        top: 25%;
+    }
+
+    #titulo_gamergyx {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    nav ul li a {
+        font-size: 18px;
+        padding: 12px 18px;
+    }
+
+    nav ul li ul {
+        position: static;
+        background-color: var(--morado);
+        opacity: 1;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    nav ul li ul li a {
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+
+    .menu_config {
+        top: 50px;
+        width: 120px;
+        padding: 1rem;
+    }
+
+    #menu_config_carrito {
+        top: 50px;
+        right: 10px;
+        width: 80px;
+    }
+
+    .menu_config a {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+
+    .icon_config {
+        width: 50px;
+        height: 50px;
+        margin-left: 1rem;
+    }
+
+    #icon_carrito {
+        width: 35px;
+        height: 35px;
+        margin-left: 1rem;
+    }
+
+    #usuario_dinero {
+        width: 80px;
+        padding: 2px;
+    }
+
+    ul li {
+        font-size: 16px;
+        padding: 0.75rem;
+    }
+
+    #banner-section {
+        padding: 6rem 0 0 0;
+    }
+
+    .carousel-item img {
+        max-height: 400px;
+        margin-bottom: 2.5rem;
+    }
+}
+@media screen and (max-width: 480px) {
+    header {
+        padding: 1rem;
+        margin-top: 2.5rem;
+        gap: 2.5rem;
+    }
+
+    .header-container-usuario {
+        gap: 2rem;
+        flex-direction: column;
+    }
+
+    #buscar_container input {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    #buscar_container img {
+        width: 16px;
+        height: 16px;
+        right: 6px;
+        top: 30%;
+    }
+
+    #titulo_gamergyx {
+        font-size: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    nav ul {
+        gap: 2rem;
+    }
+
+    nav ul li a {
+        font-size: 16px;
+        padding: 10px 15px;
+    }
+
+    nav ul li ul {
+        padding: 1.5rem;
+    }
+
+    nav ul li ul li a {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+
+    .menu_config {
+        top: 40px;
+        width: 100px;
+        padding: 1.5rem;
+    }
+
+    #menu_config_carrito {
+        top: 40px;
+        right: 5px;
+        width: 70px;
+    }
+
+    .menu_config a {
+        font-size: 10px;
+        padding: 6px 12px;
+    }
+
+    .icon_config {
+        width: 40px;
+        height: 40px;
+        margin-left: 1.5rem;
+    }
+
+    #icon_carrito {
+        width: 30px;
+        height: 30px;
+        margin-left: 1.5rem;
+    }
+
+    #usuario_dinero {
+        width: 70px;
+        padding: 1px;
+    }
+
+    ul li {
+        font-size: 14px;
+        padding: 1rem;
+    }
+
+    #banner-section {
+        padding: 4rem 0 0 0;
+    }
+
+    .carousel-item img {
+        max-height: 250px;
+        margin-bottom: 3rem;
+    }
+}

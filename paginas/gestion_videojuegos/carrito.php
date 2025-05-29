@@ -24,35 +24,44 @@ $resultCarrito = mysqli_stmt_get_result($prepareCarrito);
 ?>
 
 <main>
+    <link rel="stylesheet" href="../../assets/paginas/listaVideojuegos.css">
     <h1>Carrito de compras</h1>
 
     <section id="carrito-section">
         <?php
         if (mysqli_num_rows($resultCarrito) > 0) {
+            echo '<div class="lista-videojuego">';
             while ($row = mysqli_fetch_assoc($resultCarrito)) {
-                echo '<div class="item">';
-                echo '<img src="' . htmlspecialchars($row['imagen'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($row['titulo'], ENT_QUOTES, 'UTF-8') . '" class="imagen-section">';
-                echo '<h3>' . htmlspecialchars($row['titulo'], ENT_QUOTES, 'UTF-8') . '</h3>';
-                echo '<p>Precio: $' . htmlspecialchars($row['precio'], ENT_QUOTES, 'UTF-8') . '</p>';
+            echo '<div class="item-videojuego">';
+            echo '<img src="' . htmlspecialchars($row['imagen'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($row['titulo'], ENT_QUOTES, 'UTF-8') . '" class="imagen-section">';
+            echo '<div class="info-videojuego">';
+            echo '<h3 class="titulo-videojuego">' . htmlspecialchars($row['titulo'], ENT_QUOTES, 'UTF-8') . '</h3>';
+            echo '<p class="precio-videojuego">Precio: $' . htmlspecialchars($row['precio'], ENT_QUOTES, 'UTF-8') . '</p>';
+            echo '</div>';
 
-                echo '<form method="POST" action="../juego-detalle/juego-detalle.php">';
-                echo '<input type="hidden" name="id_videojuegos" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
-                echo '<button type="submit" name="ver_detalles" class="btn btn-warning bg-gradient">Ver Detalles</button>';
-                echo '</form>';
+            echo '<div class="acciones-videojuego">';
+            echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="form-detalle">';
+            echo '<input type="hidden" name="id_videojuegos" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
+            echo '<button type="submit" name="ver_detalles">Ver Detalles</button>';
+            echo '</form>';
 
-                echo '<form method="POST" action="compra.php">';
-                echo '<input type="hidden" name="id_videojuegos" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
-                echo '<label for="cantidad_' . $row['id_videojuegos'] . '">Cantidad:</label>';
-                echo '<input type="number" name="cantidad_videojuegos[' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . ']" min="1" required>';
-                echo '<button type="submit" name="finalizar_compra" class="btn btn-warning bg-gradient">Finalizar Compra</button>';
-                echo '</form>';
-                echo '</div>';
+            echo '<form method="POST" action="compra.php" class="form-compra">';
+            echo '<input type="hidden" name="id_videojuegos" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
+            echo '<label for="cantidad_' . $row['id_videojuegos'] . '">Cantidad:</label>';
+            echo '<input type="number" name="cantidad_videojuegos[' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . ']" min="1" required>';
+            echo '<br><br>';
+            echo '<button type="submit" name="finalizar_compra">Finalizar Compra</button>';
+            echo '</form>';
 
-                echo '<form method="POST" action="carrito.php">';
-                echo '<input type="hidden" name="id_videojuego" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
-                echo '<button type="submit" name="eliminar_producto" class="btn btn-danger bg-gradient">Eliminar del Carrito</button>';
-                echo '</form>';
+            echo '<form method="POST" action="carrito.php" class="form-eliminar">';
+            echo '<input type="hidden" name="id_videojuego" value="' . htmlspecialchars($row['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
+            echo '<button type="submit" name="eliminar_producto">Eliminar del Carrito</button>';
+            echo '</form>';
+            echo '</div>';
+
+            echo '</div>';
             }
+            echo '</div>';
         } else {
             echo '<p>No hay productos en tu carrito.</p>';
         }
@@ -97,11 +106,13 @@ $resultCarrito = mysqli_stmt_get_result($prepareCarrito);
 
     ?>
 
+
+
+</main>
+
 <?php 
 
 include "../menus/footer.php";
 
 
 ?>
-
-</main>

@@ -24,28 +24,37 @@ $resultFavoritos = mysqli_stmt_get_result($prepareFavoritos);
 ?>
 
 <main>
+    <link rel="stylesheet" href="../../assets/paginas/listaVideojuegos.css">
     <h1>Tus videojuegos favoritos</h1>
+    <br><br>
 
     <?php
+    if (mysqli_num_rows($resultFavoritos) > 0) {
+        echo '<div class="lista-videojuego">';
+        while ($columna = mysqli_fetch_assoc($resultFavoritos)) {
+            echo '<div class="item-videojuego">';
+            echo '<img src="' . htmlspecialchars($columna['imagen'], ENT_QUOTES, 'UTF-8') . '" alt="' . htmlspecialchars($columna['titulo'], ENT_QUOTES, 'UTF-8') . '" class="imagen-section">';
+            echo '<div class="info-videojuego">';
+            echo '<h3 class="titulo-videojuego">' . htmlspecialchars($columna['titulo'], ENT_QUOTES, 'UTF-8') . '</h3>';
+            echo '<p class="precio-videojuego">Precio: $' . htmlspecialchars($columna['precio'], ENT_QUOTES, 'UTF-8') . '</p>';
+            echo '</div>';
 
-    while ($columna = mysqli_fetch_assoc($resultFavoritos)) {
-        echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="item-form">';
-        echo '<div class="item">';
-        echo '<img src="' . $columna['imagen'] . '" alt="' . $columna['titulo'] . '" class="imagen-section">';
-        echo '<h3>' . $columna['titulo'] . '</h3>';
-        echo '<p>Precio: $' . $columna['precio'] . '</p>';
-        echo '<button type="submit" class="btn btn-warning bg-gradient">Ver Detalles</button>';
-        echo '<input type="hidden" name="id_videojuegos" value="' . $columna['id_videojuegos'] . '">';
+            echo '<div class="acciones-videojuego">';
+            echo '<form method="POST" action="../juego-detalle/juego-detalle.php" class="form-detalle">';
+            echo '<input type="hidden" name="id_videojuegos" value="' . htmlspecialchars($columna['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
+            echo '<button type="submit" class="btn btn-warning bg-gradient btn-detalles" name="ver_detalles">Ver Detalles</button>';
+            echo '</form>';
+
+            echo '<form method="POST" action="favoritos.php" class="form-carrito">';
+            echo '<input type="hidden" name="id_videojuegos" value="' . htmlspecialchars($columna['id_videojuegos'], ENT_QUOTES, 'UTF-8') . '">';
+            echo '<button type="submit" class="btn btn-warning bg-gradient btn-carrito" name="agregar_carrito">Agregar al carrito</button>';
+            echo '</form>';
+            echo '</div>';
+
+            echo '</div>';
+        }
         echo '</div>';
-        echo '</form>';
-
-        echo '<form method="POST" action="favoritos.php" class="item-form">';
-        echo '<button type="submit" class="btn btn-warning bg-gradient" name="agregar_carrito">Agregar al carrito</button>';
-        echo '<input type="hidden" name="id_videojuegos" value="' . $columna['id_videojuegos'] . '">';
-        echo '<div class="item">';
-
-    }
-    if (mysqli_num_rows($resultFavoritos) == 0) {
+    } else {
         echo '<p>No tienes videojuegos favoritos.</p>';
     }
 

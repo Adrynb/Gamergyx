@@ -273,3 +273,201 @@ ul li {
     font-size: 18px;
 }
 
+@media screen and (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        gap: 2rem;
+    }
+
+    .header-container-usuario {
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #buscar_container input {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    #buscar_container img {
+        width: 18px;
+        height: 18px;
+        right: 8px;
+        top: 25%;
+    }
+
+    #titulo_gamergyx {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    nav ul li a {
+        font-size: 18px;
+        padding: 12px 18px;
+    }
+
+    nav ul li ul {
+        position: static;
+        background-color: var(--morado);
+        opacity: 1;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    nav ul li ul li a {
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+
+    .menu_config {
+        top: 50px;
+        width: 120px;
+        padding: 1rem;
+    }
+
+    #menu_config_carrito {
+        top: 50px;
+        right: 10px;
+        width: 80px;
+    }
+
+    .menu_config a {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+
+    .icon_config {
+        width: 50px;
+        height: 50px;
+        margin-left: 1rem;
+    }
+
+    #icon_carrito {
+        width: 35px;
+        height: 35px;
+        margin-left: 1rem;
+    }
+
+    #usuario_dinero {
+        width: 80px;
+        padding: 2px;
+    }
+
+    ul li {
+        font-size: 16px;
+        padding: 0.75rem;
+    }
+
+    #banner-section {
+        padding: 6rem 0 0 0;
+    }
+
+    .carousel-item img {
+        max-height: 400px;
+        margin-bottom: 2.5rem;
+    }
+}
+@media screen and (max-width: 480px) {
+    header {
+        padding: 1rem;
+        margin-top: 2.5rem;
+        gap: 2.5rem;
+    }
+
+    .header-container-usuario {
+        gap: 2rem;
+        flex-direction: column;
+    }
+
+    #buscar_container input {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    #buscar_container img {
+        width: 16px;
+        height: 16px;
+        right: 6px;
+        top: 30%;
+    }
+
+    #titulo_gamergyx {
+        font-size: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    nav ul {
+        gap: 2rem;
+    }
+
+    nav ul li a {
+        font-size: 16px;
+        padding: 10px 15px;
+    }
+
+    nav ul li ul {
+        padding: 1.5rem;
+    }
+
+    nav ul li ul li a {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+
+    .menu_config {
+        top: 40px;
+        width: 100px;
+        padding: 1.5rem;
+    }
+
+    #menu_config_carrito {
+        top: 40px;
+        right: 5px;
+        width: 70px;
+    }
+
+    .menu_config a {
+        font-size: 10px;
+        padding: 6px 12px;
+    }
+
+    .icon_config {
+        width: 40px;
+        height: 40px;
+        margin-left: 1.5rem;
+    }
+
+    #icon_carrito {
+        width: 30px;
+        height: 30px;
+        margin-left: 1.5rem;
+    }
+
+    #usuario_dinero {
+        width: 70px;
+        padding: 1px;
+    }
+
+    ul li {
+        font-size: 14px;
+        padding: 1rem;
+    }
+
+    #banner-section {
+        padding: 4rem 0 0 0;
+    }
+
+    .carousel-item img {
+        max-height: 250px;
+        margin-bottom: 3rem;
+    }
+}

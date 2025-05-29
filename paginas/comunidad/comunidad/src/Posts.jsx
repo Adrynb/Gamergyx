@@ -125,158 +125,158 @@ export default function Posts() {
     };
 
     return (
-        <div>
-            {/* Formulario de publicación directa */}
-            <h1>Posts</h1>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    value={nuevoPost}
-                    onChange={(e) => setNuevoPost(e.target.value)}
+      <main class="posts-container">
+    <h1>Posts</h1>
+    <form class="post-form" onSubmit={handleSubmit}>
+        <input
+            type="text"
+            className="post-input"
+            value={nuevoPost}
+            onChange={(e) => setNuevoPost(e.target.value)}
+        />
+        <button type="submit" className="post-submit">Publicar</button>
+        <AdjuntarArchivo onFileSelect={setImagenAdjunta} />
+        <div className="image-preview">
+            {imagenAdjunta && (
+                <img
+                    src={imagenAdjunta}
+                    alt="Previsualización de imagen"
+                    className="preview-image"
                 />
-                <button type="submit">Publicar</button>
+            )}
+        </div>
+    </form>
 
-                <AdjuntarArchivo onFileSelect={setImagenAdjunta} />
+    <ul class="post-list">
+        {postsPrincipales.map((post) => (
+            <li key={post.id} className="post-item">
+                {post.fotoPerfil && (
+                    <img
+                        src={`http://localhost/gamergyx/assets/images/perfiles/${post.fotoPerfil}`}
+                        alt="Foto de perfil"
+                        className="profile-image"
+                    />
+                )}
+                <strong className="post-author">{post.nombre}</strong>
+                <p className="post-content">{post.contenido}</p>
+                {post.imagen && (
+                    <img
+                        src={`http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/${post.imagen}`}
+                        alt="Imagen del post"
+                        className="post-image"
+                    />
+                )}
+                <small className="post-date">{new Date(post.fecha_publicacion).toLocaleString()}</small>
+                <div className="post-actions">
+                    <button onClick={() => megustaPost(post.id)} className="action-button like-button">
+                        <FontAwesomeIcon icon={faThumbsUp} />
+                    </button>
+                    {usuarioActual?.nombre === post.nombre && (
+                        <button onClick={() => eliminarPost(post.id)} className="action-button delete-button">
+                            <FontAwesomeIcon icon={faXmark} />
+                        </button>
+                    )}
+                    <button onClick={() => setMostrarRespuesta(post.id)} className="action-button comment-button">
+                        <FontAwesomeIcon icon={faComment} />
+                    </button>
+                </div>
 
-                {/* Previsualización de la imagen */}
-                <br />
+                {mostrarRespuesta === post.id && (
+                    <form
+                        className="response-form"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            responderPost(respuestas[post.id], post.id);
+                            setImagenAdjunta(null);
+                        }}
+                    >
+                        <textarea
+                            placeholder="Escribe tu respuesta..."
+                            className="response-input"
+                            value={respuestas[post.id] || ""}
+                            onChange={(e) => setRespuestas({ ...respuestas, [post.id]: e.target.value })}
+                        />
+                        <button type="submit" className="response-submit">Enviar respuesta</button>
+                        <AdjuntarArchivo onFileSelect={setImagenAdjunta} />
+                        <div className="image-preview">
+                            {imagenAdjunta && (
+                                <img
+                                    src={imagenAdjunta}
+                                    alt="Previsualización de imagen de respuesta"
+                                    className="preview-image"
+                                />
+                            )}
+                        </div>
+                    </form>
+                )}
+
+                <ul className="response-list">
+                    {obtenerRespuestas(post.id).map((respuesta) => (
+                        <li key={respuesta.id} className="response-item">
+                            {respuesta.fotoPerfil && (
+                                <img
+                                    src={`http://localhost/gamergyx/assets/images/perfiles/${respuesta.fotoPerfil}`}
+                                    alt="Foto de perfil"
+                                    className="response-profile-image"
+                                />
+                            )}
+                            <strong className="response-author">{respuesta.nombre}</strong>
+                            <p className="response-content">{respuesta.contenido}</p>
+                            <small className="response-date">{new Date(respuesta.fecha_publicacion).toLocaleString()}</small>
+                            <div className="response-actions">
+                                {usuarioActual?.nombre === respuesta.nombre && (
+                                    <button onClick={() => eliminarPost(respuesta.id)} className="action-button delete-button">
+                                        <FontAwesomeIcon icon={faXmark} />
+                                    </button>
+                                )}
+                                <button onClick={() => megustaPost(respuesta.id)} className="action-button like-button">
+                                    <FontAwesomeIcon icon={faThumbsUp} />
+                                </button>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </li>
+        ))}
+    </ul>
+
+    <button className="boton-flotante" onClick={() => setMostrarNuevoPost(true)} title="Crear nuevo post">
+        <FontAwesomeIcon icon={faFeather} size="2x" />
+    </button>
+
+    <Popup isOpen={mostrarNuevoPost} onClose={() => {
+        setMostrarNuevoPost(false);
+        setImagenAdjunta(null);
+        setNuevoPost("");
+    }} className="popup">
+        <form className="popup-form" onSubmit={handleSubmit}>
+            {usuarioActual?.fotoPerfil && (
+                <img
+                    src={`http://localhost/gamergyx/assets/images/perfiles/${usuarioActual.fotoPerfil}`}
+                    alt="Foto de perfil"
+                    className="profile-image"
+                />
+            )}
+            <textarea
+                placeholder="¿Qué estás pensando?"
+                className="popup-input"
+                value={nuevoPost}
+                onChange={(e) => setNuevoPost(e.target.value)}
+                rows={4}
+            />
+            <button type="submit" className="popup-submit">Publicar</button>
+            <AdjuntarArchivo onFileSelect={setImagenAdjunta}/>
+            <div className="image-preview">
                 {imagenAdjunta && (
                     <img
                         src={imagenAdjunta}
                         alt="Previsualización de imagen"
-                        style={{ maxWidth: "300px", marginTop: "10px", borderRadius: "8px" }}
+                        className="preview-image"
                     />
                 )}
-            </form>
-
-
-            {/* Lista de posts */}
-            <ul>
-                {postsPrincipales.map((post) => (
-                    <li key={post.id}>
-                        {post.fotoPerfil && (
-                            <img
-                                src={`http://localhost/gamergyx/assets/images/perfiles/${post.fotoPerfil}`}
-                                alt="Foto de perfil"
-                                style={{ width: "50px", height: "50px" }}
-                            />
-                        )}
-                        <strong>{post.nombre}</strong><br />
-                        {post.contenido}<br />
-                        {post.imagen && (
-                            <img
-                                src={`http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/${post.imagen}`}
-                                alt="Imagen del post"
-                                id="imagen_post"
-                                width={"200px"}
-                                height={"200px"}
-                            />
-                        )}
-                        <br />
-                        <small>{new Date(post.fecha_publicacion).toLocaleString()}</small><br />
-
-                        <button onClick={() => megustaPost(post.id)}><FontAwesomeIcon icon={faThumbsUp} /></button>
-                        {usuarioActual?.nombre === post.nombre && (
-                            <button onClick={() => eliminarPost(post.id)}><FontAwesomeIcon icon={faXmark} /></button>
-                        )}
-                        <button onClick={() => setMostrarRespuesta(post.id)}><FontAwesomeIcon icon={faComment} /></button>
-
-                        {/* Formulario de respuesta */}
-                        {mostrarRespuesta === post.id && (
-                            <form onSubmit={(e) => {
-                                e.preventDefault();
-                                responderPost(respuestas[post.id], post.id);
-                                setImagenAdjunta(null);  // Limpiar después de enviar
-                            }}>
-                                <textarea
-                                    placeholder="Escribe tu respuesta..."
-                                    value={respuestas[post.id] || ""}
-                                    onChange={(e) => setRespuestas({ ...respuestas, [post.id]: e.target.value })}
-                                />
-                                <button type="submit">Enviar respuesta</button>
-                                <AdjuntarArchivo onFileSelect={setImagenAdjunta} />
-
-                                {/* Previsualización imagen respuesta */}
-                                {imagenAdjunta && (
-                                    <img
-                                        src={imagenAdjunta}
-                                        alt="Previsualización de imagen de respuesta"
-                                        style={{ maxWidth: "300px", marginTop: "10px", borderRadius: "8px" }}
-                                    />
-                                )}
-                            </form>
-                        )}
-
-
-                        {/* Respuestas */}
-                        <ul id="respuestas">
-                            {obtenerRespuestas(post.id).map((respuesta) => (
-                                <li key={respuesta.id} style={{ marginLeft: "20px" }}>
-                                    {respuesta.fotoPerfil && (
-                                        <img
-                                            src={`http://localhost/gamergyx/assets/images/perfiles/${respuesta.fotoPerfil}`}
-                                            alt="Foto de perfil"
-                                            style={{ width: "30px", height: "30px" }}
-                                        />
-                                    )}
-                                    <strong>{respuesta.nombre}</strong><br />
-                                    {respuesta.contenido}<br />
-                                    <small>{new Date(respuesta.fecha_publicacion).toLocaleString()}</small>
-                                    {usuarioActual?.nombre === respuesta.nombre && (
-                                        <button onClick={() => eliminarPost(respuesta.id)}><FontAwesomeIcon icon={faXmark} /></button>
-                                    )}
-                                    <button onClick={() => megustaPost(respuesta.id)}><FontAwesomeIcon icon={faThumbsUp} /></button>
-                                </li>
-                            ))}
-                        </ul>
-                    </li>
-                ))}
-            </ul>
-
-            {/* Botón flotante */}
-            <button className="boton-flotante" onClick={() => setMostrarNuevoPost(true)} title="Crear nuevo post">
-                <FontAwesomeIcon icon={faFeather} size="2x" />
-            </button>
-
-            {/* Popup para nuevo post */}
-            <Popup isOpen={mostrarNuevoPost} onClose={() => {
-                setMostrarNuevoPost(false);
-                setImagenAdjunta(null);
-                setNuevoPost("");
-            }}>
-                <form onSubmit={handleSubmit}> {/* handleSubmit usa nuevoPost e imagenAdjunta */}
-                    {/* Foto perfil */}
-                    {usuarioActual?.fotoPerfil && (
-                        <img
-                            src={`http://localhost/gamergyx/assets/images/perfiles/${usuarioActual.fotoPerfil}`}
-                            alt="Foto de perfil"
-                            style={{ width: "50px", height: "50px", borderRadius: "50%" }}
-                        />
-                    )}
-
-                    <textarea
-                        placeholder="¿Qué estás pensando?"
-                        value={nuevoPost}
-                        onChange={(e) => setNuevoPost(e.target.value)}
-                        rows={4}
-                        style={{ width: "70%", padding: "10px", marginBottom: "10px" }}
-                    />
-                    <button type="submit">Publicar</button>
-                    <AdjuntarArchivo onFileSelect={setImagenAdjunta} />
-                    <br />
-                    {imagenAdjunta && (
-                        <img
-                            src={imagenAdjunta}
-                            alt="Previsualización de imagen"
-                            style={{ maxWidth: "300px", marginTop: "10px", borderRadius: "8px" }}
-                        />
-                    )}
-
-
-                </form>
-            </Popup>
-
-
-        </div>
+            </div>
+        </form>
+    </Popup>
+</main>
     );
 }

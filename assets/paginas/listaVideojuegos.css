@@ -1,0 +1,184 @@
+:root {
+    --naranja: linear-gradient(90deg, #F05941 0%, #ff5d2b 100%);
+    --morado: #22092C;
+    --rojo: #BE3144;
+    --blanco: #fff;
+}
+
+h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    color: var(--blanco);
+}
+
+main {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+#carrito-section {
+    margin-top: 5rem;
+}
+
+.lista-videojuego {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 5rem;
+}
+
+.item-videojuego {
+    background: var(--morado);
+    color: var(--blanco);
+    border-radius: 1.2rem;
+    max-width: 500px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.18s, box-shadow 0.18s;
+    overflow: hidden;
+    padding: 1rem;
+}
+
+.item-videojuego:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 8px 32px rgba(34, 9, 44, 0.28), 0 3px 12px rgba(0, 0, 0, 0.12);
+}
+
+.imagen-section {
+    max-width: 400px;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 0.8rem;
+}
+
+.info-videojuego {
+    text-align: center;
+    padding: 1rem;
+}
+
+.titulo-videojuego {
+    font-size: 1.8rem;
+    margin: 0.5rem 0;
+}
+
+.precio-videojuego {
+    font-size: 1.2rem;
+    color: var(--blanco);
+    opacity: 0.9;
+}
+
+.acciones-videojuego {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.acciones-videojuego button {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+
+
+.form-compra {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-detalle button,
+.form-compra button,
+.form-eliminar button,
+#carrito_compra_section button {
+    background: var(--naranja);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.8rem;
+    color: var(--blanco);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.18s;
+}
+
+.form-eliminar button {
+    background: var(--rojo);
+}
+
+.form-detalle button:hover,
+.form-compra button:hover,
+#carrito_compra_section button:hover {
+    transform: translateY(-2px);
+}
+
+.form-eliminar button:hover {
+    transform: translateY(-2px);
+}
+
+.form-compra,
+.form-eliminar,
+.form-detalle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-compra label,
+#carrito_compra_section label {
+    color: var(--blanco);
+    font-size: 1rem;
+}
+
+.form-compra input[type="number"],
+#carrito_compra_section input[type="number"] {
+    width: 60px;
+    padding: 0.5rem;
+    border-radius: 0.4rem;
+    border: none;
+    background: var(--blanco);
+    color: var(--morado);
+    text-align: center;
+
+}
+
+.form-compra input[type="number"] {
+    width: 100%;
+}
+
+#carrito_compra_section {
+    margin-top: 3rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+#carrito_compra_section h2 {
+    font-size: 2rem;
+    color: var(--blanco);
+    margin-bottom: 1rem;
+}
+
+#carrito_compra_section form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#carrito_compra_section p[style*="color: red"] {
+    color: var(--rojo);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+p {
+    text-align: center;
+    color: var(--blanco);
+    font-size: 1.2rem;
+}

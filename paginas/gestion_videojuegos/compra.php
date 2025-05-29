@@ -89,6 +89,7 @@ if (isset($_POST['comprar_todo_ids']) || isset($_POST['id_videojuegos'])) {
 
 
 <main>
+    <link rel="stylesheet" href="../../assets/paginas/carrito/compra.css">
     <h1>Bienvenido, <?= $_SESSION['nombre'] ?></h1>
 
     <section id="detalles-videojuego">

@@ -1,3 +1,10 @@
+:root {
+    --naranja: linear-gradient(90deg, #F05941 0%, #ff5d2b 100%);
+    --morado: #22092C;
+    --rojo: #BE3144;
+    --blanco: #fff;
+}
+
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -12,8 +19,8 @@
 }
 
 .popup-content {
-    background: white;
-    color: black;
+    background: var(--morado);
+    color: white;
     padding: 20px;
     width: 400px;
     max-width: 90%;
@@ -33,4 +40,6 @@
     width: 30px;
     height: 30px;
     cursor: pointer;
+
 }
+
