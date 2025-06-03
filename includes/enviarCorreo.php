@@ -1,5 +1,4 @@
 <?php
-
 require __DIR__ . '/../libs/PHPMailer/src/Exception.php';
 require __DIR__ . '/../libs/PHPMailer/src/PHPMailer.php';
 require __DIR__ . '/../libs/PHPMailer/src/SMTP.php';
@@ -20,9 +19,8 @@ function enviarCorreo($para, $asunto, $mensaje)
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom('adriannavarrobuceta@gmail.com', 'Adrián');
+        $mail->setFrom($mail->Username, 'Adrián');
         $mail->addAddress($para);
-
         $mail->isHTML(true);
         $mail->Subject = $asunto;
         $mail->Body = $mensaje;
@@ -34,7 +32,6 @@ function enviarCorreo($para, $asunto, $mensaje)
                 'allow_self_signed' => true
             )
         );
-
 
         $mail->send();
         return true;

@@ -3,7 +3,7 @@
 include '../db.php';
 
 $api = '1b59c7f60d814b35b205f50e2b0182ef';
-$cantidadJuegos = 500;
+$cantidadJuegos = 800;
 $juegos = [];
 $nextUrl = 'https://api.rawg.io/api/games?key=' . $api . '&page_size=40';
 
