@@ -40,6 +40,7 @@ if ($resultMonedero && $rowMonedero = mysqli_fetch_assoc($resultMonedero)){
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/header-footer/header.css" />
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/header-footer/footer.css" />
+    <link rel="icon" type="image/png" href="<?= BASE_URL ?>assets/images/logos/g.png">
 
     <meta name="description" content="Tienda de videojuegos, compra y venta de videojuegos, consolas y accesorios." />
     <meta name="keywords" content="videojuegos, consolas, accesorios, compra, venta, tienda, videojuegos en línea" />

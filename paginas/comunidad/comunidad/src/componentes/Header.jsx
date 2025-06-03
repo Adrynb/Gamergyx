@@ -4,7 +4,7 @@ export default function Header() {
     const [usuario, setUsuarioActual] = useState(null);
     const [menuAbierto, setMenuAbierto] = useState(null);
 
-    const BASE_URL = "http://localhost/gamergyx/";
+    const BASE_URL = "http://44.213.37.94/gamergyx/";
 
     useEffect(() => {
         fetch(`${BASE_URL}paginas/comunidad/comunidad/public/API/usuario_actual.php`, {
@@ -52,7 +52,7 @@ export default function Header() {
                             <li><a href={`${BASE_URL}paginas/plataformas/pc.php`}>PC</a></li>
                         </ul>
                     </li>
-                    <li><a href="http://localhost:3000">Comunidad</a></li>
+                    <li><a href="http://ec2-44-213-37-94.compute-1.amazonaws.com:3000">Comunidad</a></li>
                     <li><a href={`${BASE_URL}paginas/contacto/contacto.php`}>Contacto</a></li>
                 </ul>
             </nav>

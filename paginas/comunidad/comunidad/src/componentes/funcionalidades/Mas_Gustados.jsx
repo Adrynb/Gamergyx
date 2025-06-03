@@ -12,7 +12,7 @@ export default function Mas_Gustados() {
 
 
     const cargarMasGustados = () => {
-        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/mas_gustados.php", {
+        fetch("http://44.213.37.94/gamergyx/paginas/comunidad/comunidad/public/API/mas_gustados.php", {
             credentials: 'include',
             mode: 'cors'
         })

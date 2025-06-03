@@ -1,12 +1,13 @@
 <?php
 include '../../includes/db.php';
-require '../../includes/enviarCorreo.php'; 
+require '../../includes/enviarCorreo.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    
+
     $correo_recuperar = $_POST['correo'] ?? '';
 
-    function redirigirConError($mensaje) {
+    function redirigirConError($mensaje)
+    {
         header("Location: recuperar.php?error=" . urlencode($mensaje));
         exit;
     }
@@ -34,7 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         mysqli_stmt_bind_param($stmtToken, 'isss', $idUsuario, $email, $token, $expiracion);
 
         if (mysqli_stmt_execute($stmtToken)) {
-            $enlace = "http://localhost/gamergyx/auth/gestion_contrasenia/restablecer_contrasenia.php?token=" . urlencode($token);
+            $enlace = "http://ec2-44-213-37-94.compute-1.amazonaws.com/gamergyx/auth/gestion_contrasenia/restablecer_contrasenia.php?token=" . urlencode($token);
+
 
             $asunto = 'Recuperación de contraseña';
             $mensaje = "Haga clic en este enlace para recuperar la contraseña: <a href='$enlace'>$enlace</a>";

@@ -24,7 +24,7 @@ export default function Posts() {
     const obtenerRespuestas = (idPost) => posts.filter(post => post.id_padre === idPost);
 
     const cargarPosts = () => {
-        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/obtener_post.php", {
+        fetch("http://ec2-44-213-37-94.compute-1.amazonaws.com/gamergyx/paginas/comunidad/comunidad/public/API/obtener_post.php", {
             credentials: 'include',
             mode: 'cors'
         })
@@ -38,7 +38,7 @@ export default function Posts() {
 
     // Eliminar un post
     const eliminarPost = (id) => {
-        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/eliminar_post.php", {
+        fetch("http://ec2-44-213-37-94.compute-1.amazonaws.com/gamergyx/paginas/comunidad/comunidad/public/API/eliminar_post.php", {
             method: "POST",
             credentials: 'include',
             mode: 'cors',
@@ -52,7 +52,7 @@ export default function Posts() {
 
     // Dar like a un post
     const megustaPost = (id) => {
-        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/megusta_post.php", {
+        fetch("http://ec2-44-213-37-94.compute-1.amazonaws.com/gamergyx/paginas/comunidad/comunidad/public/API/megusta_post.php", {
             method: "POST",
             credentials: 'include',
             mode: 'cors',
@@ -66,7 +66,7 @@ export default function Posts() {
 
     // Obtener usuario actual
     const obtenerUsuarioActual = () => {
-        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/usuario_actual.php", {
+        fetch("http://ec2-44-213-37-94.compute-1.amazonaws.com/gamergyx/paginas/comunidad/comunidad/public/API/usuario_actual.php", {
             credentials: 'include',
             mode: 'cors'
         })
@@ -82,7 +82,7 @@ export default function Posts() {
 
     // Enviar respuesta a un post
     const responderPost = (contenido, idPadre) => {
-        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/anadir_post.php", {
+        fetch("http://ec2-44-213-37-94.compute-1.amazonaws.com/gamergyx/paginas/comunidad/comunidad/public/API/anadir_post.php", {
             method: "POST",
             credentials: 'include',
             mode: 'cors',
@@ -107,7 +107,7 @@ export default function Posts() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetch("http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/anadir_post.php", {
+        fetch("http://44.213.37.94/gamergyx/paginas/comunidad/comunidad/public/API/anadir_post.php", {
             method: "POST",
             credentials: "include",
             mode: "cors",
@@ -152,7 +152,7 @@ export default function Posts() {
             <li key={post.id} className="post-item">
                 {post.fotoPerfil && (
                     <img
-                        src={`http://localhost/gamergyx/assets/images/perfiles/${post.fotoPerfil}`}
+                        src={`http://ec2-44-213-37-94.compute-1.amazonaws.com/gamergyx/assets/images/perfiles/${post.fotoPerfil}`}
                         alt="Foto de perfil"
                         className="profile-image"
                     />
@@ -161,7 +161,7 @@ export default function Posts() {
                 <p className="post-content">{post.contenido}</p>
                 {post.imagen && (
                     <img
-                        src={`http://localhost/gamergyx/paginas/comunidad/comunidad/public/API/${post.imagen}`}
+                        src={`http://ec2-44-213-37-94.compute-1.amazonaws.com/gamergyx/paginas/comunidad/comunidad/public/API/${post.imagen}`}
                         alt="Imagen del post"
                         className="post-image"
                     />
@@ -215,7 +215,7 @@ export default function Posts() {
                         <li key={respuesta.id} className="response-item">
                             {respuesta.fotoPerfil && (
                                 <img
-                                    src={`http://localhost/gamergyx/assets/images/perfiles/${respuesta.fotoPerfil}`}
+                                    src={`http://ec2-44-213-37-94.compute-1.amazonaws.com/gamergyx/assets/images/perfiles/${respuesta.fotoPerfil}`}
                                     alt="Foto de perfil"
                                     className="response-profile-image"
                                 />
@@ -252,7 +252,7 @@ export default function Posts() {
         <form className="popup-form" onSubmit={handleSubmit}>
             {usuarioActual?.fotoPerfil && (
                 <img
-                    src={`http://localhost/gamergyx/assets/images/perfiles/${usuarioActual.fotoPerfil}`}
+                    src={`http://ec2-44-213-37-94.compute-1.amazonaws.com/gamergyx/assets/images/perfiles/${usuarioActual.fotoPerfil}`}
                     alt="Foto de perfil"
                     className="profile-image"
                 />

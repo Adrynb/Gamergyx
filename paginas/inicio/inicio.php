@@ -19,7 +19,7 @@ include '../menus/header.php';
             </div>
             <div class="carousel-inner">
                 <?php
-                $sql = "SELECT DISTINCT imagen, titulo FROM VIDEOJUEGOS ORDER BY RAND() LIMIT 3";
+                $sql = "SELECT DISTINCT imagen, titulo FROM videojuegos ORDER BY RAND() LIMIT 3";
                 $result = mysqli_query($conexion, $sql);
                 $active = true;
                 if (mysqli_num_rows($result) > 0) {
@@ -55,8 +55,8 @@ include '../menus/header.php';
 
     <section id="ofertas-section">
         <?php
-        $sql = "SELECT DISTINCT * FROM VIDEOJUEGOS ORDER BY RAND() LIMIT 4";
-        $sqlOfertas = "SELECT DISTINCT * FROM VIDEOJUEGOS WHERE stock = (SELECT MAX(stock) FROM VIDEOJUEGOS LIMIT 1) LIMIT 1";
+        $sql = "SELECT DISTINCT * FROM videojuegos ORDER BY RAND() LIMIT 4";
+        $sqlOfertas = "SELECT DISTINCT * FROM videojuegos WHERE stock = (SELECT MAX(stock) FROM videojuegos LIMIT 1) LIMIT 1";
         $result = mysqli_query($conexion, $sql);
         $resultOfertas = mysqli_query($conexion, $sqlOfertas);
 
@@ -128,7 +128,7 @@ include '../menus/header.php';
     <h2 class="titulo-section">MÁS RECIENTES</h2>
     <section id="novedades-section">
         <?php
-        $sql = "SELECT id_videojuegos, titulo, imagen, precio FROM VIDEOJUEGOS WHERE fecha_lanzamiento >= '2018-01-01' ORDER BY RAND() DESC LIMIT 9";
+        $sql = "SELECT id_videojuegos, titulo, imagen, precio FROM videojuegos WHERE fecha_lanzamiento >= '2018-01-01' ORDER BY RAND() DESC LIMIT 9";
         $result = mysqli_query($conexion, $sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
@@ -155,13 +155,13 @@ include '../menus/header.php';
     <section class="reseñas-container">
         <?php
 
-        $sql = "SELECT comentarios, fecha, id_videojuegos, estrellas, usuario, fotoPerfil FROM Reseñas WHERE estrellas > 4 ORDER BY RAND() LIMIT 3";
+        $sql = "SELECT comentarios, fecha, id_videojuegos, estrellas, usuario, fotoPerfil FROM reseñas WHERE estrellas > 4 ORDER BY RAND() LIMIT 3";
         $result = mysqli_query($conexion, $sql);
 
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
                 $id_videojuegos = $row['id_videojuegos'];
-                $sqlJuego = "SELECT titulo, imagen FROM VIDEOJUEGOS WHERE id_videojuegos = $id_videojuegos LIMIT 1";
+                $sqlJuego = "SELECT titulo, imagen FROM videojuegos WHERE id_videojuegos = $id_videojuegos LIMIT 1";
                 $resultJuego = mysqli_query($conexion, $sqlJuego);
                 $juego = mysqli_fetch_assoc($resultJuego);
 
@@ -199,7 +199,7 @@ include '../menus/header.php';
     <h2 class="titulo-section">MÁS VENDIDOS</h2>
     <section id="masvendidos-section">
         <?php
-        $sql = "SELECT * FROM VIDEOJUEGOS ORDER BY stock DESC LIMIT 4";
+        $sql = "SELECT * FROM videojuegos ORDER BY stock DESC LIMIT 4";
         $result = mysqli_query($conexion, $sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
